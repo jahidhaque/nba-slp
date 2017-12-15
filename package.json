@@ -1,0 +1,15 @@
+{
+  "name": "nbaslp",
+  "version": "1.0.0",
+  "description": "node based project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jahid haque <jahid.haque@yahoo.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  }
+}
