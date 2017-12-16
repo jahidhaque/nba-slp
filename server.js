@@ -14,7 +14,7 @@ const Morgan = require('morgan');
 const App = Express();
 
 App.use(Morgan('dev'));
-App.use(BodyParser.urlencoded({ extended: true }));	
+App.use(BodyParser.urlencoded({ extended: true }));
 App.use(BodyParser.json());
 
 /*
@@ -22,8 +22,8 @@ App.use(BodyParser.json());
 | Setting up static directory for assets.
 |----------------------------------------------
 */
-App.use(Express.static(__dirname + Path.join('/public')));
-App.use(Express.static(__dirname + Path.join('/app_client')));
+App.use(Express.static(Path.join(__dirname, '/public')));
+App.use(Express.static(Path.join(__dirname, '/app_client')));
 
 /*
 |----------------------------------------------
@@ -31,9 +31,7 @@ App.use(Express.static(__dirname + Path.join('/app_client')));
 |----------------------------------------------
 */
 App.use((res, req) => {
-	res.sendFile(Path.join(__dirname + '/public', 'index.html'));
-})
+    res.sendFile(Path.join(__dirname, '/public', 'index.html'));
+});
 
-App.listen(process.env.APP_PORT, () => {
-	console.log(`App running on ${process.env.APP_PORT}`);
-})
+App.listen(process.env.APP_PORT, () => `App running on ${process.env.APP_PORT}`);
