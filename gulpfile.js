@@ -29,6 +29,7 @@ var     paths       =       {
         "app_client/common/directives/footer/footer.directive.js",
         "app_client/home/welcome/welcome.controller.js",
         "app_client/signup/signup.controller.js",
+        "app_client/signin/signin.controller.js",
     ],
     styles: [
         "public/scss/app.scss"

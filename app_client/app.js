@@ -25,6 +25,11 @@
                 controller: 'signupCtrl',
                 controllerAs: 'regvm',
             })
+            .when('/signin', {
+                templateUrl: 'signin/signin.view.html',
+                controller: 'signinCtrl',
+                controllerAs: 'lvm',
+            });
 
         $locationProvider.html5Mode({
             enabled: true,
