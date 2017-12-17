@@ -27,7 +27,8 @@ var     paths       =       {
         "app_client/common/directives/nav/nav.directive.js",
         "app_client/common/directives/nav/nav.controller.js",
         "app_client/common/directives/footer/footer.directive.js",
-        "app_client/home/welcome/welcome.controller.js"
+        "app_client/home/welcome/welcome.controller.js",
+        "app_client/signup/signup.controller.js",
     ],
     styles: [
         "public/scss/app.scss"

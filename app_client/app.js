@@ -19,7 +19,12 @@
                 templateUrl: 'home/welcome/welcome.view.html',
                 controller: 'welcomeCtrl',
                 controllerAs: 'wvm',
-            });
+            })
+            .when('/signup', {
+                templateUrl: 'signup/signup.view.html',
+                controller: 'signupCtrl',
+                controllerAs: 'regvm',
+            })
 
         $locationProvider.html5Mode({
             enabled: true,

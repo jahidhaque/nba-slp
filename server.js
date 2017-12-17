@@ -30,8 +30,10 @@ App.use(Express.static(Path.join(__dirname, '/app_client')));
 | Send one index file for angular route mapping
 |----------------------------------------------
 */
-App.use((res, req) => {
+App.use((req, res) => {
     res.sendFile(Path.join(__dirname, '/public', 'index.html'));
 });
 
-App.listen(process.env.APP_PORT, () => `App running on ${process.env.APP_PORT}`);
+App.listen(process.env.APP_PORT, () => {
+    console.log(`App running on ${process.env.APP_PORT}`);
+});
