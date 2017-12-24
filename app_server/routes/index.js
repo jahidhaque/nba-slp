@@ -20,6 +20,6 @@ const Authentication = require('../controllers/authentication');
 | signin, email varification, password reset etc
 |----------------------------------------------
 */
-Routes.post('api/signup', Authentication.signup);
+Routes.post('/signup', Authentication.signup);
 
 module.exports = Routes;

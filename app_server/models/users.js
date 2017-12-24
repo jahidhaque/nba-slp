@@ -13,6 +13,9 @@ const Jwt = require('jsonwebtoken');
 const Crypto = require('crypto');
 
 const userSchema = new Mongoose.Schema({
+    userId: {
+        type: String, min: 10, max: 10, required: true,
+    },
     firstName: { 
         type: String, min: 3, max: 24, required: true,
     },
@@ -30,6 +33,15 @@ const userSchema = new Mongoose.Schema({
     },
     salt: {
         type: String, required: true,
+    },
+    userDir: {
+        type: String, default: 'null',
+    },
+    validationStatus: {
+        type: Boolean, default: false,
+    },
+    createdAt: {
+        type: Date, default: Date.now,
     },
 });
 
@@ -65,6 +77,7 @@ userSchema.methods.generateJwt = function () {
 
     return Jwt.sign({
         _id: this._id,
+        userId: this.userId,
         email: this.email,
         name: this.displayName,
         exp: parseInt(expiry.getTime() / 1000),

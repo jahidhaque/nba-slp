@@ -62,13 +62,13 @@ function authentication($window, $http) {
     };
 
     const signUp = (user) => {
-        return $http.post('/api/register', user).success(function (data) {
+        return $http.post('/api/signup', user).success(function (data) {
             saveToken(data.token);
         });
     };
 
     const signIn = (user) => {
-        return $http.post('/api/login', user).success(function (data) {
+        return $http.post('/api/signin', user).success(function (data) {
             saveToken(data.token);
         });
     };

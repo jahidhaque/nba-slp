@@ -7,6 +7,13 @@
 			<form role="form" ng-submit='regvm.register()'>
 				<h1 class="light title">Please Sign Up <small class="title thin">One Accountant, All Services.</small></h1>
 				<hr class="colorgraph">
+				<div class="row" ng-if="regvm.RegistrationError === true">
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<div class="alert alert-danger">
+							<p class="text-center light title">{{regvm.RegistrationErrorMsg}}</p>
+						</div>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-6">
 						<div class="form-group">

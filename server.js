@@ -34,8 +34,6 @@ const apiRoutes = require('./app_server/routes/index');
 
 App.use(Passport.initialize());
 
-App.use(Passport.initialize());
-
 App.use('/api', apiRoutes);
 
 /*

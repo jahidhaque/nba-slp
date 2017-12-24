@@ -13,9 +13,9 @@
         .module('nbaslp')
         .controller('signupCtrl', signupCtrl);
 
-    signupCtrl.$inject = ['authentication'];
+    signupCtrl.$inject = ['authentication', '$location'];
 
-    function signupCtrl() {
+    function signupCtrl(authentication, $location) {
         const regvm = this;
 
         // user object.
@@ -29,7 +29,24 @@
         };
 
         regvm.register = () => {
-            
+            authentication
+                .signUp(regvm.user)
+                .then((response) => {
+                    if (response.data.error) {
+                        regvm.RegistrationError = true;
+                        regvm.RegistrationErrorMsg = response.data.error;
+                    }
+                    else {
+                        regvm.RegistrationError = false;
+                        $location.path('/welcome');
+                    }
+                })
+                .catch((err) => {
+                    if (err) {
+                        regvm.RegistrationError = true;
+                        regvm.RegistrationErrorMsg = err.data.error;
+                    }
+                });
         };
     }
 })();

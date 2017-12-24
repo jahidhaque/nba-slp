@@ -29,6 +29,9 @@
                 templateUrl: 'signin/signin.view.html',
                 controller: 'signinCtrl',
                 controllerAs: 'lvm',
+            })
+            .when('/welcome', {
+                templateUrl: 'welcome/welcome.view.html',
             });
 
         $locationProvider.html5Mode({
