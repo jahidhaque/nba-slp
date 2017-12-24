@@ -27,5 +27,11 @@
     "prefer-rest-params": 0,
     "consistent-return": 0,
     "prefer-destructuring": 0
+  },
+  "env": {
+    "browser": 1
+  },
+  "globals": {
+    "angular": 1
   }
 }

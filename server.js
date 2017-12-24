@@ -10,8 +10,13 @@ const Express = require('express');
 const BodyParser = require('body-parser');
 const Path = require('path');
 const Morgan = require('morgan');
+const Passport = require('passport');
 
 const App = Express();
+
+// db connection.
+require('./app_server/models/db');
+require('./app_server/config/passport');
 
 App.use(Morgan('dev'));
 App.use(BodyParser.urlencoded({ extended: true }));
@@ -24,6 +29,14 @@ App.use(BodyParser.json());
 */
 App.use(Express.static(Path.join(__dirname, '/public')));
 App.use(Express.static(Path.join(__dirname, '/app_client')));
+
+const apiRoutes = require('./app_server/routes/index');
+
+App.use(Passport.initialize());
+
+App.use(Passport.initialize());
+
+App.use('/api', apiRoutes);
 
 /*
 |----------------------------------------------

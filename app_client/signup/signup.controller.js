@@ -12,7 +12,24 @@
     angular
         .module('nbaslp')
         .controller('signupCtrl', signupCtrl);
+
+    signupCtrl.$inject = ['authentication'];
+
     function signupCtrl() {
         const regvm = this;
+
+        // user object.
+        regvm.user = {
+            firstName: '',
+            lastName: '',
+            displayName: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        };
+
+        regvm.register = () => {
+            
+        };
     }
 })();
