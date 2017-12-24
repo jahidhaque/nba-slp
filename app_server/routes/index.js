@@ -21,5 +21,6 @@ const Authentication = require('../controllers/authentication');
 |----------------------------------------------
 */
 Routes.post('/signup', Authentication.signup);
+Routes.post('/signin', Authentication.signin);
 
 module.exports = Routes;

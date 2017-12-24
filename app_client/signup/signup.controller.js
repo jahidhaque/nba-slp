@@ -48,5 +48,9 @@
                     }
                 });
         };
+
+        if (authentication.isLoggedIn()) {
+            $location.path('/welcome');
+        }
     }
 })();

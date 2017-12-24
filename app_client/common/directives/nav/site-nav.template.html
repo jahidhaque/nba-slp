@@ -21,9 +21,14 @@
         <li><a href="#">Contact us</a></li>
       </ul>
       
+      <!-- for logged url -->
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/signup">Registration</a></li>
-        <li><a href="/signin">Login</a></li>
+        <li ng-if='nvm.loggedInUri === true'><a href="/profile">{{nvm.loggedInName}}</a></li>
+        <li ng-if='nvm.loggedInUri === true'><a href="#" ng-click='nvm.logout()'>Logout <i class="m-l-1 fa fa-sign-out" aria-hidden="true"></i></a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-if='nvm.loggedInUri === false'><a href="/signup">Registration</a></li>
+        <li ng-if='nvm.loggedInUri === false'><a href="/signin">Login</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

@@ -85,3 +85,38 @@ module.exports.signup = (req, res) => {
         }
     });
 };
+
+/*
+|----------------------------------------------
+| Following function will allow user to login
+|----------------------------------------------
+*/
+module.exports.signin = function (req, res) {
+    // checking input.
+    if(!req.body.email || !req.body.password)   {
+        sendJsonResponse(res, 400, {
+            message: 'All fields required. Must not be empty',
+        });
+    }
+    else {
+
+        // using passport.
+        Passport.authenticate('local', function (err, User, info) {
+
+            if (err) {
+                sendJsonResponse(res, 404, err);
+            }
+            else if (User) {                
+                const token = User.generateJwt();
+                sendJsonResponse(res, 200, {
+                    token: token,
+                });
+            }
+            else {
+                sendJsonResponse(res, 404, info);
+            }
+
+        })(req, res);
+    }
+};
+

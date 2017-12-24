@@ -13,7 +13,22 @@
         .module('nbaslp')
         .controller('navCtrl', navCtrl);
 
-    function navCtrl() {
+    navCtrl.$inject = ['authentication', '$location'];
+
+    function navCtrl(authentication, $location) {
         const nvm = this;
+
+        if (authentication.isLoggedIn()) {
+            nvm.loggedInUri = true;
+            nvm.loggedInName = authentication.currentUser().name;
+        }
+        else {
+            nvm.loggedInUri = false;
+        }
+
+        nvm.logout = () => {
+            authentication.Logout();
+            $location.path('/signin');
+        };
     }
 })();
