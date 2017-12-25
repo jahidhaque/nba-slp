@@ -49,7 +49,6 @@ module.exports.signup = (req, res) => {
             sendJsonResponse(res, 404, {
                 error: err.details[0].message,
             });
-            return;
         }
         else {
             // Create user object to generate collection.

@@ -30,8 +30,15 @@
                 controller: 'signinCtrl',
                 controllerAs: 'lvm',
             })
+            .when('/profile', {
+                templateUrl: 'profile/profile.view.html',
+                controller: 'profileCtrl',
+                controllerAs: 'provm',
+            })
             .when('/welcome', {
                 templateUrl: 'welcome/welcome.view.html',
+                controller: 'welcomeCtrl',
+                controllerAs: 'wvm',
             });
 
         $locationProvider.html5Mode({

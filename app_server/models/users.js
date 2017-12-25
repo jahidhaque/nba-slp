@@ -80,6 +80,7 @@ userSchema.methods.generateJwt = function () {
         userId: this.userId,
         email: this.email,
         name: this.displayName,
+        accountStatus: this.validationStatus,
         exp: parseInt(expiry.getTime() / 1000),
     }, process.env.jswntokenkey);
 };
