@@ -95,7 +95,8 @@ gulp.task('compile-sass', function(){
 gulp.task('watch', function(){
     gulp.watch(paths.scripts, ['compile-js']);
     gulp.watch(paths.frontEndScripts, ['compile-fontEndsScripts']);
-    gulp.watch("public/scss/*.scss", ['compile-sass'])
+    gulp.watch("public/scss/*.scss", ['compile-sass']);
+    gulp.watch("public/scss/components/*.scss", ['compile-sass']);
 });
 
 

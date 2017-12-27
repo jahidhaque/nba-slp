@@ -23,6 +23,7 @@
       
       <!-- for logged url -->
       <ul class="nav navbar-nav navbar-right">
+        <li ng-if='nvm.loggedInUri === true'><a href="/welcome">Welcome <i class="fa fa-home" aria-hidden="true"></i></a></li>
         <li ng-if='nvm.loggedInUri === true'><a href="/profile">{{nvm.loggedInName}}</a></li>
         <li ng-if='nvm.loggedInUri === true'><a href="#" ng-click='nvm.logout()'>Logout <i class="m-l-1 fa fa-sign-out" aria-hidden="true"></i></a></li>
       </ul>
