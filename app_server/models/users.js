@@ -12,6 +12,13 @@ const Mongoose = require('mongoose');
 const Jwt = require('jsonwebtoken');
 const Crypto = require('crypto');
 
+const statusSchema = new Mongoose.Schema({
+    profile: { type: Boolean, required: true, default: false },
+    current_profile: { type: Boolean, required: true, default: false },
+    bankteller: { type: Boolean, required: true, default: false },
+    batch: { type: Boolean, required: true, default: false },
+});
+
 const userSchema = new Mongoose.Schema({
     userId: {
         type: String, min: 10, max: 10, required: true,
@@ -40,6 +47,7 @@ const userSchema = new Mongoose.Schema({
     validationStatus: {
         type: Boolean, default: false,
     },
+    statuses: [statusSchema],
     createdAt: {
         type: Date, default: Date.now,
     },

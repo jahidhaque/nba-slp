@@ -14,6 +14,8 @@ const Routes = Express.Router();
 
 const Authentication = require('../controllers/authentication');
 
+const AccountController = require('../controllers/AccountController');
+
 /*
 |----------------------------------------------
 | Following routes for authentication- signup, 
@@ -22,5 +24,12 @@ const Authentication = require('../controllers/authentication');
 */
 Routes.post('/signup', Authentication.signup);
 Routes.post('/signin', Authentication.signin);
+
+/*
+|----------------------------------------------
+| Following routes for account use only 
+|----------------------------------------------
+*/
+Routes.post('/createbasicprofile', AccountController.createBasicProfile);
 
 module.exports = Routes;

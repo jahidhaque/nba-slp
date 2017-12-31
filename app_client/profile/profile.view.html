@@ -22,11 +22,11 @@
                 <form ng-submit="provm.saveBasicInfo()">
                     <div class="form-group">
                         <label for="formername">Former Name</label>
-                        <input type="text" id='formername' placehoder="former name" class="form-control">
+                        <input type="text" id='formername' ng-model='provm.basicProfile.formerName' placehoder="former name" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="sex">Sex</label>
-                        <select name="sex" id="sex" class="form-control half">
+                        <select name="sex" id="sex" ng-model='provm.basicProfile.sex' class="form-control half">
                             <option value="" selected="">----Select Sex----</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
@@ -35,12 +35,16 @@
 
                     <div class="form-group">
                         <label for="tel">Telephone</label>
-                        <input type="text" id='tel' placehoder="Telephone" class="form-control">
+                        <input type="text" id='tel' ng-model='provm.basicProfile.tele' placehoder="Telephone" class="form-control">
                     </div>
 
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text" id='address' placehoder="Your address" class="form-control">
+                        <input type="text" id='address' ng-model='provm.basicProfile.address' placehoder="Your address" class="form-control">
+                    </div>
+
+                    <div class="alert alert-danger" ng-if="provm.basicAccountInfoError === true">
+                        <p class="regular text-center">{{provm.basicAccountInfoErrorMsg}}</p>
                     </div>
 
                     <button type="submit" class="btn btn-info">Save Details</button>
@@ -62,11 +66,6 @@
                     <div class="form-group">
                         <label for="nba_batch">Nba Batch</label>
                         <input type="text" id='nba_batch' placehoder="NBA Batch" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <input type="text" id='address' placehoder="Your address" class="form-control">
                     </div>
 
                     <button type="submit" class="btn btn-info">Save Details</button>

@@ -60,6 +60,7 @@ module.exports.signup = (req, res) => {
             user.displayName = req.body.displayName;
             user.email = req.body.email;
             user.password = user.setPassword(req.body.password);
+            user.statuses = {};
 
             user.save((err) => {
                 if (err) {
