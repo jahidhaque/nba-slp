@@ -14,6 +14,7 @@ const Crypto = require('crypto');
 
 const statusSchema = new Mongoose.Schema({
     profile: { type: Boolean, required: true, default: false },
+    basic_info: { type: Boolean, required: true, default: false },
     current_profile: { type: Boolean, required: true, default: false },
     bankteller: { type: Boolean, required: true, default: false },
     batch: { type: Boolean, required: true, default: false },

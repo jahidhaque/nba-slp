@@ -12,6 +12,8 @@ const Mongoose = require('mongoose');
 
 const Profile = Mongoose.model('profile');
 
+const Users = Mongoose.model('users');
+
 const Joi = require('joi');
 
 const UId = require('uid-safe');
@@ -24,6 +26,107 @@ const UId = require('uid-safe');
 const sendJsonResponse = function (res, status, content) {
     res.status(status);
     res.json(content);
+};
+
+/*
+|----------------------------------------------
+| userId joi validation
+|----------------------------------------------
+*/
+const userId = Joi.object().keys({
+    userId: Joi.string().email().required(),
+});
+
+/*
+|----------------------------------------------
+| Following function will get all statuses from
+| each collection based on given userId
+|----------------------------------------------
+*/
+module.exports.getAccountStatuses = (req, res) => {
+
+    Joi.validate(req.params, userId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            Users
+                .findOne({ email: req.params.userId })
+                .select('statuses')
+                .exec((err, user) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            statuses: user.statuses,
+                        });
+                    }
+                });
+        }
+    });
+};
+
+/*
+|----------------------------------------------
+| Following function will update user status
+| based on given values.
+|----------------------------------------------
+*/
+module.exports.updateUserStatus = (req, res) => {
+
+    const statusObject = Joi.object().keys({
+        update_at: Joi.string().required(),
+        email: Joi.string().email().required(),
+        status: Joi.boolean().required(),
+    });
+
+    Joi.validate(req.body, statusObject, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            Users
+                .findOne({ email: req.body.email })
+                .select('statuses')
+                .exec((err, user) => {
+                    console.log(user);
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else if (!user) {
+                        sendJsonResponse(res, 404, {
+                            error: `No user found with ${req.body.email}`,
+                        });
+                    }
+                    else {
+                        const newStatus = user.statuses[0];
+                        newStatus[req.body.update_at] = req.body.status;
+
+                        newStatus.save(err => {
+                            if (err) {
+                                sendJsonResponse(res, 404, {
+                                    error: err,
+                                });
+                            }
+                            else {
+                                sendJsonResponse(res, 200, {
+                                    success: true,
+                                });
+                            }
+                        });
+                    }
+                });
+        }
+    });
 };
 
 

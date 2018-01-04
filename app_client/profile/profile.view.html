@@ -13,10 +13,10 @@
 </div>
 
 <!-- profile container -->
-<div class="container m-t-2 m-b-2">
-    <div class="row">
+<div class="container m-t-2 m-b-2" ng-init='provm.getProfileStatuses()'>
+    <div class="row" ng-if='provm.statusLoadError === false'>
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            <div class="container-box shadow wbg">
+            <div class="container-box shadow wbg" ng-if='provm.userStatuses[0].basic_info === false'>
                 <h1 class="text-center title light">Fill up your personal information</h1>
                 <hr>
                 <form ng-submit="provm.saveBasicInfo()">
@@ -106,6 +106,10 @@
             </div>
         </div>
 
+    </div>
+
+    <div class="row" ng-if="provm.statusLoadError === true">
+        <h1 class="hero-big-title light text-center">{{provm.statusLoadErrorMsg}}</h1>
     </div>
 </div>
 
