@@ -23,10 +23,17 @@
       
       <!-- for logged url -->
       <ul class="nav navbar-nav navbar-right">
-        <li ng-if='nvm.loggedInUri === true'><a href="/welcome">Welcome <i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li ng-if='nvm.loggedInUri === true'><a ng-if ='nvm.currentAccountType === "customer" ' href="/welcome">Welcome <i class="fa fa-home" aria-hidden="true"></i></a></li>
         <li ng-if='nvm.loggedInUri === true'><a href="/profile">{{nvm.loggedInName}}</a></li>
         <li ng-if='nvm.loggedInUri === true'><a href="#" ng-click='nvm.logout()'>Logout <i class="m-l-1 fa fa-sign-out" aria-hidden="true"></i></a></li>
       </ul>
+      
+      <ul class="nav navbar-nav navbar-right" ng-if='nvm.currentAccountType === "admin" '>
+        <li><a href="/sitecontroll">Site Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
+        <li><a href="#">User Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
+        <li><a href="#">Staff Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
+      </ul>
+
       <ul class="nav navbar-nav navbar-right">
         <li ng-if='nvm.loggedInUri === false'><a href="/signup">Registration</a></li>
         <li ng-if='nvm.loggedInUri === false'><a href="/signin">Login</a></li>

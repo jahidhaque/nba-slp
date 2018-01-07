@@ -1,0 +1,26 @@
+<!-- navigation -->
+<site-nav></site-nav>
+
+<!-- container -->
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+			<div class="container-box shadow wbg small-radius">
+				<h1 class="text-center regular sub-title">Add preferred committee</h1>
+				<hr>
+				<form ng-submit="adSite.addPreferredCommittee()">
+					<div class="form-group">
+						<label for="committee_name">Committee Name</label><input type="text" id='committee_name' class="form-control" ng-model="adSite.committee.name" placeholder="Committee name" tabindex="1">
+					</div>
+
+					<div class="form-group">
+						<button type="submit" tabindex="2" class="btn btn-info">Save Committee</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- sitefooter -->
+<site-footer></site-footer>

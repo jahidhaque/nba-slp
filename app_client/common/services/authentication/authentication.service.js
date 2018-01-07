@@ -50,6 +50,7 @@ function authentication($window, $http) {
                 userId: payload._id,
                 email: payload.email,
                 accountStatus: payload.accountStatus,
+                accountType: payload.accountType,
                 accountId: payload.userId,
                 name: payload.name,
             };

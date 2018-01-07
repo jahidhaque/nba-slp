@@ -24,9 +24,9 @@
                 .catch(handleError);
         };
 
-        const updateUserStatus = function (updateData) {
+        const updateUserStatus = function (data) {
             return $http
-                .post('/api/userstatus/', updateData)
+                .post('/api/userstatus', data)
                 .then(handleSuccess)
                 .catch(handleError);
         };
@@ -34,6 +34,13 @@
         const saveBasicInfo = (data) => {
             return $http 
                 .post('/api/createbasicprofile', data)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
+        const saveBranchInfo = (userId, data) => {
+            return $http
+                .post('/api/' + userId + '/savebranchinfo', data)
                 .then(handleSuccess)
                 .catch(handleError);
         };
@@ -46,6 +53,7 @@
             getAccountStatuses: getAccountStatuses,
             updateUserStatus: updateUserStatus,
             saveBasicInfo: saveBasicInfo,
+            saveBranchInfo: saveBranchInfo,
         };
     }
 

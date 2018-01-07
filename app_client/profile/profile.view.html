@@ -2,7 +2,7 @@
 <site-nav></site-nav>
 
 <!-- when profile hasn't been activated -->
-<div class="container-fluid">
+<div class="container-fluid" ng-if='provm.currentAccountType === "customer" '>
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="provm.profileStatus === false">
 			<h1 class="hero-big-title light text-center">
@@ -55,18 +55,20 @@
 
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="container-box shadow wbg">
-                <h1 class="text-center title light">Batch Info</h1>
+                <h1 class="text-center title light">Branch Info</h1>
                 <hr>
                 <form ng-submit="provm.saveBatchInfo()">
                     <div class="form-group">
                         <label for="baryear">Bar year</label>
-                        <input type="text" id='baryear' placehoder="Bar year" class="form-control">
+                        <input type="text" id='baryear' ng-model='provm.branch.year' placehoder="Bar year" class="form-control">
                     </div>
                     
                     <div class="form-group">
-                        <label for="nba_batch">Nba Batch</label>
-                        <input type="text" id='nba_batch' placehoder="NBA Batch" class="form-control">
+                        <label for="nba_branch">Nba Branch</label>
+                        <input type="text" id='nba_branch' ng-model='provm.branch.branch' placehoder="NBA Branch" class="form-control">
                     </div>
+
+                    <div class="alert alert-danger" ng-if=" provm.branchInfoError === true">{{provm.branchInfoErrorMsg}}</div>
 
                     <button type="submit" class="btn btn-info">Save Details</button>
 

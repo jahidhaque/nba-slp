@@ -17,9 +17,6 @@ const batchSchema = new Mongoose.Schema({
     whos: {
         type: String, unique: true, required: true,
     },
-    userid: {
-        type: String, min: 10, max: 10, required: true, unique: true,
-    },
     barYear: {
         type: String, min: 10, max: 10, required: true,
     },

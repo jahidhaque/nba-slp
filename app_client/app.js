@@ -35,6 +35,16 @@
                 controller: 'profileCtrl',
                 controllerAs: 'provm',
             })
+            .when('/help', {
+                templateUrl: 'help/help.view.html',
+                controller: 'helpCtrl',
+                controllerAs: 'hvm',
+            })
+            .when('/sitecontroll', {
+                templateUrl: 'admin/sitecontroll/sitecontroll.view.html',
+                controller: 'sitecontrollCtrl',
+                controllerAs: 'adSite',
+            })
             .when('/welcome', {
                 templateUrl: 'welcome/welcome.view.html',
                 controller: 'welcomeCtrl',

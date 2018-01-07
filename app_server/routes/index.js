@@ -16,6 +16,8 @@ const Authentication = require('../controllers/authentication');
 
 const AccountController = require('../controllers/AccountController');
 
+const siteController = require('../controllers/SiteController');
+
 /*
 |----------------------------------------------
 | Following routes for authentication- signup, 
@@ -33,5 +35,14 @@ Routes.post('/signin', Authentication.signin);
 Routes.get('/:userId/statuses', AccountController.getAccountStatuses);
 Routes.post('/createbasicprofile', AccountController.createBasicProfile);
 Routes.post('/userstatus', AccountController.updateUserStatus);
+Routes.post('/:userId/savebranchinfo', AccountController.saveBranchInfo);
+
+
+/*
+|----------------------------------------------
+| following routes are only for admin.
+|----------------------------------------------
+*/
+Routes.post('/createcommittee', siteController.createCommittee);
 
 module.exports = Routes;

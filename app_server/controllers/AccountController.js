@@ -14,6 +14,8 @@ const Profile = Mongoose.model('profile');
 
 const Users = Mongoose.model('users');
 
+const Branch = Mongoose.model('batch');
+
 const Joi = require('joi');
 
 const UId = require('uid-safe');
@@ -96,7 +98,6 @@ module.exports.updateUserStatus = (req, res) => {
                 .findOne({ email: req.body.email })
                 .select('statuses')
                 .exec((err, user) => {
-                    console.log(user);
                     if (err) {
                         sendJsonResponse(res, 404, {
                             error: err,
@@ -107,11 +108,12 @@ module.exports.updateUserStatus = (req, res) => {
                             error: `No user found with ${req.body.email}`,
                         });
                     }
-                    else {
+                    else if (user.statuses && user.statuses.length > 0) {
                         const newStatus = user.statuses[0];
+
                         newStatus[req.body.update_at] = req.body.status;
 
-                        newStatus.save(err => {
+                        user.save(err => {
                             if (err) {
                                 sendJsonResponse(res, 404, {
                                     error: err,
@@ -119,9 +121,14 @@ module.exports.updateUserStatus = (req, res) => {
                             }
                             else {
                                 sendJsonResponse(res, 200, {
-                                    success: true,
+                                    updated: true,
                                 });
                             }
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 404, {
+                            error: 'Error no statuses found for user',
                         });
                     }
                 });
@@ -157,8 +164,6 @@ module.exports.createBasicProfile = (req, res) => {
             profile.telephone = req.body.telephone;
             profile.address = req.body.address;
 
-            console.log(profileId);
-
             profile.save((err) => {
                 if (err) {
                     sendJsonResponse(res, 404, {
@@ -169,6 +174,58 @@ module.exports.createBasicProfile = (req, res) => {
                     sendJsonResponse(res, 200, {
                         success: true,
                         profile: profile,
+                    });
+                }
+            });
+        }
+    });
+};
+
+
+/*
+|----------------------------------------------
+| Following function will save branch info for
+|----------------------------------------------
+*/
+module.exports.saveBranchInfo = (req, res) => {
+
+    const branchInfo = Joi.object().keys({
+        year: Joi.string().min(4).max(4).regex(/^[0-9]{4,4}$/).required(),
+        branch: Joi.string().min(3).max(20).regex(/^[a-zA-Z ]{3,20}$/).required(),
+    });
+
+    Joi.validate(req.params, userId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            Joi.validate(req.body, branchInfo, (err, value) => {
+                if (err) {
+                    sendJsonResponse(res, 404, {
+                        error: err.details[0].message,
+                    });
+                }
+                else {
+                    const branch = new Branch();
+
+                    branch.batchId = UId.sync(10);
+                    branch.whos = req.params.userId;
+                    branch.barYear = req.body.year;
+                    branch.nbaBatch = req.body.branch;
+
+                    branch.save(err => {
+                        if (err) {
+                            sendJsonResponse(res, 404, {
+                                error: 'Error while saving branch info. Contact admin',
+                            });
+                        }
+                        else {
+                            sendJsonResponse(res, 404, {
+                                success: true,
+                            });
+                        }
                     });
                 }
             });

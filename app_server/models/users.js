@@ -48,6 +48,9 @@ const userSchema = new Mongoose.Schema({
     validationStatus: {
         type: Boolean, default: false,
     },
+    accountType: {
+        type: String, default: 'customer',
+    },
     statuses: [statusSchema],
     createdAt: {
         type: Date, default: Date.now,
@@ -90,6 +93,7 @@ userSchema.methods.generateJwt = function () {
         email: this.email,
         name: this.displayName,
         accountStatus: this.validationStatus,
+        accountType: this.accountType,
         exp: parseInt(expiry.getTime() / 1000),
     }, process.env.jswntokenkey);
 };
