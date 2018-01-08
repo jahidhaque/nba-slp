@@ -51,10 +51,36 @@
 
                 </form>
             </div>
+
+            <!-- this html block to show basic Info -->
+            <div class="container-box shadow wbg" ng-if="provm.userStatuses[0].basic_info === true" ng-init="provm.loadBasicInfo('profile')">
+                <div class="alert alert-danger" ng-if="provm.userBasicInfoLoadingError === true">
+                    <p class="text-center no-margin regular title">{{provm.userBasicInfoLoadingErrorMsg}}</p>
+                </div>
+                <div ng-if='provm.userBasicInfoLoadingError === false'>
+                    <h1 class="text-center title regular">Your Basic Profile Info</h1>
+                    <hr>
+                    <ul class="list">
+                        <li>
+                            <p class="regular sub-title">Former name: {{provm.basicInfo.formerName}}</p>
+                        </li>
+                        <li>
+                            <p class="regular sub-title">Sex: {{provm.basicInfo.sex}}</p>
+                        </li>
+                        <li>
+                            <p class="regular sub-title">Address: {{provm.basicInfo.address}}</p>
+                        </li>
+                        <li>
+                            <p class="regular sub-title">Account Created: {{provm.basicInfo.createdAt | date: 'yyyy, MMM dd'}}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
 
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-            <div class="container-box shadow wbg">
+            <div class="container-box shadow wbg" ng-if='provm.userStatuses[0].branch === false'>
                 <h1 class="text-center title light">Branch Info</h1>
                 <hr>
                 <form ng-submit="provm.saveBatchInfo()">
@@ -73,6 +99,26 @@
                     <button type="submit" class="btn btn-info">Save Details</button>
 
                 </form>
+            </div>
+
+            <!-- this html block to show branch info -->
+            <div class="container-box shadow wbg" ng-if="provm.userStatuses[0].branch === true" 
+            ng-init="provm.loadUserBranch('branch')">
+                <div class="alert alert-danger" ng-if="provm.userInfoLoadingError === true">
+                    <p class="text-center no-margin regular title">{{provm.userInfoLoadingErrorMsg}}</p>
+                </div>
+                <div ng-if='provm.userInfoLoadingError === false'>
+                    <h1 class="text-center title regular">Your Branch Info</h1>
+                    <hr>
+                    <ul class="list">
+                        <li>
+                            <p class="regular sub-title">Bar Year: {{provm.branchInfo.barYear}}</p>
+                        </li>
+                        <li>
+                            <p class="regular sub-title">NBA Branch: {{provm.branchInfo.nbaBranch}}</p>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 

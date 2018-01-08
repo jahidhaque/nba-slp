@@ -36,6 +36,7 @@ Routes.get('/:userId/statuses', AccountController.getAccountStatuses);
 Routes.post('/createbasicprofile', AccountController.createBasicProfile);
 Routes.post('/userstatus', AccountController.updateUserStatus);
 Routes.post('/:userId/savebranchinfo', AccountController.saveBranchInfo);
+Routes.get('/:userId/:collectionName/userinfo', AccountController.loadUserInfo);
 
 
 /*
@@ -44,5 +45,7 @@ Routes.post('/:userId/savebranchinfo', AccountController.saveBranchInfo);
 |----------------------------------------------
 */
 Routes.post('/createcommittee', siteController.createCommittee);
+Routes.get('/showcommittee', siteController.showCommittees);
+Routes.delete('/:committeeId/removecommittee', siteController.removeCommittee);
 
 module.exports = Routes;

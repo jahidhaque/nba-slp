@@ -57,5 +57,5 @@ process.on('SIGTERM', function () {
 require('./users');
 require('./profile');
 require('./securitycode');
-require('./batch');
+require('./branch');
 require('./committee');

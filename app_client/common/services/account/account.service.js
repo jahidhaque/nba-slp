@@ -45,6 +45,19 @@
                 .catch(handleError);
         };
 
+        /*
+        |----------------------------------------------
+        | Following function will load all data for user
+        | based on given userEmail and collection name
+        |----------------------------------------------
+        */
+        const loadUserInfo = (collectionName, userId) => {
+            return $http 
+                .get('/api/' + userId + '/' + collectionName + '/userinfo')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const handleSuccess = (response) => response;
 
         const handleError = (response) => response;
@@ -54,6 +67,7 @@
             updateUserStatus: updateUserStatus,
             saveBasicInfo: saveBasicInfo,
             saveBranchInfo: saveBranchInfo,
+            loadUserInfo: loadUserInfo,
         };
     }
 

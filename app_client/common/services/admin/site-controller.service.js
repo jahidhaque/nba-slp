@@ -25,12 +25,28 @@
                 .catch(handleError);
         };
 
+        const showAllCommittee = () => {
+            return $http
+                .get('/api/showcommittee')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
+        const removeCommittee = (committeeId) => {
+            return $http 
+                .delete('/api/' + committeeId + '/removecommittee')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const handleSuccess = (response) => response;
 
         const handleError = (response) => response;
 
         return {
             addPreferredCommittee: addPreferredCommittee,
+            showAllCommittee: showAllCommittee,
+            removeCommittee: removeCommittee,
         };
 
     }

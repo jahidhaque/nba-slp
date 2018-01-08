@@ -114,12 +114,75 @@
                             }
                             else if (response.data.success) {
                                 provm.branchInfoError = false;
-                                provm.branchSuccess = 'Branch information hase been successfully added';
+                                
+                                const updatedStatus = {
+                                    update_at: 'branch',
+                                    email: authentication.currentUser().email,
+                                    status: true,
+                                };
+
+                                // calling service function.
+                                account
+                                    .updateUserStatus(updatedStatus)
+                                    .then(response => {
+                                        if (response.data.updated === true) {
+                                            provm.branchInfoError = false;
+                                            $route.reload();
+                                        }
+                                        else {
+                                            provm.branchInfoError = true;
+                                            provm.branchInfoErrorMsg = response.data.error;
+                                        }
+                                    })
+                                    .catch(err => {
+                                        provm.branchInfoError = true;
+                                        provm.branchInfoErrorMsg = err;
+                                    });
                             }
                         })
                         .catch(err => {
                             provm.branchInfoError = true;
                             provm.branchInfoErrorMsg = err;
+                        });
+                };
+
+                // show basic info
+                provm.loadBasicInfo = (collectionName) => {
+                    account
+                        .loadUserInfo(collectionName, authentication.currentUser().email)
+                        .then(response => {
+                            if (response.data.error) {
+                                provm.userBasicInfoLoadingError = true;
+                                provm.userBasicInfoLoadingErrorMsg = response.data.error;
+                            }
+                            else {
+                                provm.userBasicInfoLoadingError = false;
+                                provm.basicInfo = response.data.userInfo;
+                            }
+                        })
+                        .catch(err => {
+                            provm.userBasicInfoLoadingError = true;
+                            provm.userBasicInfoLoadingErrorMsg = err;
+                        });
+                };
+
+                // show branch info
+                provm.loadUserBranch = (collectionName) => {
+                    account
+                        .loadUserInfo(collectionName, authentication.currentUser().email)
+                        .then(response => {
+                            if (response.data.error) {
+                                provm.userInfoLoadingError = true;
+                                provm.userInfoLoadingErrorMsg = response.data.error;
+                            }
+                            else {
+                                provm.userInfoLoadingError = false;
+                                provm.branchInfo = response.data.userInfo;
+                            }
+                        })
+                        .catch(err => {
+                            provm.userInfoLoadingError = true;
+                            provm.userInfoLoadingErrorMsg = err;
                         });
                 };
             }

@@ -14,7 +14,7 @@ const Profile = Mongoose.model('profile');
 
 const Users = Mongoose.model('users');
 
-const Branch = Mongoose.model('batch');
+const Branch = Mongoose.model('branch');
 
 const Joi = require('joi');
 
@@ -210,10 +210,10 @@ module.exports.saveBranchInfo = (req, res) => {
                 else {
                     const branch = new Branch();
 
-                    branch.batchId = UId.sync(10);
+                    branch.branchId = UId.sync(10);
                     branch.whos = req.params.userId;
                     branch.barYear = req.body.year;
-                    branch.nbaBatch = req.body.branch;
+                    branch.nbaBranch = req.body.branch;
 
                     branch.save(err => {
                         if (err) {
@@ -232,3 +232,44 @@ module.exports.saveBranchInfo = (req, res) => {
         }
     });
 };
+
+
+/*
+|----------------------------------------------
+| Following function will get the user data
+| based on given userId and collection name
+|----------------------------------------------
+*/
+module.exports.loadUserInfo = (req, res) => {
+    const info = Joi.object().keys({
+        collectionName: Joi.string().min(3).max(24).regex(/^[a-zA-Z]{3,24}$/),
+        userId: Joi.string().email().required(),
+    });
+
+    Joi.validate(req.params, info, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            const collectionName = Mongoose.model(req.params.collectionName);
+
+            collectionName
+                .findOne({ whos: req.params.userId })
+                .exec((err, info) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            userInfo: info,
+                        });
+                    }
+                });
+        }
+    });
+};
+

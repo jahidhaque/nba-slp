@@ -17,7 +17,7 @@ const statusSchema = new Mongoose.Schema({
     basic_info: { type: Boolean, required: true, default: false },
     current_profile: { type: Boolean, required: true, default: false },
     bankteller: { type: Boolean, required: true, default: false },
-    batch: { type: Boolean, required: true, default: false },
+    branch: { type: Boolean, required: true, default: false },
 });
 
 const userSchema = new Mongoose.Schema({

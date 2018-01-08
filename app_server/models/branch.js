@@ -11,7 +11,7 @@
 const Mongoose = require('mongoose');
 
 const batchSchema = new Mongoose.Schema({
-    batchId: {
+    branchId: {
         type: String, min: 10, max: 10, required: true, unique: true,
     },
     whos: {
@@ -20,7 +20,7 @@ const batchSchema = new Mongoose.Schema({
     barYear: {
         type: String, min: 10, max: 10, required: true,
     },
-    nbaBatch: {
+    nbaBranch: {
         type: String, min: 10, max: 10, required: true,
     },
     createdAt: {
@@ -28,6 +28,6 @@ const batchSchema = new Mongoose.Schema({
     },
 });
 
-const collectionName = 'batch';
+const collectionName = 'branch';
 
-Mongoose.model('batch', batchSchema, collectionName);
+Mongoose.model('branch', batchSchema, collectionName);

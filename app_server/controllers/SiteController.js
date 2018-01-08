@@ -56,3 +56,64 @@ module.exports.createCommittee = (req, res) => {
         }
     });
 };
+
+/*
+|----------------------------------------------
+| Following function will get all the data
+| from the collection
+|----------------------------------------------
+*/
+module.exports.showCommittees = (req, res) => {
+    Committee
+        .find()
+        .exec((err, committees) => {
+            if (err) {
+                sendJsonResponse(res, 404, {
+                    error: err,
+                });
+            }
+            else {
+                sendJsonResponse(res, 200, {
+                    committee: committees,
+                });
+            }
+        });
+};
+
+
+/*
+|----------------------------------------------
+| Following function will delete a committee 
+| based on given committee id.
+|----------------------------------------------
+*/
+module.exports.removeCommittee = (req, res) => {
+    const committeeInfo = Joi.object().keys({
+        committeeId: Joi.string().min(24).max(24).regex(/^[a-z0-9]{24,24}$/).required(),
+    });
+
+    Joi.validate(req.params, committeeInfo, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            Committee
+                .findByIdAndRemove(req.params.committeeId)
+                .exec((err) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            success: true,
+                        });
+                    }
+                });
+        }
+    });
+};
+
