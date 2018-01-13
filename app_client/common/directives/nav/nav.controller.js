@@ -21,9 +21,7 @@
         if (authentication.isLoggedIn()) {
             nvm.loggedInUri = true;
             nvm.loggedInName = authentication.currentUser().name;
-
             nvm.currentAccountType = authentication.currentUser().accountType;
-            console.log(nvm.currentAccountType);
         }
         else {
             nvm.loggedInUri = false;
