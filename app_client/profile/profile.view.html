@@ -132,12 +132,11 @@
                         <input type="text" id='preferredCommittee' placehoder="Preferred Committee" class="form-control">
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group" ng-init="provm.getCommittee()">
                         <label for="additional_committee">Additional Committee</label>
                         <select name="additional_committee" id="additional_committee" class="form-control">
-                            <option value="" selected="">----Select additional committee----</option>
-                            <option value="male">committee 1</option>
-                            <option value="female">committee 2</option>
+                            <option value="" selected="">Select additional committee</option>
+                            <option value="committee.name" ng-repeat="committee in provm.committees">{{committee.name}}</option>
                         </select>
                     </div>
 

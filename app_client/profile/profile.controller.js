@@ -166,6 +166,17 @@
                         });
                 };
 
+                provm.getCommittee = () => {
+                    account
+                        .getCommittee()
+                        .then(response => {
+                            provm.committees = response.data.committee;
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                };
+
                 // show branch info
                 provm.loadUserBranch = (collectionName) => {
                     account
