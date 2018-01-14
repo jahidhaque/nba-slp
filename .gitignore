@@ -2,3 +2,4 @@
 .env
 .eslintrc
 /public/sitefile/*.txt
+.DS_Store

@@ -17,6 +17,13 @@
 
     function account($window, $http) {
 
+        const createActivationCode = (userId) => {
+            return $http 
+                .post('/api/' + userId + '/generatevalidationcode')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const getAccountStatuses = (userId) => {
             return $http 
                 .get('/api/' + userId + '/statuses')
@@ -70,6 +77,7 @@
         const handleError = (response) => response;
 
         return {
+            createActivationCode: createActivationCode,
             getAccountStatuses: getAccountStatuses,
             updateUserStatus: updateUserStatus,
             saveBasicInfo: saveBasicInfo,

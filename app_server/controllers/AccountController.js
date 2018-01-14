@@ -8,6 +8,8 @@
 
 'use strict';
 
+require('dotenv').config();
+
 const Mongoose = require('mongoose');
 
 const Profile = Mongoose.model('profile');
@@ -15,6 +17,10 @@ const Profile = Mongoose.model('profile');
 const Users = Mongoose.model('users');
 
 const Branch = Mongoose.model('branch');
+
+const AppMailer = require('../config/appmailer.js');
+
+const SecurityCode = Mongoose.model('securityCode');
 
 const Joi = require('joi');
 
@@ -38,6 +44,140 @@ const sendJsonResponse = function (res, status, content) {
 const userId = Joi.object().keys({
     userId: Joi.string().email().required(),
 });
+
+
+/*
+|----------------------------------------------
+| Following function will generate security code
+| @author: jahid haque <jahid.haque@yahoo.com>
+| @copyright: nbaslp, 2018
+|----------------------------------------------
+*/
+module.exports.generateSecurityCode = (req, res) => {
+
+    Joi.validate(req.params, userId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            SecurityCode
+                .findOne({ codeHolder: req.params.userId })
+                .exec((err, code) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else if (!code) {
+                        const key = UId.sync(5);
+
+                        const Code = new SecurityCode();
+
+                        Code.codeId = UId.sync(10);
+                        Code.securityCode = key;
+                        Code.encryptCode = Code.setCode(key);
+                        Code.codeHolder = req.params.userId;
+
+                        Code.save((err) => {
+                            if (err) {
+                                sendJsonResponse(res, 404, {
+                                    error: err,
+                                });
+                            }
+                            else {
+                                
+                                const Message = {
+                                    form: process.env.mailuser,
+                                    to: req.params.userId,
+                                    subject: `Nba-SLP Account Validation Code`,
+                                    html: `<p> You have recent request for security code. Please use the following code to 
+                                    validate your account. This code will be valid for next <strong>8 hours</strong>.
+                                    <br/> Your security code is <br/>
+                                    <strong><pre>${key}</pre></strong>
+                                    </p>`,
+                                };
+
+                                AppMailer.verify((err, message) => {
+                                    if (err) {
+                                        sendJsonResponse(res, 404, {
+                                            error: err,
+                                        });
+                                    }
+                                    else {
+                                        AppMailer.sendMail(Message, (err, info) => {
+                                            if (err) {
+                                                sendJsonResponse(res, 404, {
+                                                    error: err,
+                                                });
+                                            }
+                                            else {
+                                                sendJsonResponse(res, 200, {
+                                                    success: true,
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                    else {
+                        const newKey = UId.sync(5);
+                        code.securityCode = newKey;
+                        code.encryptCode = code.setCode(newKey);
+
+                        code.save((err) => {
+                            if (err) {
+                                sendJsonResponse(res, 404, {
+                                    error: err,
+                                });
+                            }
+                            else {
+                                const Message = {
+                                    form: process.env.mailuser,
+                                    to: req.params.userId,
+                                    subject: `Nba-SLP Account Validation Code`,
+                                    html: `<p> You have recent request for security code. Please use the following code to 
+                                    validate your account. This code will be valid for next <strong>8 hours</strong>.
+                                    <br/> Your security code is <br/>
+                                    <strong><pre>${newKey}</pre></strong>
+                                    </p>`,
+                                };
+
+                                // send email
+                                AppMailer.verify((err, message) => {
+                                    if (err) {
+                                        sendJsonResponse(res, 404, {
+                                            error: err,
+                                        });
+                                    }
+                                    else {
+                                        AppMailer.sendMail(Message, (err, info) => {
+                                            if (err) {
+                                                sendJsonResponse(res, 404, {
+                                                    error: err,
+                                                });
+                                            }
+                                            else {
+                                                sendJsonResponse(res, 200, {
+                                                    success: true,
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                });
+        }
+    });
+};
+
 
 /*
 |----------------------------------------------

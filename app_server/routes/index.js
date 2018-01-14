@@ -37,6 +37,7 @@ Routes.post('/createbasicprofile', AccountController.createBasicProfile);
 Routes.post('/userstatus', AccountController.updateUserStatus);
 Routes.post('/:userId/savebranchinfo', AccountController.saveBranchInfo);
 Routes.get('/:userId/:collectionName/userinfo', AccountController.loadUserInfo);
+Routes.post('/:userId/generatevalidationcode', AccountController.generateSecurityCode);
 
 
 /*

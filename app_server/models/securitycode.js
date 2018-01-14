@@ -14,24 +14,37 @@ const Crypto = require('crypto');
 
 const securityCodeSchema = new Mongoose.Schema({
     codeId: {
-        type: String, min: 10, max: 10, required: true, unique: true,
+        type: String, min: 10, max: 10, required: true, 
     },
-    key: {
-        type: String, required: true, unique: true,
+    securityCode: {
+        type: String, min: 10, max: 10, required: true, 
     },
-    code: {
+    hash: {
+        type: String, required: true,
+    },
+    salt: {
         type: String, required: true,
     },
     codeHolder: {
         type: String, required: true,
+    },
+    valid: {
+        type: Boolean, default: true,
     },
     createdAt: {
         type: Date, default: Date.now,
     },
 });
 
-securityCodeSchema.methods.setCode = function (key) {
-    this.code = Crypto.pbkdf2Sync(key, this.key, 1000, 5, 'sha512').toString('hex');
+securityCodeSchema.methods.setCode = function (securityCode) {
+    this.salt = Crypto.randomBytes(16).toString('hex');
+    this.hash = Crypto.pbkdf2Sync(securityCode, this.salt, 1000, 64, 'sha512').toString('hex');
+};
+
+
+securityCodeSchema.methods.validateCode = function (securityCode) {
+    const hash = Crypto.pbkdf2Sync(securityCode, this.salt, 1000, 64, 'sha512').toString('hex');
+    return this.hash === hash;
 };
 
 const collectionName = 'securityCode';

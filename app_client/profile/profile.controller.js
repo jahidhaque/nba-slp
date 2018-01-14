@@ -20,13 +20,66 @@
 
         const provm = this;
 
-        if (authentication.isLoggedIn()) {
-            provm.profileStatus = authentication.currentUser().accountStatus;
+        function statusUpdater(updateObject) {
 
+            // calling service function.
+            account
+                .updateUserStatus(updateObject)
+                .then(response => {
+                    if (response.data.updated === true) {
+                        provm.statusUpdateError = false;
+                        $route.reload();
+                    }
+                    else {
+                        provm.basicAccountInfoError = true;
+                        provm.basicAccountInfoErrorMsg = response.data.error;
+                    }
+                })
+                .catch(err => {
+                    provm.statusUpdateError = true;
+                    provm.basicAccountInfoErrorMsg = err;
+                });
+        }
+
+        if (authentication.isLoggedIn()) {
+
+                        
             provm.currentAccountType = authentication.currentUser().accountType;
             
             // checking account type
             if (authentication.currentUser().accountType === 'customer') {
+
+                provm.profileStatus = authentication.currentUser().accountStatus;
+
+                provm.codeReady = false;
+
+                provm.sendActivationCode = () => {
+                    provm.codeReady = true;
+                    account
+                        .createActivationCode(authentication.currentUser().email)
+                        .then(response => {
+                            if (response.data.error) {
+                                provm.activationCodeError = true;
+                                provm.activationCodeErrorMsg = response.data.error;
+                            }
+                            else {
+                                const updatedStatus = {
+                                    update_at: 'profileActivationMail',
+                                    email: authentication.currentUser().email,
+                                    status: true,
+                                };
+                                statusUpdater(updatedStatus);
+
+                                provm.codeReady = false;
+
+                                provm.activationCodeError = false;
+                            }
+                        })
+                        .catch(err => {
+                            provm.activationCodeError = true;
+                            provm.activationCodeErrorMsg = err;
+                        });
+                };
 
                 // get user account statues 
                 provm.getProfileStatuses = () => {
