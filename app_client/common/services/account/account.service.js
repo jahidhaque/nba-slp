@@ -24,6 +24,13 @@
                 .catch(handleError);
         };
 
+        const getCommittee = () => {
+            return $http
+                .get('/api/showcommittee')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const updateUserStatus = function (data) {
             return $http
                 .post('/api/userstatus', data)
@@ -68,6 +75,7 @@
             saveBasicInfo: saveBasicInfo,
             saveBranchInfo: saveBranchInfo,
             loadUserInfo: loadUserInfo,
+            getCommittee: getCommittee,
         };
     }
 
