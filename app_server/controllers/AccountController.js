@@ -181,6 +181,83 @@ module.exports.generateSecurityCode = (req, res) => {
 
 /*
 |----------------------------------------------
+| Following function will validate given security
+| code
+|----------------------------------------------
+*/
+module.exports.validateCode = (req, res) => {
+    const validateObject = Joi.object().keys({
+        userId: Joi.string().email().required(),
+        code: Joi.string().required(),
+    });
+
+    Joi.validate(req.params, validateObject, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            SecurityCode
+                .findOne({ codeHolder: req.params.userId })
+                .exec((err, code) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else if (!code) {
+                        sendJsonResponse(res, 404, {
+                            error: 'No security code generated for You. Please contact admin',
+                        });
+                    }
+                    else if (!code.validateCode(req.params.code)) {
+                        sendJsonResponse(res, 404, {
+                            error: 'Invalid code!',
+                        });
+                    }
+                    else {
+                        
+                        Users
+                            .findOne({ email: req.params.userId })
+                            .select('validationStatus')
+                            .exec((err, user) => {
+                                if (err) {
+                                    sendJsonResponse(res, 404, {
+                                        error: err,
+                                    });
+                                }
+                                else if (!user) {
+                                    sendJsonResponse(res, 404, {
+                                        error: 'No user found to update the account status. contact admin',
+                                    });
+                                }
+                                else {
+                                    user.validationStatus = true;
+
+                                    user.save(err => {
+                                        if (err) {
+                                            sendJsonResponse(res, 404, {
+                                                error: err,
+                                            });
+                                        }
+                                        else {
+                                            sendJsonResponse(res, 404, {
+                                                success: true,
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                    }
+                });
+        }
+    });
+};
+
+
+/*
+|----------------------------------------------
 | Following function will get all statuses from
 | each collection based on given userId
 |----------------------------------------------

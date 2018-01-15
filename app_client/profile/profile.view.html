@@ -14,15 +14,24 @@
             </div>
             
             <div ng-if="provm.userStatuses[0].profileActivationMail === true" class="col-xs-4 col-md-4 col-md-offset-4">
+                <p class="regular text-center title">We sent you activation code to your email address. Plz check the <strong>junk</strong> inbox too</p>
                 <h1 class="text-center regular title">
                     Enter your activation code                
                 </h1>
-                <form ng-submit="provm.activeProfile">
+                <form ng-submit="provm.activeProfile()">
                     <div class="form-group">
-                        <input type="text" placeholder="Enter activation code" class="form-control text-center" tabindex="1">
+                        <input type="text" placeholder="Enter activation code" ng-model='provm.activation.code' class="form-control text-center" tabindex="1">
+                    </div>
+                    <!-- when activation fails -->
+                    <div class="alert alert-danger" ng-if="provm.ActivationError === true">
+                        <p class="text-center regular title">{{provm.ActivationErrorMsg}}</p>
+                    </div>
+                    <!-- when activation successfull -->
+                    <div class="alert alert-success" ng-if='provm.activationSuccess === true'>
+                        <p class="text-center regular">Success!. You will be logged out from the system in 3 sec to let the activation take place. thank you </p>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-danger full">Activate Profile</button>
+                        <button type="submit" tabindex="2" class="btn btn-danger full">Activate Profile</button>
                     </div>
                 </form>
             </div>         

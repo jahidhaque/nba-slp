@@ -249,6 +249,41 @@
                             provm.userInfoLoadingErrorMsg = err;
                         });
                 };
+
+                /*
+                |----------------------------------------------
+                | following function will active the profile 
+                | based on given code
+                |----------------------------------------------
+                */
+                provm.activation = {
+                    code: '',
+                };
+
+                provm.activeProfile = () => {
+                    account
+                        .validateActivationCode(authentication.currentUser().email, provm.activation.code)
+                        .then(response => {
+                            if (response.data.error) {
+                                provm.ActivationError = true;
+                                provm.ActivationErrorMsg = response.data.error;
+                            }
+                            else if (response.data.success) {
+                                provm.activationSuccess = true;
+
+                                // calling the logout function.
+                                setTimeout(() => {
+                                    authentication.Logout();
+                                    $route.reload();
+                                }, 3000);
+                            }
+                        })
+                        .catch(err => {
+                            provm.ActivationError = true;
+                            provm.ActivationErrorMsg = err;
+                        });
+                };
+
             }
             else if (authentication.currentUser().accountType === 'admin') {
 

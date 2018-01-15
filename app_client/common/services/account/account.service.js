@@ -24,6 +24,13 @@
                 .catch(handleError);
         };
 
+        const validateActivationCode = (userId, code) => {
+            return $http 
+                .post('/api/' + userId + '/' + code + '/validate')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const getAccountStatuses = (userId) => {
             return $http 
                 .get('/api/' + userId + '/statuses')
@@ -78,6 +85,7 @@
 
         return {
             createActivationCode: createActivationCode,
+            validateActivationCode: validateActivationCode,
             getAccountStatuses: getAccountStatuses,
             updateUserStatus: updateUserStatus,
             saveBasicInfo: saveBasicInfo,
