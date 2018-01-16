@@ -39,6 +39,8 @@ Routes.post('/:userId/savebranchinfo', AccountController.saveBranchInfo);
 Routes.get('/:userId/:collectionName/userinfo', AccountController.loadUserInfo);
 Routes.post('/:userId/generatevalidationcode', AccountController.generateSecurityCode);
 Routes.post('/:userId/:code/validate', AccountController.validateCode);
+Routes.post('/docupload/:userId/', AccountController.uploadBankTeller);
+Routes.post('/savebankteller', AccountController.saveBankTeller);
 
 
 /*

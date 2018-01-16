@@ -42,7 +42,7 @@
 
 <!-- profile container -->
 <div class="container m-t-2 m-b-2" ng-init='provm.getProfileStatuses()'>
-    <div class="row" ng-if='provm.statusLoadError === false'>
+    <div class="row">
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
             <div class="container-box shadow wbg" ng-if='provm.userStatuses[0].basic_info === false'>
                 <h1 class="text-center title light">Fill up your personal information</h1>
@@ -156,23 +156,27 @@
                 <hr>
                 <form ng-submit="provm.saveBankTellerInfo()">
                     <div class="form-group">
-                        <label for="preferredCommittee">Preferred Committee</label>
-                        <input type="text" id='preferredCommittee' placehoder="Preferred Committee" class="form-control">
+                        <label for="preferredCommittee">Preferred Committee * </label>
+                        <input type="text" id='preferredCommittee' ng-model='provm.bankTellerInfo.preferredCommittee' placehoder="Preferred Committee" class="form-control">
                     </div>
                     
                     <div class="form-group" ng-init="provm.getCommittee()">
-                        <label for="additional_committee">Additional Committee</label>
-                        <select name="additional_committee" id="additional_committee" class="form-control">
+                        <label for="additional_committee">Additional Committee *</label>
+                        <select name="additional_committee" id="additional_committee" class="form-control" ng-model='provm.bankTellerInfo.additional_committee'>
                             <option value="" selected="">Select additional committee</option>
                             <option value="committee.name" ng-repeat="committee in provm.committees">{{committee.name}}</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="tellerPic" class="btn btn-success">
-                            Upload Bank Teller
-                            <input type="file" id="tellerPic" class="hidden">
+                        <label for="tellerDoc" class="btn btn-danger">
+                            Upload bank Teller *
+                            <input type="file" id="tellerDoc" file-model='tellerDoc' name='files' class="hidden">
                         </label>
+                    </div> 
+
+                    <div class="alert alert-danger" ng-if="provm.saveTellerError === true">
+                        <p class="text-center regular no-margin">{{provm.saveTellerErrorMsg}}</p>
                     </div>
 
                     <button type="submit" class="btn btn-info">Save Details</button>

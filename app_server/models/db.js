@@ -59,3 +59,4 @@ require('./profile');
 require('./securitycode');
 require('./branch');
 require('./committee');
+require('./bankteller');

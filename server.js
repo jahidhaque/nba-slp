@@ -12,11 +12,11 @@ const Path = require('path');
 const Morgan = require('morgan');
 const Passport = require('passport');
 
-const App = Express();
-
 // db connection.
 require('./app_server/models/db');
 require('./app_server/config/passport');
+
+const App = Express();
 
 App.use(Morgan('dev'));
 App.use(BodyParser.urlencoded({ extended: true }));

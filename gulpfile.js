@@ -30,6 +30,7 @@ var     paths       =       {
         "app_client/common/directives/nav/nav.directive.js",
         "app_client/common/directives/nav/nav.controller.js",
         "app_client/common/directives/footer/footer.directive.js",
+        "app_client/common/directives/fileModel/fileModel.directive.js",
         "app_client/home/welcome/welcome.controller.js",
         "app_client/signup/signup.controller.js",
         "app_client/signin/signin.controller.js",
@@ -52,6 +53,18 @@ function reportError (error) {
     this.emit('end');
 }
 
+//gulp task to compile js files.
+gulp.task('compile-js', function(){
+    
+    return gulp.src(paths.scripts)
+        .pipe(sourcemaps.init())
+            .pipe(babel({presets: ['es2015']}).on('error', reportError ))
+            .pipe(uglify())
+            .pipe(concat('master.min.js'))
+        .pipe(sourcemaps.write())
+        .pipe(notify('js compiled'))
+        .pipe(gulp.dest("./public/js/"));
+});
 
 //gulp task to compile fontend scripts files files.
 gulp.task('compile-fontEndsScripts', function(){
@@ -63,20 +76,6 @@ gulp.task('compile-fontEndsScripts', function(){
             .pipe(concat('app.min.js'))
         .pipe(sourcemaps.write())
         .pipe(notify('fontend scripts compiled'))
-        .pipe(gulp.dest("./public/js/"));
-});
-
-
-//gulp task to compile js files.
-gulp.task('compile-js', function(){
-    
-    return gulp.src(paths.scripts)
-        .pipe(sourcemaps.init())
-            .pipe(babel({presets: ['es2015']}).on('error', reportError ))
-            .pipe(uglify())
-            .pipe(concat('master.min.js'))
-        .pipe(sourcemaps.write())
-        .pipe(notify('js compiled'))
         .pipe(gulp.dest("./public/js/"));
 });
 
@@ -104,4 +103,4 @@ gulp.task('watch', function(){
 
 
 //calling gulp task to run as default function.
-gulp.task('default', ['watch', 'compile-js', 'compile-sass', 'compile-fontEndsScripts']);
+gulp.task('default', ['watch', 'compile-js', 'compile-fontEndsScripts', 'compile-sass']);

@@ -14,9 +14,9 @@
         .module('nbaslp')
         .controller('profileCtrl', profileCtrl);
 
-    profileCtrl.$inject = ['authentication', '$location', 'account', '$route'];
+    profileCtrl.$inject = ['$scope', 'authentication', '$location', 'account', '$route'];
 
-    function profileCtrl(authentication, $location, account, $route) {
+    function profileCtrl($scope, authentication, $location, account, $route) {
 
         const provm = this;
 
@@ -282,6 +282,68 @@
                             provm.ActivationError = true;
                             provm.ActivationErrorMsg = err;
                         });
+                };
+
+                /*
+                |----------------------------------------------
+                | Following function will handle bank teller 
+                | upload
+                |----------------------------------------------
+                */
+                provm.bankTellerInfo = {
+                    preferredCommittee: '',
+                    additional_committee: '',
+                    whos: authentication.currentUser().email,
+                    userId: authentication.currentUser().accountId,
+                    tellerDoc: $scope.tellerDoc,
+                };
+
+                provm.saveBankTellerInfo = () => {   
+
+                    if (!provm.bankTellerInfo.preferredCommittee || !provm.bankTellerInfo.additional_committee) {
+                        provm.saveTellerError = true;
+                        provm.saveTellerErrorMsg = 'All * fiends are required. Must not be empty';
+                    }
+                    else {
+
+                        account
+                            .uploadTellerDocs($scope.tellerDoc, authentication.currentUser().accountId)
+                            .then(response => {
+                                if (response.data.success === false) {
+                                    provm.saveTellerError = true;
+                                    provm.saveTellerErrorMsg = response.data.error;
+                                }
+                                else if (response.data.success === true) {
+                                    provm.bankTellerInfo.tellerDoc = response.data.docLocation;
+
+                                    account
+                                        .saveBankTeller(provm.bankTellerInfo)
+                                        .then(response => {
+                                            if (response.data.error) {
+                                                provm.saveTellerError = true;
+                                                provm.saveTellerErrorMsg = response.data.error;
+                                            }
+                                            else {
+                                                const updatedStatus = {
+                                                    update_at: 'bankteller',
+                                                    email: authentication.currentUser().email,
+                                                    status: true,
+                                                };
+                                                statusUpdater(updatedStatus);
+                                                $route.reload();
+                                            }
+                                        })
+                                        .catch(err => {
+                                            provm.saveTellerError = true;
+                                            provm.saveTellerErrorMsg = err;
+                                        });
+                                }
+                            })
+                            .catch(err => {
+                                provm.saveTellerError = true;
+                                provm.saveTellerErrorMsg = err;
+                            });
+                    }
                 };
 
             }

@@ -15,9 +15,9 @@ const bankTellerSchema = new Mongoose.Schema({
         type: String, min: 10, max: 10, required: true, unique: true,
     },
     whos: {
-        type: String, unique: true, required: true,
+        type: String, required: true,
     },
-    userid: {
+    userId: {
         type: String, min: 10, max: 10, required: true, unique: true,
     },
     preferredCommittee: {
@@ -31,6 +31,9 @@ const bankTellerSchema = new Mongoose.Schema({
     },
     tellerApproved: {
         type: Boolean, default: false, required: true,
+    },
+    tellerValidTill: {
+        type: Date, 
     },
     createdAt: {
         type: Date, default: Date.now,

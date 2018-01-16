@@ -66,6 +66,26 @@
                 .catch(handleError);
         };
 
+        const uploadTellerDocs = (file, userId) => {
+            var fd = new FormData();
+            fd.append('tellerDoc', file);
+
+            return $http
+                .post('/api/docupload/' + userId, fd, {
+                    transformRequest: angular.identity,
+                    headers: { 'Content-Type': undefined }
+                })
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
+        const saveBankTeller = (teller) => {
+            return $http
+                .post('/api/savebankteller', teller)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         /*
         |----------------------------------------------
         | Following function will load all data for user
@@ -84,6 +104,7 @@
         const handleError = (response) => response;
 
         return {
+            uploadTellerDocs: uploadTellerDocs,
             createActivationCode: createActivationCode,
             validateActivationCode: validateActivationCode,
             getAccountStatuses: getAccountStatuses,
@@ -92,6 +113,7 @@
             saveBranchInfo: saveBranchInfo,
             loadUserInfo: loadUserInfo,
             getCommittee: getCommittee,
+            saveBankTeller: saveBankTeller,
         };
     }
 

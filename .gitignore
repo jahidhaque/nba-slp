@@ -1,5 +1,6 @@
 /node_modules
 .env
 .eslintrc
+/users
 /public/sitefile/*.txt
 .DS_Store

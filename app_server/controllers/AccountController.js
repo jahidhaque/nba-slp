@@ -18,7 +18,13 @@ const Users = Mongoose.model('users');
 
 const Branch = Mongoose.model('branch');
 
+const BankTeller = Mongoose.model('bank_teller');
+
 const AppMailer = require('../config/appmailer.js');
+
+const Multer = require('multer');
+
+const Fs = require('fs');
 
 const SecurityCode = Mongoose.model('securityCode');
 
@@ -490,3 +496,127 @@ module.exports.loadUserInfo = (req, res) => {
     });
 };
 
+
+/*
+|----------------------------------------------
+| Following function will upload file for bank
+| teller
+|----------------------------------------------
+*/
+module.exports.uploadBankTeller = (req, res) => {
+
+    const userDir = './users/' + req.params.userId;
+
+    // create directory if it doesn't exists.
+    if (!Fs.existsSync(userDir)) {
+        Fs.mkdirSync(userDir);
+    }
+    
+    const storage = Multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, './users/' + req.params.userId);
+        },
+        filename: function (req, file, cb) { 
+            if (!file.originalname.match(/\.(png|jpeg|jpg|JPG|pdf)$/)) {
+                const err = new Error(); 
+                err.code = 'filetype';
+                return cb(err);
+            } 
+            else {
+                const fileid = UId.sync(10);
+                cb(null, fileid + file.originalname);
+            } 
+        },
+    });
+
+    const upload = Multer({
+        storage: storage,
+        limits: { fileSize: 5000000 },
+    }).single('tellerDoc');
+
+    upload(req, res, function (err) {
+        if (err) {
+            if (err.code === 'LIMIT_FILE_SIZE') {
+                sendJsonResponse(res, 404, {
+                    success: false,
+                    error: "File size is too large",
+                });
+            }
+            else if (err.code === 'filetype') {
+                sendJsonResponse(res, 404, {
+                    success: false,
+                    error : "Invalid file type",
+                });
+            }
+            else {
+                sendJsonResponse(res, 404, {
+                    success: false,
+                    error: err,
+                });
+            }
+        }
+        else {
+            if (!req.file) {
+                sendJsonResponse(res, 404, {
+                    success: false,
+                    error: "Please select a product image",
+                });
+            }
+            else {
+                sendJsonResponse(res, 200, {
+                    success: true,
+                    docLocation: '/users/' + req.params.userId + '/' + req.file.filename,
+                });
+            }
+        }
+    });
+};
+
+
+/*
+|----------------------------------------------
+| Following function will save bank teller in
+| mongodb
+|----------------------------------------------
+*/
+module.exports.saveBankTeller = (req, res) => {
+    const tellerInfo = Joi.object().keys({
+        preferredCommittee: Joi.string().required(),
+        additional_committee: Joi.string().required(),
+        whos: Joi.string().email().required(),
+        userId: Joi.string().required(),
+        tellerDoc: Joi.string().required(),
+    });
+
+    Joi.validate(req.body, tellerInfo, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+
+            const newteller = new BankTeller();
+
+            newteller.tellerId = UId.sync(10);
+            newteller.whos = req.body.whos;
+            newteller.userId = req.body.userId;
+            newteller.preferredCommittee = req.body.preferredCommittee;
+            newteller.additional_committee = req.body.additional_committee;
+            newteller.tellerLocation = req.body.tellerDoc;
+
+            newteller.save(err => {
+                if (err) {
+                    sendJsonResponse(res, 404, {
+                        error: err,
+                    });
+                }
+                else {
+                    sendJsonResponse(res, 200, {
+                        success: true,
+                    });
+                }
+            });
+        }
+    });
+};
