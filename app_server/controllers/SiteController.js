@@ -130,7 +130,6 @@ module.exports.removeCommittee = (req, res) => {
 */
 
 module.exports.addEvent = (req, res) => {
-    console.log(req.body);
     const event = Joi.object().keys({
         eventTitle: Joi.string().required(),
         eventDetails: Joi.string().required(),
@@ -166,6 +165,66 @@ module.exports.addEvent = (req, res) => {
                 }
             });
 
+        }
+    });
+};
+
+/*
+|----------------------------------------------
+| Following function will get all events.
+|----------------------------------------------
+*/
+module.exports.showEvent = (req, res) => {
+    Event
+        .find()
+        .exec((err, events) => {
+            if (err) {
+                sendJsonResponse(res, 404, {
+                    error: err,
+                });
+            }
+            else {
+                sendJsonResponse(res, 200, {
+                    success: true,
+                    events: events,
+                });
+            }
+        });
+};
+
+/*
+|----------------------------------------------
+| Following function will remove event based on
+| event id
+|----------------------------------------------
+*/
+module.exports.deleteEvent = (req, res) => {
+    const eventId = Joi.object().keys({
+        eventId: Joi.string().min(24).max(24).regex(/^[a-z0-9]{24,24}$/),
+    });
+
+    Joi.validate(req.params, eventId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+
+            Event
+                .findByIdAndRemove(req.params.eventId)
+                .exec((err) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            success: true,
+                        });
+                    }
+                });
         }
     });
 };

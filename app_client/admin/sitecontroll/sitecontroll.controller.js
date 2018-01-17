@@ -114,6 +114,11 @@
                             else if (response.data.success) {
                                 adSite.eventAddError = false;
                                 adSite.eventAddSuccess = true;
+
+                                // set time out and call show committee method.
+                                setTimeout(() => {
+                                    adSite.showEvent();
+                                }, 200);
                             }
                         })
                         .catch(err => {
@@ -121,6 +126,45 @@
                             adSite.eventAddErrorMsg = err;
                         });
                 };
+
+                adSite.showEvent = () => {
+                    sitecontroller
+                        .showEvent()
+                        .then(response => {
+                            if (response.data.error) {
+                                adSite.showEventError = true;
+                                adSite.showEventErrorMsg = response.data.error;
+                            }
+                            else if (response.data.success) {
+                                adSite.showEventError = false;
+                                adSite.events = response.data.events;
+                            }
+                        })
+                        .catch(err => {
+                            adSite.showEventError = true;
+                            adSite.showEventErrorMsg = err;
+                        });
+                };
+
+                adSite.removeEvent = (eventId) => {
+                    sitecontroller
+                        .removeEvent(eventId)
+                        .then(response => {
+                            if (response.data.error) {
+                                adSite.showEventError = true;
+                                adSite.showEventErrorMsg = response.data.error;
+                            }
+                            else if (response.data.success) {
+                                setTimeout(() => {
+                                    adSite.showEvent();
+                                }, 100);
+                            }
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                };
+
             }
             else {
                 $location.path('/welcome');

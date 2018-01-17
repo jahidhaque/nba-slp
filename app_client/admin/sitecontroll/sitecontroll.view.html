@@ -98,6 +98,21 @@
 							</div>
 
 						</form>
+
+						<!-- show newly added event. -->
+						<div ng-init="adSite.showEvent()">
+							<div ng-if="adSite.showEventError === false">
+								<ul class="list">
+									<li ng-repeat="event in adSite.events">
+										<p class="regular sub-title m-b-1">
+											{{event.eventTitle}}
+											<span class="pull-right pointer no-margin no-padding"><i class="fa fa-close" aria-hidden="true" ng-click="adSite.removeEvent(event._id)"></i></span>
+										</p>
+										<span class="clearfix"></span>
+									</li>
+								</ul>
+							</div>
+						</div>
 				</div>
 		</div>
 

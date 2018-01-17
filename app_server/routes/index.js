@@ -52,5 +52,7 @@ Routes.post('/createcommittee', siteController.createCommittee);
 Routes.get('/showcommittee', siteController.showCommittees);
 Routes.delete('/:committeeId/removecommittee', siteController.removeCommittee);
 Routes.post('/event', siteController.addEvent);
+Routes.get('/showEvent', siteController.showEvent);
+Routes.delete('/:eventId/event', siteController.deleteEvent);
 
 module.exports = Routes;

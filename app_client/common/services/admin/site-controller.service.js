@@ -46,6 +46,20 @@
                 .catch(handleError);
         };
 
+        const showEvent = () => {
+            return $http
+                .get('/api/showEvent')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
+        const removeEvent = (eventId) => {
+            return $http
+                .delete('/api/' + eventId + '/event')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const handleSuccess = (response) => response;
 
         const handleError = (response) => response;
@@ -55,6 +69,8 @@
             showAllCommittee: showAllCommittee,
             removeCommittee: removeCommittee,
             addEvent: addEvent,
+            showEvent: showEvent,
+            removeEvent: removeEvent,
         };
 
     }
