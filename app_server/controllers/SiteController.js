@@ -15,6 +15,8 @@ const UId = require('uid-safe');
 
 const Committee = Mongoose.model('committee');
 
+const Event = Mongoose.model('event');
+
 /*
 |----------------------------------------------------------------
 | function for returning json.
@@ -113,6 +115,57 @@ module.exports.removeCommittee = (req, res) => {
                         });
                     }
                 });
+        }
+    });
+};
+
+
+/*
+|----------------------------------------------
+| Following function will add new event to the
+| database
+| @author: jahid haque <jahid.haque@yahoo.com>
+| @copyright: nba-slp, 2018
+|----------------------------------------------
+*/
+
+module.exports.addEvent = (req, res) => {
+    console.log(req.body);
+    const event = Joi.object().keys({
+        eventTitle: Joi.string().required(),
+        eventDetails: Joi.string().required(),
+        eventStarts: Joi.string().required(),
+        eventEnds: Joi.string().required(),
+    });
+
+    Joi.validate(req.body, event, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+
+            const event = new Event();
+            event.eventId = UId.sync(10);
+            event.eventTitle = req.body.eventTitle;
+            event.eventDetails = req.body.eventDetails;
+            event.eventStarts = req.body.eventStarts;
+            event.eventEnds = req.body.eventEnds;
+
+            event.save(err => {
+                if (err) {
+                    sendJsonResponse(res, 404, {
+                        error: err,
+                    });
+                }
+                else {
+                    sendJsonResponse(res, 200, {
+                        success: true,
+                    });
+                }
+            });
+
         }
     });
 };

@@ -89,6 +89,38 @@
                             alert(err);
                         });
                 };
+
+                /*
+                |----------------------------------------------
+                | following function will add new event into the
+                | database.
+                |----------------------------------------------
+                */
+                adSite.event = {
+                    eventTitle: '',
+                    eventDetails: '',
+                    eventStarts: '',
+                    eventEnds: '',
+                };
+
+                adSite.addEvent = () => {
+                    sitecontroller
+                        .addEvent(adSite.event)
+                        .then(response => {
+                            if (response.data.error) {
+                                adSite.eventAddError = true;
+                                adSite.eventAddErrorMsg = response.data.error;
+                            }
+                            else if (response.data.success) {
+                                adSite.eventAddError = false;
+                                adSite.eventAddSuccess = true;
+                            }
+                        })
+                        .catch(err => {
+                            adSite.eventAddError = true;
+                            adSite.eventAddErrorMsg = err;
+                        });
+                };
             }
             else {
                 $location.path('/welcome');

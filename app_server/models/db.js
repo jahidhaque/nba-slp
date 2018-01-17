@@ -60,3 +60,4 @@ require('./securitycode');
 require('./branch');
 require('./committee');
 require('./bankteller');
+require('./events');

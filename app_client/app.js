@@ -10,7 +10,7 @@
 
 (function () {
     angular
-        .module('nbaslp', ['ngResource', 'ngRoute'])
+        .module('nbaslp', ['ngResource', 'ngRoute', '720kb.datepicker'])
         .config(['$routeProvider', '$locationProvider', config]);
 
     function config($routeProvider, $locationProvider) {

@@ -39,6 +39,13 @@
                 .catch(handleError);
         };
 
+        const addEvent = (event) => {
+            return $http 
+                .post('/api/event', event)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const handleSuccess = (response) => response;
 
         const handleError = (response) => response;
@@ -47,6 +54,7 @@
             addPreferredCommittee: addPreferredCommittee,
             showAllCommittee: showAllCommittee,
             removeCommittee: removeCommittee,
+            addEvent: addEvent,
         };
 
     }

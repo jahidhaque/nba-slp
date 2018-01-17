@@ -19,6 +19,7 @@ var     paths       =       {
         "public/libs/angular.js",
         "public/libs/angular-resource.js",
         "public/libs/angular-route.js",
+        "public/libs/angular-datepicker.js",
         "public/libs/jquery.js",
         "public/libs/bootstrap.js"
     ],

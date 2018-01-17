@@ -51,5 +51,6 @@ Routes.post('/savebankteller', AccountController.saveBankTeller);
 Routes.post('/createcommittee', siteController.createCommittee);
 Routes.get('/showcommittee', siteController.showCommittees);
 Routes.delete('/:committeeId/removecommittee', siteController.removeCommittee);
+Routes.post('/event', siteController.addEvent);
 
 module.exports = Routes;
