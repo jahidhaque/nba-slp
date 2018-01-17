@@ -1,7 +1,36 @@
 <!-- navigation -->
 <site-nav></site-nav>
 
-<h1 class="thin text-center">event</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" ng-init='evm.showEvents()'>
+			<h1 class="hero-big-title regular text-center" ng-if="evm.eventLoadError === true">
+				{{evm.eventLoadErrorMsg}}
+			</h1>
+
+			<h1 class="hero-big-title regular text-center" ng-if="evm.noEvent === true">
+				Currently We don't have any events. But stay tuned. :)
+			</h1>
+			
+			<div ng-if="evm.eventLoadError === false && evm.noEvent === false">
+					<div class="container-box shadow small-radius m-t-1 m-b-2" ng-repeat="event in evm.events">
+						<p class="text-center title regular">{{event.eventTitle}}</p>
+						<hr>
+						<p class="regular title">{{event.eventDetails}}</p>
+						<p>
+							<span class="btn btn-success pull-left">Starts {{event.eventStarts}}</span>
+							<span class="btn btn-danger pull-right">Ends {{event.eventEnds}}</span>
+							<div class="clearfix"></div>
+						</p>
+					</div>
+			</div>
+
+		</div>
+		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+			hi
+		</div>
+	</div>
+</div>
 
 <!-- sitefooter -->
 <site-footer></site-footer>
