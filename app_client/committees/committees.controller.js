@@ -1,17 +1,21 @@
 /*
 |----------------------------------------------
-| setting up homepage controller
+| setting up committees for the app
 | @author: jahid haque <jahid.haque@yahoo.com>
-| @copyright: nba-slp, 2017
+| @copyright: nba-slp, 2018
 |----------------------------------------------
 */
+
 'use strict';
-(function(){
+
+(function () {
+
     angular
         .module('nbaslp')
-        .controller('welcomeCtrl', welcomeCtrl);
+        .controller('committeesCtrl', committeesCtrl);
 
-    function welcomeCtrl() {
-        const wvm = this;
+    function committeesCtrl() {
+        const cvm = this;
     }
+
 })();

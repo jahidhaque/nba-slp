@@ -49,6 +49,26 @@
                 templateUrl: 'welcome/welcome.view.html',
                 controller: 'welcomeCtrl',
                 controllerAs: 'wvm',
+            })
+            .when('/committees', {
+                templateUrl: 'committees/committees.view.html',
+                controller: 'committeesCtrl',
+                controllerAs: 'cvm',
+            })
+            .when('/events', {
+                templateUrl: 'events/events.view.html',
+                controller: 'eventsCtrl',
+                controllerAs: 'evm',
+            })
+            .when('/aboutus', {
+                templateUrl: 'aboutus/aboutus.view.html',
+                controller: 'aboutusCtrl',
+                controllerAs: 'abvm',
+            })
+            .when('/contactus', {
+                templateUrl: 'contactus/contactus.view.html',
+                controller: 'contactusCtrl',
+                controllerAs: 'cvm',
             });
 
         $locationProvider.html5Mode({

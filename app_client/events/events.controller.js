@@ -1,17 +1,21 @@
 /*
 |----------------------------------------------
-| setting up homepage controller
+| setting up event controller for the app
 | @author: jahid haque <jahid.haque@yahoo.com>
-| @copyright: nba-slp, 2017
+| @copyright: nba-slp, 2018
 |----------------------------------------------
 */
+
 'use strict';
-(function(){
+
+(function () {
+    
     angular
         .module('nbaslp')
-        .controller('welcomeCtrl', welcomeCtrl);
+        .controller('eventsCtrl', eventsCtrl);
 
-    function welcomeCtrl() {
-        const wvm = this;
+    function eventsCtrl() {
+        const evm = this;
     }
+
 })();
