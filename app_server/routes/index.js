@@ -18,6 +18,8 @@ const AccountController = require('../controllers/AccountController');
 
 const siteController = require('../controllers/SiteController');
 
+const systemController = require('../controllers/systemController');
+
 /*
 |----------------------------------------------
 | Following routes for authentication- signup, 
@@ -54,5 +56,12 @@ Routes.delete('/:committeeId/removecommittee', siteController.removeCommittee);
 Routes.post('/event', siteController.addEvent);
 Routes.get('/showEvent', siteController.showEvent);
 Routes.delete('/:eventId/event', siteController.deleteEvent);
+
+/*
+|----------------------------------------------
+| following routes are for system use only
+|----------------------------------------------
+*/
+Routes.post('/sendmessage', systemController.sendMessage);
 
 module.exports = Routes;

@@ -1,7 +1,40 @@
 <!-- navigation -->
 <site-nav></site-nav>
 
-<h1 class="thin text-center">contact us</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-sm-8 col-md-8">
+			<div class="container-box shadow small-radius wbg">
+				<img class="img-responsive" src="img/ire.jpg" alt="banner">
+				<h1 class="text-center title regular">Get in Touch With Us</h1>
+				<hr>
+				<form ng-submit="cvm.contactUs()">
+					<div class="form-group">
+						<label for="name">Name</label><input type="text" id="name" placeholder="Name" ng-model="cvm.contact.name" class="form-control half">
+					</div>
+
+					<div class="form-group"><label for="email">Email</label><input type="email" id="email" placeholder="Your email address" ng-model="cvm.contact.email" class="form-control half"></div>
+
+					<div class="form-group"><label for="message">Message</label><textarea ng-model='cvm.contact.message' 
+						class='form-control' id="message" cols="30" rows="10"></textarea></div>
+
+					<div class="alert alert-danger" ng-if="cvm.sendMessageError === true">
+						<p class="text-center no-margin title">{{cvm.sendMessageErrorMsg}}</p>
+					</div>
+
+					<div class="alert alert-success" ng-if="cvm.sendMessageSuccess === true">
+						<p class="text-center no-margin title">{{cvm.sendMessageSuccessMsg}}</p>
+					</div>
+
+					<div class="form-group"><button type="submit" class="btn btn-success">Send Message</button></div>
+				</form>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-4 col-md-4">
+			<side-bar></side-bar>
+		</div>
+	</div>
+</div>
 
 <!-- sitefooter -->
 <site-footer></site-footer>

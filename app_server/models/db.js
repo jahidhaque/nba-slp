@@ -61,3 +61,5 @@ require('./branch');
 require('./committee');
 require('./bankteller');
 require('./events');
+require('./message');
+

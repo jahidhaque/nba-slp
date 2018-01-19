@@ -19,6 +19,7 @@
     function sitecontrollCtrl(authentication, $location, sitecontroller) {
         const adSite = this;
 
+       
         if (authentication.isLoggedIn()) {
             
             if (authentication.currentUser().accountType === 'admin') {
@@ -104,6 +105,7 @@
                 };
 
                 adSite.addEvent = () => {
+                    
                     sitecontroller
                         .addEvent(adSite.event)
                         .then(response => {
