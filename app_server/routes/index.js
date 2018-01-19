@@ -18,6 +18,8 @@ const AccountController = require('../controllers/AccountController');
 
 const siteController = require('../controllers/SiteController');
 
+const userController = require('../controllers/userController');
+
 const systemController = require('../controllers/systemController');
 
 /*
@@ -56,6 +58,10 @@ Routes.delete('/:committeeId/removecommittee', siteController.removeCommittee);
 Routes.post('/event', siteController.addEvent);
 Routes.get('/showEvent', siteController.showEvent);
 Routes.delete('/:eventId/event', siteController.deleteEvent);
+Routes.get('/members', userController.showMembers);
+Routes.get('/:memberId/member', userController.showMember);
+Routes.get('/:memberId/profile', userController.showMemberProfile);
+Routes.get('/:memberId/branch', userController.showMemberBranch);
 
 /*
 |----------------------------------------------

@@ -45,6 +45,11 @@
                 controller: 'sitecontrollCtrl',
                 controllerAs: 'adSite',
             })
+            .when('/usercontroll', {
+                templateUrl: 'admin/usercontroll/usercontroll.view.html',
+                controller: 'usercontrollCtrl',
+                controllerAs: 'uservm',
+            })
             .when('/welcome', {
                 templateUrl: 'welcome/welcome.view.html',
                 controller: 'welcomeCtrl',

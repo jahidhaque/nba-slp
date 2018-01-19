@@ -1,0 +1,106 @@
+<!-- navigation -->
+<site-nav></site-nav>
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+			<div class="container-box shadow wbg">
+				<h1 class="text-center title regular">
+					List of users
+					<hr>
+				</h1>
+				<!-- when we have error showing members -->
+				<div class="alert alert-danger" ng-if="uservm.showMemberError === true">
+					<p class="text-center regular no-margin">{{uservm.showMemberErrorMsg}}</p>
+				</div>
+				<!-- when we don't have errors while showing memebrs -->
+				<ul class="list">
+					<li ng-repeat="member in uservm.members"><a href="/usercontroll?v={{member.email}}" title="Check details of {{member.displayName}}" class="regular">{{member.displayName}}</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- user details component -->
+		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" ng-init='uservm.checkRoutes()'>
+				<div class="container-box shadow wbg">
+
+					<!-- when admin clicks the member's name -->
+					<div ng-if="uservm.clickedMemberName === true" ng-init='uservm.loadUserInfo()'>
+						<h1 class="text-center regular title">User Details</h1>
+						<hr>
+						
+						<!-- when we have error showing single user -->
+						<div class="alert alert-danger" ng-if="uservm.singleMemberLoadingError === true">
+							<p class="text-center regular">{{uservm.singleMemberLoadingErrorMsg}}</p>
+						</div>
+						
+						<!-- when we don't have error showing user details -->
+						<p class="title light">{{uservm.singleMember.displayName}}'s Personal Details</p>
+
+						<ul class="list list-inline">
+							<li class="pull-left"><span class="regular title">Display Name: {{uservm.singleMember.displayName}}</span><span class="regular title m-l-2">Full name {{uservm.singleMember.lastName}} {{uservm.singleMember.firstName}}</span><span class="clearfix"></span></li>
+							<li class="pull-left">
+								<span class="regular title">Email: {{uservm.singleMember.email}}</span>
+								<span class="regular title">Account Created: {{uservm.singleMember.createdAt | date: 'dd MMM,  yyyy'}}</span>
+								<p class="regular title pull-right">Account Status: <span style="color: green !important;"> {{uservm.singleMember.validationStatus}} </span> </p>
+							</li>
+						</ul>
+						<div class="clearfix"></div>
+						<hr>
+
+						<p class="title light">{{uservm.singleMember.displayName}}'s Account Status</p>
+						<ul class="list">
+							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Branch: {{status.branch}}</span></li>
+							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Bank Teller: {{status.bankteller}}</span></li>
+							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Basic Info: {{status.basic_info}}</span></li>
+							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Current Profile: {{status.current_profile}}</span></li>
+							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Profile: {{status.profile}}</span></li>
+							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Email Validation: {{status.profileActivationMail}}</span></li>
+						</ul>
+
+						<hr>
+						
+						<p class="title light">{{uservm.singleMember.displayName}}'s Profile</p>
+
+						<div ng-init="uservm.loadUserProfile()">
+							
+							<!-- when we have error loading member's profile -->
+							<div class="alert alert-danger" ng-if="uservm.profileLoadingError === true">
+								<p class="text-center regular">{{uservm.profileLoadingErrorMsg}}</p>
+							</div>
+
+							<!-- when we don't have any error while loading user profile -->
+							<p class="regular light">Address : <strong>{{uservm.memberProfile.address}}</strong></p>
+							<p class="regular light">Sex : <strong>{{uservm.memberProfile.sex}}</strong></p>
+							<p class="regular light">Former Name : <strong>{{uservm.memberProfile.formerName}}</strong></p>
+						</div>
+
+						<hr>
+						
+						<p class="title light">{{uservm.singleMember.displayName}}'s Branch Info</p>
+						<div ng-init="uservm.loadUserBranch()">
+							
+							<!-- when we have error loading member's profile -->
+							<div class="alert alert-danger" ng-if="uservm.branchLoadingError === true">
+								<p class="text-center regular">{{uservm.branchLoadingErrorMsg}}</p>
+							</div>
+
+							<!-- when we don't have any error while loading user profile -->
+							<p class="regular light">Branch : <strong>{{uservm.memberBranch.nbaBranch}}</strong></p>
+							<p class="regular light">Bar Year : <strong>{{uservm.memberBranch.barYear}}</strong></p>
+						</div>
+
+					</div>
+
+					<div ng-if="uservm.clickedMemberName === false">
+							<h1 class="text-center regular title">Please click member's name from left panel to see details </h1>
+							<hr>
+					</div>
+				</div>	
+		</div>
+	</div>
+</div>
+
+<!-- sitefooter -->
+<site-footer></site-footer>
