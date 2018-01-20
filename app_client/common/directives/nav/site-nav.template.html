@@ -8,35 +8,38 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Nba-Slp</a>
+      <a class="navbar-brand site-nav-custom" href="/">
+        Nba-Slp
+        <img src="img/logo.jpg" class="pull-right m-l-2" style="margin-top: 0px;" width="30" height="30" alt='Logo' />
+      </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="site-nav">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Council Member <span class="sr-only">(current)</span></a></li>
-        <li><a href="/committees">Committees</a></li>
-        <li><a href="/events">Events</a></li>
-        <li><a href="/aboutus">About us</a></li>
-        <li><a href="/contactus">Contact us</a></li>
+        <li><a class="site-nav-custom" href="#">Council Member <span class="sr-only">(current)</span></a></li>
+        <li><a class="site-nav-custom" href="/committees">Committees</a></li>
+        <li><a class="site-nav-custom" href="/events">Events</a></li>
+        <li><a class="site-nav-custom" href="/aboutus">About us</a></li>
+        <li><a class="site-nav-custom" href="/contactus">Contact us</a></li>
       </ul>
       
       <!-- for logged url -->
       <ul class="nav navbar-nav navbar-right">
-        <li ng-if='nvm.loggedInUri === true'><a ng-if ='nvm.currentAccountType === "customer" ' href="/welcome">Welcome <i class="fa fa-home" aria-hidden="true"></i></a></li>
-        <li ng-if='nvm.loggedInUri === true'><a href="/profile">{{nvm.loggedInName}}</a></li>
-        <li ng-if='nvm.loggedInUri === true'><a href="#" ng-click='nvm.logout()'>Logout <i class="m-l-1 fa fa-sign-out" aria-hidden="true"></i></a></li>
+        <li ng-if='nvm.loggedInUri === true'><a class="site-nav-custom" ng-if ='nvm.currentAccountType === "customer" ' href="/welcome">Welcome <i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li ng-if='nvm.loggedInUri === true'><a class="site-nav-custom" href="/profile">{{nvm.loggedInName}}</a></li>
+        <li ng-if='nvm.loggedInUri === true'><a class="site-nav-custom" href="#" ng-click='nvm.logout()'>Logout <i class="m-l-1 fa fa-sign-out" aria-hidden="true"></i></a></li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right" ng-if='nvm.currentAccountType === "admin" '>
-        <li><a href="/sitecontroll">Site Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
-        <li><a href="/usercontroll">User Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
-        <li><a href="/staffcontroll">Staff Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
+        <li><a class="site-nav-custom" href="/sitecontroll">Site Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
+        <li><a class="site-nav-custom" href="/usercontroll">User Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
+        <li><a class="site-nav-custom" href="/staffcontroll">Staff Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li ng-if='nvm.loggedInUri === false'><a href="/signup">Registration</a></li>
-        <li ng-if='nvm.loggedInUri === false'><a href="/signin">Login</a></li>
+        <li ng-if='nvm.loggedInUri === false'><a class="site-nav-custom" href="/signup">Registration</a></li>
+        <li ng-if='nvm.loggedInUri === false'><a class="site-nav-custom" href="/signin">Login</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

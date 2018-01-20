@@ -91,6 +91,18 @@
 							<p class="regular light">Bar Year : <strong>{{uservm.memberBranch.barYear}}</strong></p>
 						</div>
 
+						<hr>
+
+						<p class="title light">{{uservm.singleMember.displayName}}'s Bank Teller Info</p>
+
+						<div ng-init="uservm.loadBankTeller()">
+							<div class="alert alert-danger" ng-if="uservm.bankTellerLoadingError === true">
+								<p class="text-center title regular">{{uservm.bankTellerLoadingErrorMsg}}</p>
+							</div>
+							<p class="title regular">Preferred Committee: {{uservm.memberbankTeller.preferredCommittee}}</p>
+							<p class="title regular">Additional Committee: {{uservm.memberbankTeller.additionalCommittee}}</p>
+						</div>
+
 					</div>
 
 					<div ng-if="uservm.clickedMemberName === false">

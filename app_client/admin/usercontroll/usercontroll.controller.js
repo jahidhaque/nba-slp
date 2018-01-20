@@ -14,9 +14,9 @@
         .module('nbaslp')
         .controller('usercontrollCtrl', usercontrollCtrl);
 
-    usercontrollCtrl.$inject = ['usercontroller', '$routeParams'];
+    usercontrollCtrl.$inject = ['usercontroller', 'account', '$routeParams'];
 
-    function usercontrollCtrl(usercontroller, $routeParams) {
+    function usercontrollCtrl(usercontroller, account, $routeParams) {
         
         const uservm = this;
 
@@ -102,7 +102,6 @@
             usercontroller
                 .showMemberBranch(memebrId)
                 .then(response => {
-                	console.log(response);
                     if (response.data.error) {
                         uservm.branchLoadingError = true;
                         uservm.branchLoadingErrorMsg = response.data.error;
@@ -115,6 +114,27 @@
                 .catch(err => {
                     uservm.branchLoadingError = true;
                     uservm.branchLoadingErrorMsg = err;
+                });
+        };
+
+        uservm.loadBankTeller = () => {
+            const memebrId = $routeParams.v;
+
+            account
+                .getBankTeller(memebrId)
+                .then(response => {
+                    if (response.data.error) {
+                        uservm.bankTellerLoadingError = true;
+                        uservm.bankTellerLoadingErrorMsg = response.data.error;
+                    }
+                    else {
+                        uservm.bankTellerLoadingError = false;
+                        uservm.memberbankTeller = response.data.bankTeller;
+                    }
+                })
+                .catch(err => {
+                    uservm.bankTellerLoadingError = true;
+                    uservm.bankTellerLoadingErrorMsg = err;
                 });
         };
     }
