@@ -164,7 +164,7 @@
                         <label for="additional_committee">Additional Committee *</label>
                         <select name="additional_committee" id="additional_committee" class="form-control" ng-model='provm.bankTellerInfo.additional_committee'>
                             <option value="" selected="">Select additional committee</option>
-                            <option value="committee.name" ng-repeat="committee in provm.committees">{{committee.name}}</option>
+                            <option value="{{committee.name}}" ng-repeat="committee in provm.committees">{{committee.name}}</option>
                         </select>
                     </div>
 
@@ -180,8 +180,26 @@
                     </div>
 
                     <button type="submit" class="btn btn-info">Save Details</button>
-
                 </form>
+                
+                <!-- when file upload has been successfull -->
+                <div ng-if="provm.userStatuses[0].bankteller === true === true" ng-init='provm.getCurrentBankTeller()'>
+                    
+                    <!-- when we have error loading bank teller -->
+                    <div class="alert alert-danger" ng-if="provm.bankTellerLoadingError === true">
+                        <p class="text-center regular">{{provm.bankTellerLoadingErrorMsg}}</p>
+                    </div>
+
+                    <!-- when bank teller loading successful -->
+                    <div class="alert alert-success m-t-2">
+                        <p class="text-center regular">We have received your bank teller. its under verification right now. You will get a notification email once its been verified.</p>
+                    </div>
+                    <ul class="list">
+                        <li><span class="regular titile">Preferred Committee: {{provm.userBankTeller.preferredCommittee}}</span></li>
+                        <li><span class="regular titile">Additional Committee: {{provm.userBankTeller.additionalCommittee}}</span></li>
+                    </ul>
+                </div>
+
             </div>
         </div>
 

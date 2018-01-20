@@ -565,7 +565,7 @@ module.exports.uploadBankTeller = (req, res) => {
             else {
                 sendJsonResponse(res, 200, {
                     success: true,
-                    docLocation: '/users/' + req.params.userId + '/' + req.file.filename,
+                    docLocation: req.params.userId + '/' + req.file.filename,
                 });
             }
         }
@@ -602,7 +602,7 @@ module.exports.saveBankTeller = (req, res) => {
             newteller.whos = req.body.whos;
             newteller.userId = req.body.userId;
             newteller.preferredCommittee = req.body.preferredCommittee;
-            newteller.additional_committee = req.body.additional_committee;
+            newteller.additionalCommittee = req.body.additional_committee;
             newteller.tellerLocation = req.body.tellerDoc;
 
             newteller.save(err => {
@@ -617,6 +617,45 @@ module.exports.saveBankTeller = (req, res) => {
                     });
                 }
             });
+        }
+    });
+};
+
+
+/*
+|----------------------------------------------
+| Following function will get bank teller based
+| on given user id.
+| @author: jahid haque <jahid.haque@yahoo.com>
+| @copyright: nba-slp, 2018
+|----------------------------------------------
+*/
+module.exports.showTellerInfo = (req, res) => {
+    const userId = Joi.object().keys({
+        userId: Joi.string().email().required(),
+    });
+
+    Joi.validate(req.params, userId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            BankTeller
+                .findOne({ whos: req.params.userId })
+                .exec((err, bankteller) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            bankTeller: bankteller,
+                        });
+                    }
+                });
         }
     });
 };

@@ -52,7 +52,7 @@
                 provm.profileStatus = authentication.currentUser().accountStatus;
 
                 provm.codeReady = false;
-
+                
                 provm.sendActivationCode = () => {
                     provm.codeReady = true;
                     account
@@ -306,6 +306,8 @@
                     }
                     else {
 
+                        console.log(provm.bankTellerInfo);
+
                         account
                             .uploadTellerDocs($scope.tellerDoc, authentication.currentUser().accountId)
                             .then(response => {
@@ -330,7 +332,9 @@
                                                     status: true,
                                                 };
                                                 statusUpdater(updatedStatus);
-                                                $route.reload();
+
+                                                $route.reload();                                              
+                                                
                                             }
                                         })
                                         .catch(err => {
@@ -344,6 +348,30 @@
                                 provm.saveTellerErrorMsg = err;
                             });
                     }
+                };
+
+                /*
+                |----------------------------------------------
+                | Following function will get latest bank teller
+                |----------------------------------------------
+                */
+                provm.getCurrentBankTeller = () => {
+                    account
+                        .getBankTeller(authentication.currentUser().email)
+                        .then(response => {
+                            if (response.data.error) {
+                                provm.bankTellerLoadingError = true;
+                                provm.bankTellerLoadingErrorMsg = response.data.error;
+                            }
+                            else {
+                                provm.bankTellerLoadingError = false;
+                                provm.userBankTeller = response.data.bankTeller;
+                            }
+                        })
+                        .catch(err => {
+                            provm.bankTellerLoadingError = true;
+                            provm.bankTellerLoadingErrorMsg = err;
+                        });
                 };
 
             }

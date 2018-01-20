@@ -86,6 +86,13 @@
                 .catch(handleError);
         };
 
+        const getBankTeller = (userId) => {
+            return $http 
+                .get('/api/' + userId + '/bankteller')
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         /*
         |----------------------------------------------
         | Following function will load all data for user
@@ -114,6 +121,7 @@
             loadUserInfo: loadUserInfo,
             getCommittee: getCommittee,
             saveBankTeller: saveBankTeller,
+            getBankTeller: getBankTeller,
         };
     }
 
