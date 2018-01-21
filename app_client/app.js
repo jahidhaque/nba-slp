@@ -20,6 +20,9 @@
                 controller: 'welcomeCtrl',
                 controllerAs: 'wvm',
             })
+            .when('/councilmembers', {
+                templateUrl: 'councilmembers/councilmembers.view.html',
+            })
             .when('/signup', {
                 templateUrl: 'signup/signup.view.html',
                 controller: 'signupCtrl',
