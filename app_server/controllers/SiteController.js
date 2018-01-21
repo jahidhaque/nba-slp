@@ -30,7 +30,7 @@ const sendJsonResponse = function (res, status, content) {
 module.exports.createCommittee = (req, res) => {
     const committeeInfo = Joi.object().keys({
         name: Joi.string().min(5).max(50).regex(/^[a-zA-Z ]{5,50}$/),
-        chairman: Joi.string().min(5).max(24).regex(/^[a-zA-Z ]{5,24}$/),
+        councilMember: Joi.string().min(5).max(24).regex(/^[a-zA-Z ]{5,24}$/),
     });
 
     Joi.validate(req.body, committeeInfo, (err, value) => {
@@ -43,7 +43,7 @@ module.exports.createCommittee = (req, res) => {
             const committee = new Committee();
             committee.committeeId = UId.sync(10);
             committee.name = req.body.name;
-            committee.chairman = req.body.chairman;
+            committee.councilMember = req.body.councilMember;
 
             committee.save(err => {
                 if (err) {

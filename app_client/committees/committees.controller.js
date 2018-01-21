@@ -14,8 +14,29 @@
         .module('nbaslp')
         .controller('committeesCtrl', committeesCtrl);
 
-    function committeesCtrl() {
+    committeesCtrl.$inject = ['sitecontroller'];
+
+    function committeesCtrl(sitecontroller) {
         const cvm = this;
+
+        cvm.loadCommittee = () => {
+            sitecontroller
+                .showAllCommittee()	
+                .then(response => {
+                    if (response.data.error) {
+                        cvm.committeeLoadingError = true;
+                        cvm.committeeLoadingErrorMsg = response.data.error;
+                    }
+                    else {
+                        cvm.committeeLoadingError = false;
+                        cvm.committees = response.data.committee;
+                    }
+                })
+                .catch(err => {
+                    cvm.committeeLoadingError = true;
+                    cvm.committeeLoadingErrorMsg = err;
+                });
+        }
     }
 
 })();

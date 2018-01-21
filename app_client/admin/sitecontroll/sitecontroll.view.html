@@ -14,7 +14,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="chairman">Chairman</label><input type="text" id='chairman' class="form-control" ng-model="adSite.committee.chairman" placeholder="Chairman for the Committee" tabindex="2">
+						<label for="councilMember">Council Member</label><input type="text" id='councilMember' class="form-control" ng-model="adSite.committee.councilMember" placeholder="Chairman for the Committee" tabindex="2">
 					</div>
 					
 					<!-- show error whiling adding it to database. -->
@@ -43,7 +43,7 @@
 							<ul class="list">
 								<li ng-repeat="committee in adSite.committeeList">
 									<p class="regular sub-title m-b-1">
-										{{committee.name}} (<span class="sub-title light">{{committee.chairman}}</span>)
+										{{committee.name}} (<span class="sub-title light">{{committee.councilMember}}</span>)
 										<span class="pull-right pointer no-margin no-padding"><i class="fa fa-close" aria-hidden="true" ng-click="adSite.removeList(committee._id)"></i></span>
 									</p>
 									<span class="clearfix"></span>

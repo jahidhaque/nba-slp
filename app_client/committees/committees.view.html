@@ -23,6 +23,17 @@
 				</ul>
 				<h2 class="regular title">The Committees of the Section On Legal Practice (SLP) are:</h2>
 				<hr>
+
+				<div ng-init="cvm.loadCommittee()">
+						<div class="alert alert-danger" ng-if="cvm.committeeLoadingError === true">
+							<p class="text-center title regular">{{cvm.committeeLoadingErrorMsg}}</p>
+						</div>
+						<ul class="list">
+							<li ng-repeat="commiteeInfo in cvm.committees">
+								{{commiteeInfo.name}}
+							</li>
+						</ul>
+				</div>
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-4">

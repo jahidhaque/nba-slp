@@ -26,7 +26,7 @@
                 
                 adSite.committee = {
                     name: '',
-                    chairman: '',
+                    councilMember: '',
                 };
                 // add committee
                 adSite.addPreferredCommittee = () => {
