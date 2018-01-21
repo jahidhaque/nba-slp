@@ -15,6 +15,9 @@ const committeSchema = new Mongoose.Schema({
     name: {
         type: String, min: 5, max: 50, required: true,
     },
+    chairman: {
+        type: String, min: 5, max: 24, required: true,
+    },
     createdAt: {
         type: Date, default: Date.now,
     },

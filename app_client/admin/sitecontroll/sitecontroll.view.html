@@ -12,6 +12,10 @@
 					<div class="form-group">
 						<label for="committee_name">Committee Name</label><input type="text" id='committee_name' class="form-control" ng-model="adSite.committee.name" placeholder="Committee name" tabindex="1">
 					</div>
+
+					<div class="form-group">
+						<label for="chairman">Chairman</label><input type="text" id='chairman' class="form-control" ng-model="adSite.committee.chairman" placeholder="Chairman for the Committee" tabindex="2">
+					</div>
 					
 					<!-- show error whiling adding it to database. -->
 					<div class="alert alert-danger" ng-if="adSite.addCommitteeError === true">
@@ -24,13 +28,13 @@
 					</div>
 
 					<div class="form-group">
-						<button type="submit" tabindex="2" class="btn btn-info">Save Committee</button>
+						<button type="submit" tabindex="3" class="btn btn-info">Save Committee</button>
 					</div>
 					
 					<!-- to show existing committees -->
 					<div ng-init="adSite.showCommittee()">
 						<div class="alert alert-danger" ng-if="adSite.committeeError === true">
-							<p class="text-center regular title no-margin">{{adSite.committeeErrorMsg}}</p>
+							<p class="text-center regular title no-margin">{{adSite.committeeErrorMsg}} </p>
 						</div>
 
 						<div ng-if="adSite.committeeError === false">
@@ -39,7 +43,7 @@
 							<ul class="list">
 								<li ng-repeat="committee in adSite.committeeList">
 									<p class="regular sub-title m-b-1">
-										{{committee.name}}
+										{{committee.name}} (<span class="sub-title light">{{committee.chairman}}</span>)
 										<span class="pull-right pointer no-margin no-padding"><i class="fa fa-close" aria-hidden="true" ng-click="adSite.removeList(committee._id)"></i></span>
 									</p>
 									<span class="clearfix"></span>
@@ -70,17 +74,17 @@
 
 							<div class="form-group">
 								<label for="eventStarts">Event starts</label>
-								<datepicker date-format="dd-MM-yyyy">
+								<datepicker date-format="dd-MM-yyyy" style='position: relative;'>
 									<input type="text" id="eventStarts" ng-model='adSite.event.eventStarts' class="form-control half" placeholder="Event start date">
-									<i class="fa fa-calendar" aria-hidden="true"></i>
+									<i class="fa fa-calendar" style="position: absolute !important; right: 260px; top: 10px; color: #499928 !important;" aria-hidden="true"></i>
 								</datepicker>
 							</div>
 
 							<div class="form-group">
 								<label for="eventEnds">Event ends</label>
-								<datepicker date-format="dd-MM-yyyy">
+								<datepicker date-format="dd-MM-yyyy" style="position: relative;">
 									<input type="text" id="eventEnds" ng-model='adSite.event.eventEnds' class="form-control half" placeholder="Event end date">
-									<i class="fa fa-calendar" aria-hidden="true"></i>
+									<i class="fa fa-calendar" style="position: absolute !important; right: 260px; top: 10px; color: #499928 !important;" aria-hidden="true"></i>
 								</datepicker>
 							</div>
 							<div class="clearfix"></div>
@@ -94,7 +98,7 @@
 							</div>
 
 							<div class="form-group">
-									<button type="submit" class="btn btn-success">Save</button>
+									<button type="submit" class="btn btn-success m-t-2 m-b-2">Save</button>
 							</div>
 
 						</form>
