@@ -36,6 +36,7 @@ Routes.post('/signin', Authentication.signin);
 | Following routes for account use only 
 |----------------------------------------------
 */
+Routes.post('/:userId/resetpassword', AccountController.resetPassword);
 Routes.get('/:userId/statuses', AccountController.getAccountStatuses);
 Routes.post('/createbasicprofile', AccountController.createBasicProfile);
 Routes.post('/userstatus', AccountController.updateUserStatus);

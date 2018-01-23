@@ -205,6 +205,33 @@
 
     </div>
 
+    <div class="row">
+        <div class="col-md-4">
+            <div class="container-box shadow wbg">
+                <h1 class="text-center regular title">Reset your password</h1>
+                <hr>
+                <form ng-submit="provm.resetPassword()">
+                    <div class="form-group"><label for="password">Password</label><input type="password" class="form-control" ng-model="provm.resetpassword.password" id='password' tabindex="1" placeholder="Your existing password"></div>
+
+                    <div class="form-group"><label for="repeat_password">Repeat Password</label><input type="password" class="form-control" ng-model="provm.resetpassword.repeat_password" tabindex="2" id='repeat_password' placeholder="Repeat Your existing password"></div>
+
+                    <div class="form-group"><label for="new_password">Repeat Password</label><input type="password" class="form-control" ng-model="provm.resetpassword.new_password" tabindex="3" id='new_password' placeholder="Your new password"></div>
+
+                    <div class="alert alert-danger" ng-if="provm.resetPasswordError === true">
+                        <p class="text-center regular title">{{provm.resetPasswordErrorMsg}}</p>
+                    </div>
+                    <div class="alert alert-success" ng-if="provm.resetSuccess === true">
+                        <p class="text-center regular title">Password reset successful!. For security, you will be logged out now</p>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" tabindex="4" class="btn btn-success">Change Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="row" ng-if="provm.statusLoadError === true">
         <h1 class="hero-big-title light text-center">{{provm.statusLoadErrorMsg}}</h1>
     </div>

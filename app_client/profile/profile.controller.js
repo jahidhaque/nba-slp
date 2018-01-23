@@ -20,6 +20,35 @@
 
         const provm = this;
 
+        provm.resetpassword = {
+            password: '',
+            repeat_password: '',
+            new_password: '',
+        };
+
+        provm.resetPassword = () => {
+            account
+                .resetPassword(authentication.currentUser().email, provm.resetpassword)
+                .then(response => {
+                    if (response.data.error) {
+                        provm.resetPasswordError = true;
+                        provm.resetPasswordErrorMsg = response.data.error;
+                    }
+                    else {
+                        provm.resetPasswordError = false;
+                        provm.resetSuccess = true; 
+                        setTimeout(() => {
+                            authentication.Logout();
+                            $route.reload();
+                        }, 200);
+                    }
+                })
+                .catch(err => {
+                    provm.resetPasswordError = true;
+                    provm.resetPasswordErrorMsg = err;
+                });
+        };
+
         function statusUpdater(updateObject) {
 
             // calling service function.

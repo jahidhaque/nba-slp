@@ -17,6 +17,13 @@
 
     function account($window, $http) {
 
+        const resetPassword = (userId, resetData) => {
+            return $http 
+                .post('/api/' + userId + '/resetpassword', resetData)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const createActivationCode = (userId) => {
             return $http 
                 .post('/api/' + userId + '/generatevalidationcode')
@@ -111,6 +118,7 @@
         const handleError = (response) => response;
 
         return {
+            resetPassword: resetPassword,
             uploadTellerDocs: uploadTellerDocs,
             createActivationCode: createActivationCode,
             validateActivationCode: validateActivationCode,

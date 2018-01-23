@@ -53,6 +53,11 @@
                 controller: 'usercontrollCtrl',
                 controllerAs: 'uservm',
             })
+            .when('/staffcontroll', {
+                templateUrl: 'admin/staffcontroll/staffcontroll.view.html',
+                controller: 'staffCtrl',
+                controllerAs: 'svm',
+            })
             .when('/welcome', {
                 templateUrl: 'welcome/welcome.view.html',
                 controller: 'welcomeCtrl',

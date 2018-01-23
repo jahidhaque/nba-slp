@@ -30,6 +30,7 @@ var     paths       =       {
         "app_client/common/services/admin/site-controller.service.js",
         "app_client/common/services/admin/user-controller.service.js",
         "app_client/admin/usercontroll/usercontroll.controller.js",
+        "app_client/admin/staffcontroll/staffcontroller.controller.js",
         "app_client/common/services/system/system.service.js",
         "app_client/common/directives/nav/nav.directive.js",
         "app_client/common/directives/nav/nav.controller.js",

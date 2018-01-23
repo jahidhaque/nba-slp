@@ -54,6 +54,68 @@ const userId = Joi.object().keys({
 
 /*
 |----------------------------------------------
+| Following function will reset user given password
+|----------------------------------------------
+*/
+module.exports.resetPassword = (req, res) => {
+    const resetInfo = Joi.object().keys({
+        password: Joi.string().min(5).max(50).required(),
+        repeat_password: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } }),
+        new_password: Joi.string().min(5).max(50).required(),        
+    });
+
+    Joi.validate(req.params, userId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            Joi.validate(req.body, resetInfo, (err, value) => {
+                if (err) {
+                    sendJsonResponse(res, 404, {
+                        error: err.details[0].message,
+                    });
+                }
+                else {
+                    Users
+                        .findOne({ email: req.params.userId })
+                        .exec((err, user) => {
+                            if (err) {
+                                sendJsonResponse(res, 404, {
+                                    error: err,
+                                });
+                            }
+                            else if (!user) {
+                                sendJsonResponse(res, 404, {
+                                    error: "No user found with given id",
+                                });
+                            }
+                            else {
+                                user.password = user.setPassword(req.body.new_password);
+
+                                user.save(err => {
+                                    if (err) {
+                                        sendJsonResponse(res, 404, {
+                                            error: 'Error while changing password. Please contact admin',
+                                        });
+                                    }
+                                    else {
+                                        sendJsonResponse(res, 200, {
+                                            success: true,
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                }
+            });
+        }
+    });
+};
+
+/*
+|----------------------------------------------
 | Following function will generate security code
 | @author: jahid haque <jahid.haque@yahoo.com>
 | @copyright: nbaslp, 2018
