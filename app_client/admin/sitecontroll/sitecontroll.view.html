@@ -4,7 +4,7 @@
 <!-- container -->
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 			<div class="container-box shadow wbg small-radius">
 				<h1 class="text-center regular sub-title">Add preferred committee</h1>
 				<hr>
@@ -13,10 +13,7 @@
 						<label for="committee_name">Committee Name</label><input type="text" id='committee_name' class="form-control" ng-model="adSite.committee.name" placeholder="Committee name" tabindex="1">
 					</div>
 
-					<div class="form-group">
-						<label for="councilMember">Council Member</label><input type="text" id='councilMember' class="form-control" ng-model="adSite.committee.councilMember" placeholder="Chairman for the Committee" tabindex="2">
-					</div>
-					
+										
 					<!-- show error whiling adding it to database. -->
 					<div class="alert alert-danger" ng-if="adSite.addCommitteeError === true">
 						<p class="text-center sub-title no-margin">{{adSite.addCommitteeErrorMsg}}</p>
@@ -43,8 +40,7 @@
 							<ul class="list">
 								<li ng-repeat="committee in adSite.committeeList">
 									<p class="regular sub-title m-b-1">
-										{{committee.name}} (<span class="sub-title light">{{committee.councilMember}}</span>)
-										<span class="pull-right pointer no-margin no-padding"><i class="fa fa-close" aria-hidden="true" ng-click="adSite.removeList(committee._id)"></i></span>
+										{{committee.name}} <span class="pull-right pointer no-margin no-padding"><i class="fa fa-close" aria-hidden="true" ng-click="adSite.removeList(committee._id)"></i></span>
 									</p>
 									<span class="clearfix"></span>
 								</li>
@@ -52,6 +48,42 @@
 						</div>
 
 					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+			<div class="container-box shadow wbg small-radius">
+				<h1 class="text-center regular sub-title">Add council member</h1>
+				<hr>
+				<form ng-submit="adSite.addCouncilMember()">
+					<div class="form-group">
+						<label for="councilmember">Council Member</label><input type="text" ng-model='adSite.council.name' class="form-control" id="councilmember" placeholder="council member name" tabindex="1">
+					</div>
+
+					<div class="alert alert-danger" ng-if="adSite.councilAddError === true">
+						<p class="text-center regular no-margin">{{adSite.councilAddErrorMsg}}</p>
+					</div>
+
+					<div ng-init="adSite.showCouncil()">
+						<div class="alert alert-danger" ng-if="adSite.councilShowError === true">
+							<p class="text-center regular no-margin">{{adSite.councilShowErrorMsg}}</p>
+						</div>
+						<div ng-if="adSite.councilShowError === false">
+							<h1 class="regular title">Existing Council Member List</h1>
+							<hr>
+							<ul class="list">
+								<li ng-repeat="council in adSite.councils">
+									<p class="regular sub-title m-b-1">
+										{{council.name}} <span class="pull-right pointer no-margin no-padding"><i class="fa fa-close" aria-hidden="true" ng-click="adSite.removeCouncil(council._id)"></i></span>
+									</p>
+									<span class="clearfix"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="form-group"><button type="submit" class="btn btn-success" tabindex="2">Save Council</button></div>
 				</form>
 			</div>
 		</div>

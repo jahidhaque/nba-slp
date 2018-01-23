@@ -26,7 +26,6 @@
                 
                 adSite.committee = {
                     name: '',
-                    councilMember: '',
                 };
                 // add committee
                 adSite.addPreferredCommittee = () => {
@@ -86,6 +85,63 @@
                                     adSite.showCommittee();
                                 }, 100);
                             }
+                        })
+                        .catch(err => {
+                            alert(err);
+                        });
+                };
+
+                adSite.council = {
+                    name: '',
+                };
+
+                adSite.addCouncilMember = () => {
+                    sitecontroller
+                        .addCouncil(adSite.council)
+                        .then(response => {
+                            if (response.data.error) {
+                                adSite.councilAddError = true;
+                                adSite.councilAddErrorMsg = response.data.error;
+                            }
+                            else  {
+                                adSite.councilAddError = false;
+                                setTimeout(() => {
+                                    adSite.showCouncil();
+                                }, 100);
+                            }
+                        })
+                        .catch(err => {
+                            adSite.councilAddError = true;
+                            adSite.councilAddErrorMsg = err;
+                        });
+                };
+
+                adSite.showCouncil = () => {
+                    sitecontroller
+                        .showCouncilMember()
+                        .then(response => {
+                            if (response.data.error) {
+                                adSite.councilShowError = true;
+                                adSite.councilShowErrorMsg = response.data.error;
+                            }
+                            else {
+                                adSite.councilShowError = false;
+                                adSite.councils = response.data.data;
+                            }
+                        })
+                        .catch(err => {
+                            adSite.councilShowError = true;
+                            adSite.councilShowErrorMsg = err;
+                        });
+                };
+
+                adSite.removeCouncil = (councilId) => {
+                    sitecontroller
+                        .removeCouncil(councilId)
+                        .then(response => {
+                            setTimeout(() => {
+                                adSite.showCouncil();
+                            }, 100);
                         })
                         .catch(err => {
                             alert(err);

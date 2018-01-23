@@ -1,17 +1,13 @@
 /*
 |----------------------------------------------
-| setting up committee schema for committee
+| setting up council schema for the app
 | @author: jahid haque <jahid.haque@yahoo.com>
 | @copyright: nba-slp, 2018
 |----------------------------------------------
 */
-
 const Mongoose = require('mongoose');
 
-const committeSchema = new Mongoose.Schema({
-    committeeId: { 
-        type: String, min: 10, max: 10, required: true, unique: true,
-    },
+const councilSchema = new Mongoose.Schema({
     name: {
         type: String, min: 5, max: 100, required: true,
     },
@@ -20,6 +16,6 @@ const committeSchema = new Mongoose.Schema({
     },
 });
 
-const collectionName = 'committee';
+const collectionName = 'council';
 
-Mongoose.model('committee', committeSchema, collectionName);
+Mongoose.model('council', councilSchema, collectionName);

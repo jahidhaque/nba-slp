@@ -63,6 +63,9 @@ Routes.get('/members', userController.showMembers);
 Routes.get('/:memberId/member', userController.showMember);
 Routes.get('/:memberId/profile', userController.showMemberProfile);
 Routes.get('/:memberId/branch', userController.showMemberBranch);
+Routes.post('/councilmember', siteController.createCouncil);
+Routes.get('/showcouncil', siteController.showcouncil);
+Routes.delete('/:councilId/council', siteController.deleteCouncil);
 
 /*
 |----------------------------------------------

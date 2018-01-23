@@ -17,6 +17,8 @@ const Committee = Mongoose.model('committee');
 
 const Event = Mongoose.model('event');
 
+const Council = Mongoose.model('council');
+
 /*
 |----------------------------------------------------------------
 | function for returning json.
@@ -29,8 +31,7 @@ const sendJsonResponse = function (res, status, content) {
 
 module.exports.createCommittee = (req, res) => {
     const committeeInfo = Joi.object().keys({
-        name: Joi.string().min(5).max(50).regex(/^[a-zA-Z ]{5,50}$/),
-        councilMember: Joi.string().min(5).max(24).regex(/^[a-zA-Z ]{5,24}$/),
+        name: Joi.string().min(5).max(100).regex(/^[a-zA-Z ]{5,50}$/),
     });
 
     Joi.validate(req.body, committeeInfo, (err, value) => {
@@ -43,7 +44,6 @@ module.exports.createCommittee = (req, res) => {
             const committee = new Committee();
             committee.committeeId = UId.sync(10);
             committee.name = req.body.name;
-            committee.councilMember = req.body.councilMember;
 
             committee.save(err => {
                 if (err) {
@@ -121,6 +121,105 @@ module.exports.removeCommittee = (req, res) => {
     });
 };
 
+/*
+|----------------------------------------------
+| add new council
+|----------------------------------------------
+*/
+module.exports.createCouncil = (req, res) => {
+    console.log(req.body);
+    const councilName = Joi.object().keys({
+        name: Joi.string().min(5).max(100).required(),
+    });
+
+    Joi.validate(req.body, councilName, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            const council = new Council();
+            council.name = req.body.name;
+
+            council.save(err => {
+                if (err) {
+                    sendJsonResponse(res, 404, {
+                        error: err,
+                    });
+                }
+                else {
+                    sendJsonResponse(res, 200, {
+                        success: true,
+                    });
+                }
+            });
+
+        }
+    });
+};
+
+/*
+|----------------------------------------------
+| Following function will get latest council memebers
+|----------------------------------------------
+*/
+module.exports.showcouncil = (req, res) => {
+    Council
+        .find({})
+        .exec((err, council) => {
+            if (err) {
+                sendJsonResponse(res, 404, {
+                    error: err,
+                });
+            }
+            else if (!council) {
+                sendJsonResponse(res, 404, {
+                    error: 'No council has been found',
+                });
+            }
+            else {
+                sendJsonResponse(res, 200, {
+                    data: council,
+                });
+            }
+        });
+};
+
+/*
+|----------------------------------------------
+| Following function will delete council from db
+|----------------------------------------------
+*/
+module.exports.deleteCouncil = (req, res) => {
+    const councilInfo = Joi.object().keys({
+        councilId: Joi.string().min(24).max(24).regex(/^[a-z0-9]{24,24}$/).required(),
+    });
+
+    Joi.validate(req.params, councilInfo, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            Council
+                .findByIdAndRemove(req.params.councilId)
+                .exec(err => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            success: true,
+                        });
+                    }
+                });
+        }
+    });
+};
 
 /*
 |----------------------------------------------
