@@ -22,6 +22,8 @@
             })
             .when('/councilmembers', {
                 templateUrl: 'councilmembers/councilmembers.view.html',
+                controller: 'councilCtrl',
+                controllerAs: 'clvm',
             })
             .when('/signup', {
                 templateUrl: 'signup/signup.view.html',

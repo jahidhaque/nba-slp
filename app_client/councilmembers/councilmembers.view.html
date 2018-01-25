@@ -15,7 +15,18 @@
 				<p class="regular title">
 					The Nigerian Bar Association (NBA), in compliance with the provisions of Article IX (b) of the Uniform Bye-Laws of Sections, Institutes and Fora, has setup Steering Committees to administer the affairs of its Section on Legal Practice [SLP] for a maximum period of six (6) weeks and to take steps to organise elections for a new leadership of these Sections and Forum.
 				</p>
-
+				
+				<div ng-init="clvm.loadCouncilMembers()">
+						<div class="alert alert-danger" ng-if="cvm.committeeLoadingError === true">
+							<p class="text-center title regular">{{cvm.committeeLoadingErrorMsg}}</p>
+						</div>
+						<ul class="list">
+							<li ng-repeat="council in clvm.councils">
+								{{council.name}}
+							</li>
+						</ul>
+				</div>
+			
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-4">
