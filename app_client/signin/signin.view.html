@@ -4,8 +4,11 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-md-offset-3">
-		  <div class="panel panel-default">
-		  <div class="panel-heading"><h3 class="panel-title"><strong>Login </strong></h3></div>
+			<img class="img-responsive" src="img/ire.jpg" alt="banner"><br><br>
+			<p>The Section is currently made up of fourteen Committees that promote the participation of members of the Association towards achieving the objectives of the Section. </p>
+				<p>Please make sure you select the Committees that you wish to join as listed in the profile page and indicate your preferred free membership committee. For more details of the list of committees refer to the committees page or download the registration form from the paper registration link below</p><br><br>
+		  <div class="panel panel-success">
+		  <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-unlock-alt" aria-hidden="true"></i> Sign In</h3></div>
 		  <div class="panel-body">
 		   <form role="form" ng-submit='lvm.login()'>
 				  <div class="form-group">
@@ -20,11 +23,13 @@
 				  <div class="alert alert-danger" ng-if="lvm.loginError === true">
 				  	<p class="text-center light title">{{lvm.loginErrorMsg}}</p>
 				  </div>
-		  		<button type="submit" class="btn btn-sm btn-default" tabindex="3">Sign in</button>
+		  		<button type="submit" class="btn btn-sm btn-success" tabindex="3">Sign in</button>
 				</form>
 		  </div>
+		  <h5><strong class="label label-info" > Download</strong>  a copy of the <a href="/files/slp_current_membership_form.pdf" download target="_self" >paper Registration Form here</a></h5>
 		</div>
 	</div>
+
 	</div>
 </div>
 
