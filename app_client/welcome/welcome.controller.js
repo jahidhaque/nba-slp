@@ -19,18 +19,7 @@
     function welcomeCtrl(authentication, $location) {
         const wvm = this;
 
-        if (authentication.isLoggedIn()) {
-            
-            if (authentication.currentUser().accountType === 'admin') {
-                $location.path('/usercontroll');
-            }
-            else {
-                
-            }
-        }
-        else {
-            $location.path('/signin');
-        }
+        
     }
 
 })();
