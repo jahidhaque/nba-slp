@@ -4,6 +4,11 @@
 <!-- when profile hasn't been activated -->
 <div class="container-fluid" ng-if='provm.currentAccountType === "customer" '>
 	<div class="row">
+
+        <div class="container">
+             <img class="image-response" src="img\banner_profile.jpg" alt="conference">
+        </div>
+
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="provm.profileStatus === false">
 			<h1 class="hero-big-title light text-center">
 				Looks Like You Haven't Activated Your Account Yet. <p class="text-center light title m-t-2">Please activate your account now.<br/> <a ng-if='provm.userStatuses[0].profileActivationMail === false' href="#" ng-click='provm.sendActivationCode()' title="Activate your account" class="m-t-2 btn btn-success">SEND ME ACTIVATION CODE</a></p>
