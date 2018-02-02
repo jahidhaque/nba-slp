@@ -25,16 +25,27 @@
       </ul>
       
       <!-- for logged url -->
-      <ul class="nav navbar-nav navbar-right">
-        <li ng-if='nvm.loggedInUri === true'><a class="site-nav-custom" ng-if ='nvm.currentAccountType === "customer" ' href="/welcome">Welcome <i class="fa fa-home" aria-hidden="true"></i></a></li>
-        <li ng-if='nvm.loggedInUri === true'><a class="site-nav-custom" href="/profile">{{nvm.loggedInName}}</a></li>
-        <li ng-if='nvm.loggedInUri === true'><a class="site-nav-custom" href="#" ng-click='nvm.logout()'>Logout <i class="m-l-1 fa fa-sign-out" aria-hidden="true"></i></a></li>
+      <ul class="nav navbar-nav navbar-right dropdown">
+        <li ng-if='nvm.loggedInUri === true'><a data-toggle="dropdown" class="site-nav-custom dropdown" ng-if ='nvm.currentAccountType === "customer" ' href="/welcome">
+          <i class="fa fa-home" aria-hidden="true"></i> Welcome {{nvm.loggedInName}}<span class="caret"></span>
+        </a>
+            <ul class="dropdown-menu">
+               <li ng-if='nvm.loggedInUri === true'><a class="site-nav-custom" href="/profile"><i class=" m-l-1 fa fa-user" aria-hidden="true"></i> Registration</a></li>
+               
+            </ul>
+
+        </li>
+       
+        <li ng-if='nvm.loggedInUri === true'><a class="site-nav-custom" href="#" ng-click='nvm.logout()'> <i class="m-l-1 fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
       </ul>
       
-      <ul class="nav navbar-nav navbar-right" ng-if='nvm.currentAccountType === "admin" '>
-        <li><a class="site-nav-custom" href="/sitecontroll">Site Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
-        <li><a class="site-nav-custom" href="/usercontroll">User Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
-        <li><a class="site-nav-custom" href="/staffcontroll">Staff Controll <i class="fa fa-cogs" aria-hidden="true"></i></a></li>
+      <ul class="nav navbar-nav navbar-right dropdown" ng-if='nvm.currentAccountType === "admin" '>
+        <li><a  data-toggle="dropdown" class="site-nav-custom dropdown" href="/sitecontroll"><i class="fa fa-cogs" aria-hidden="true"></i>  Site Controle<span class="caret"></span></a>
+            <ul class="dropdown-menu">                  
+              <li><a class="site-nav-custom" href="/usercontroll"><i class="fa fa-users" aria-hidden="true"> Users Controle </i></a></li>
+              <li><a class="site-nav-custom" href="/staffcontroll"><i class="fa fa-id-badge" aria-hidden="true"> Staffs Controle </i></a></li>
+             </ul>
+        </li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
