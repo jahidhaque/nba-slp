@@ -33,7 +33,7 @@ const sendJsonResponse = function (res, status, content) {
 /*
 |----------------------------------------------
 | Following function will create a new user into
-| mongodb 
+| mongodb
 |----------------------------------------------
 */
 module.exports.signup = (req, res) => {
@@ -80,69 +80,73 @@ module.exports.signup = (req, res) => {
                 else {
                     const token = user.generateJwt();
 
-                    const welcomeMessage = {
-                        form: process.env.mailuser,
-                        to: req.body.email,
-                        subject: `Welcome to NBA-SLP`,
-                        html: `
-                            <div style="width:700px; font-style: normal; font-size:14px; margin-left: 20px;">
+                    // const welcomeMessage = {
+                    //     form: process.env.mailuser,
+                    //     to: req.body.email,
+                    //     subject: `Welcome to NBA-SLP`,
+                    //     html: `
+                    //         <div style="width:700px; font-style: normal; font-size:14px; margin-left: 20px;">
+                    //
+                    //             <header id="header" style="margin-bottom: 20px;">
+                    //                 <img src="http://188.166.147.189/img/ire.jpg" style="width:700px;">
+                    //             </header><br/>
+                    //
+                    //             <p>Dear ${req.body.firstName} ${req.body.lastName}, </p><br/>
+                    //             <p style="color: green">Thank you for registering with the NBA Section on Legal Practice</p>
+                    //
+                    //             <p>
+                    //                 On behalf of the Exco and Council Members I want  to welcome you to the Section. You're joining a Legal
+                    //                 community of thousands of lawyers, and we are happy to have you here.
+                    //             </p>
+                    //
+                    //             <p>The Section is currently made up of Fourteen Committees that promote the participation of members of the Nigerian
+                    //              Bar Association towards achieving the objectives of the Section. Now that you're a part of our community, we encourage
+                    //              you to join any of the Section's committees, details are on our website.
+                    //              </p>
+                    //
+                    //              <p>Our Membership base is growing every day, but our goal has always remained the same regardless of our size, we want
+                    //              to have a personal connection with each and every member. If you have any questions regarding your Membership, please
+                    //              get in touch with us via our website
+                    //              </p>
+                    //
+                    //             <p>our web site is <a href="http.nba-slp.org">Nba-slp.org</a> </p><br/>
+                    //
+                    //             <p>So, on behalf of the entire Section on Legal Practice you are welcome!</p><br>
+                    //
+                    //             <p>Mrs Mia Essien SAN</p>
+                    //             <p><b>SECTION CHAIRMAN</b></p><br>
+                    //
+                    //         </div>
+                    //     `,
+                    // };
 
-                                <header id="header" style="margin-bottom: 20px;">
-                                    <img src="http://188.166.147.189/img/ire.jpg" style="width:700px;">
-                                </header><br/>
-
-                                <p>Dear ${req.body.firstName} ${req.body.lastName}, </p><br/>
-                                <p style="color: green">Thank you for registering with the NBA Section on Legal Practice</p>
-
-                                <p>
-                                    On behalf of the Exco and Council Members I want  to welcome you to the Section. You're joining a Legal 
-                                    community of thousands of lawyers, and we are happy to have you here.
-                                </p>
-
-                                <p>The Section is currently made up of Fourteen Committees that promote the participation of members of the Nigerian
-                                 Bar Association towards achieving the objectives of the Section. Now that you're a part of our community, we encourage 
-                                 you to join any of the Section's committees, details are on our website.
-                                 </p>
-                                  
-                                 <p>Our Membership base is growing every day, but our goal has always remained the same regardless of our size, we want 
-                                 to have a personal connection with each and every member. If you have any questions regarding your Membership, please 
-                                 get in touch with us via our website
-                                 </p>
-                                                              
-                                <p>our web site is <a href="http.nba-slp.org">Nba-slp.org</a> </p><br/>
-                                
-                                <p>So, on behalf of the entire Section on Legal Practice you are welcome!</p><br>
-
-                                <p>Mrs Mia Essien SAN</p>
-                                <p><b>SECTION CHAIRMAN</b></p><br>
-
-                            </div>
-                        `,
-                    };
-
-                    AppMailer.verify((err, message) => {
-                        if (err) {
-                            sendJsonResponse(res, 404, {
-                                error: err,
-                            });
-                        }
-                        else {
-                            AppMailer.sendMail(welcomeMessage, (err, info) => {
-                                if (err) {
-                                    console.log(err);
-                                    sendJsonResponse(res, 404, {
-                                        error: err,
-                                    });
-                                }
-                                else {
-                                    sendJsonResponse(res, 200, {
-                                        token: token,
-                                    });
-                                }
-                            });
-                        }
-
+                    sendJsonResponse(res, 200, {
+                        token: token,
                     });
+
+                    // AppMailer.verify((err, message) => {
+                    //     if (err) {
+                    //         sendJsonResponse(res, 404, {
+                    //             error: err,
+                    //         });
+                    //     }
+                    //     else {
+                    //         AppMailer.sendMail(welcomeMessage, (err, info) => {
+                    //             if (err) {
+                    //                 console.log(err);
+                    //                 sendJsonResponse(res, 404, {
+                    //                     error: err,
+                    //                 });
+                    //             }
+                    //             else {
+                    //                 sendJsonResponse(res, 200, {
+                    //                     token: token,
+                    //                 });
+                    //             }
+                    //         });
+                    //     }
+                    //
+                    // });
                 }
             });
         }
@@ -169,7 +173,7 @@ module.exports.signin = function (req, res) {
             if (err) {
                 sendJsonResponse(res, 404, err);
             }
-            else if (User) {                
+            else if (User) {
                 const token = User.generateJwt();
                 sendJsonResponse(res, 200, {
                     token: token,
@@ -182,4 +186,3 @@ module.exports.signin = function (req, res) {
         })(req, res);
     }
 };
-

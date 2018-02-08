@@ -71,7 +71,6 @@
         }
 
         if (authentication.isLoggedIn()) {
-
                         
             provm.currentAccountType = authentication.currentUser().accountType;
             
