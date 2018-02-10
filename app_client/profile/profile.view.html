@@ -91,9 +91,13 @@
                     <p class="text-center no-margin regular title">{{provm.userBasicInfoLoadingErrorMsg}}</p>
                 </div>
                 <div ng-if='provm.userBasicInfoLoadingError === false'>
-                    <h1 class="text-center title regular">Your Basic Profile Info</h1>
+                    <h1 class="text-center title regular">
+                        Your Basic Profile Info
+                        <a href="#" ng-click='provm.editBasicInfo(provm.basicInfo.whos)' title="Edit Profile Details" class="btn btn-info pull-right"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    </h1>
+                    <div class="clearfix"></div>
                     <hr>
-                    <ul class="list">
+                    <ul class="list" ng-if='provm.basicProfileEditOn === false'>
                         <li>
                             <p class="regular sub-title">Former name: {{provm.basicInfo.formerName}}</p>
                         </li>
@@ -104,9 +108,52 @@
                             <p class="regular sub-title">Address: {{provm.basicInfo.address}}</p>
                         </li>
                         <li>
+                            <p class="regular sub-title">Telephone: {{provm.basicInfo.telephone}}</p>
+                        </li>
+                        <li>
                             <p class="regular sub-title">Account Created: {{provm.basicInfo.createdAt | date: 'yyyy, MMM dd'}}</p>
                         </li>
                     </ul>
+
+                    <form ng-submit="provm.SaveEditBasicInfo()" ng-if="provm.basicProfileEditOn === true">
+                        <div class="form-group">
+                            <label for="formal_name">Formal name</label>
+                            <input type="text" id="formal_name" placeholder="Formal name" 
+                            class="form-control" ng-model='provm.editBasic.name' ng-value="provm.basicInfo.formerName">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sex">Sex</label>
+                            <select name="sex" id="sex" ng-model='provm.editBasic.sex' class="form-control half">
+                                <option value="" selected="">Select Sex</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telephone">Telephone</label>
+                            <input type="text" id="telephone" placeholder="Telephone" 
+                            class="form-control" ng-model='provm.editBasic.telephone' ng-value="provm.basicInfo.telephone">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" placeholder="Address" 
+                            class="form-control" ng-model='provm.editBasic.address' ng-value="provm.basicInfo.address">
+                        </div>
+
+                        <!-- when we have error saving edit info -->
+                        <div class="alert alert-danger m-t-1 m-b-1" ng-if="provm.editBasicInfoError === true">
+                            <p class="text-center regular title">{{provm.editBasicInfoErrorMsg}}</p>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success pull-left">Save Change</button>
+                            <a href="" class="pull-right btn btn-danger" ng-click="provm.cancleBasicEdit()">Cancel</a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -211,7 +258,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 m-t-3">
             <div class="container-box shadow wbg">
                 <h1 class="text-center regular title">Reset your password</h1>
                 <hr>

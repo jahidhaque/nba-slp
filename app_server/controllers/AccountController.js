@@ -446,7 +446,7 @@ module.exports.createBasicProfile = (req, res) => {
             profile.userId = req.body.userId;
             profile.formerName = req.body.formerName;
             profile.sex = req.body.sex;
-            profile.telephone = req.body.telephone;
+            profile.telephone = req.body.tele;
             profile.address = req.body.address;
 
             profile.save((err) => {
@@ -460,6 +460,79 @@ module.exports.createBasicProfile = (req, res) => {
                         success: true,
                         profile: profile,
                     });
+                }
+            });
+        }
+    });
+};
+
+
+/*
+|----------------------------------------------
+| Edit basic info based on given user id & 
+| details
+|----------------------------------------------
+*/
+module.exports.editBasicProfile = (req, res) => {
+
+    const userId = Joi.object().keys({
+        userId: Joi.string().email().required(),
+    });
+
+    Joi.validate(req.params, userId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            const updateInfo = Joi.object().keys({
+                name: Joi.string().regex(/^[a-zA-Z ]{3,50}$/).allow('', null),
+                sex: Joi.string().min(4).max(6).regex(/^[a-z]{4,6}$/).required(),
+                tele: Joi.string().min(11).max(11).regex(/^[0-9]{11,11}$/).required(),
+                address: Joi.string().min(8).max(50).regex(/^[a-zA-Z0-9, ]{8,50}$/).required(),
+            });
+
+            Joi.validate(req.body, updateInfo, (err, value) => {
+                if (err) {
+                    sendJsonResponse(res, 404, {
+                        error: err.details[0].message,
+                    });
+                }
+                else {
+                    Profile
+                        .findOne({ whos: req.params.userId })
+                        .exec((err, profile) => {
+                            if (err) {
+                                sendJsonResponse(res, 404, {
+                                    error: err,
+                                });
+                            }
+                            else if (!profile) {
+                                sendJsonResponse(res, 404, {
+                                    error: `Error! can't found any profile with given id ${req.params.userId}`,
+                                });
+                            }
+                            else {
+                                profile.address = req.body.address;
+                                profile.sex = req.body.sex;
+                                profile.formerName = req.body.name;
+                                profile.telephone = req.body.tele;
+
+                                profile.save(err => {
+                                    if (err) {
+                                        sendJsonResponse(res, 404, {
+                                            error: `Error while saving new info, contact admin`,
+                                        });
+                                    }
+                                    else {
+                                        sendJsonResponse(res, 200, {
+                                            success: true,
+                                        });
+                                    }
+                                });
+                            }
+                        });
                 }
             });
         }

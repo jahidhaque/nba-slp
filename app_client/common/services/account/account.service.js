@@ -66,6 +66,13 @@
                 .catch(handleError);
         };
 
+        const editBasicInfo = (userId, data) => {
+            return $http
+                .put('/api/' + userId + '/editbasicinfo', data)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const saveBranchInfo = (userId, data) => {
             return $http
                 .post('/api/' + userId + '/savebranchinfo', data)
@@ -125,6 +132,7 @@
             getAccountStatuses: getAccountStatuses,
             updateUserStatus: updateUserStatus,
             saveBasicInfo: saveBasicInfo,
+            editBasicInfo: editBasicInfo,
             saveBranchInfo: saveBranchInfo,
             loadUserInfo: loadUserInfo,
             getCommittee: getCommittee,

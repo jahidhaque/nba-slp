@@ -39,6 +39,7 @@ Routes.post('/signin', Authentication.signin);
 Routes.post('/:userId/resetpassword', AccountController.resetPassword);
 Routes.get('/:userId/statuses', AccountController.getAccountStatuses);
 Routes.post('/createbasicprofile', AccountController.createBasicProfile);
+Routes.put('/:userId/editbasicinfo', AccountController.editBasicProfile);
 Routes.post('/userstatus', AccountController.updateUserStatus);
 Routes.post('/:userId/savebranchinfo', AccountController.saveBranchInfo);
 Routes.get('/:userId/:collectionName/userinfo', AccountController.loadUserInfo);

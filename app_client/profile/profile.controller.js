@@ -80,6 +80,8 @@
                 provm.profileStatus = authentication.currentUser().accountStatus;
 
                 provm.codeReady = false;
+
+                provm.basicProfileEditOn = false;
                 
                 provm.sendActivationCode = () => {
                     provm.codeReady = true;
@@ -245,6 +247,42 @@
                             provm.userBasicInfoLoadingError = true;
                             provm.userBasicInfoLoadingErrorMsg = err;
                         });
+                };
+
+                // edit basic info
+                provm.editBasicInfo = (userId) => {
+                    provm.basicProfileEditOn = true;
+
+                    provm.editBasic = {
+                        name: provm.basicInfo.formerName,
+                        sex: provm.basicInfo.sex,
+                        address: provm.basicInfo.address,
+                        tele: provm.basicInfo.telephone,
+                    };
+
+                    provm.SaveEditBasicInfo = () => {
+                        console.log(provm.editBasic);
+                        account
+                            .editBasicInfo(userId, provm.editBasic)
+                            .then(response => {
+                                if (response.data.error) {
+                                    provm.editBasicInfoError = true;
+                                    provm.editBasicInfoErrorMsg = response.data.error;
+                                }
+                                else {
+                                    provm.editBasicInfoError = false;
+                                    $route.reload();
+                                }
+                            })
+                            .catch(err => {
+                                provm.editBasicInfoError = true;
+                                provm.editBasicInfoErrorMsg = err;
+                            });
+                    };
+                };
+
+                provm.cancleBasicEdit = () => {
+                    provm.basicProfileEditOn = false;
                 };
 
                 provm.getCommittee = () => {
