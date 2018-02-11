@@ -20,6 +20,8 @@ const Passport = require('passport');
 
 const UId = require('uid-safe');
 
+const SecurityCode = Mongoose.model('securityCode');
+
 /*
 |----------------------------------------------------------------
 | function for returning json.
@@ -220,41 +222,102 @@ module.exports.checkingUser = (req, res) => {
                         });
                     }
                     else {
-                        const ResetMessage = {
-                            form: process.env.mailuser,
-                            to: req.body.email,
-                            subject: `Password Reset Link`,
-                            html: `
-                                <div style="width:700px; font-style: normal; font-size:14px; margin-left: 20px;">
-                                    <p>Password Reset link</p>
-                                </div>
-                            `,
-                        };
+                        const code = new SecurityCode();
 
-                        AppMailer.verify((err, message) => {
+                        const key = UId.sync(10);
+
+
+                        code.codeId = UId.sync(10);
+                        code.securityCode = key;
+                        code.encryptCode = code.setCode(key);
+                        code.codeHolder = req.body.email;
+
+                        code.save(err => {
                             if (err) {
                                 sendJsonResponse(res, 404, {
-                                    error: `We have problem emailing you reset link`,
+                                    error: `Error while generating reset link`,
                                 });
                             }
                             else {
-                                AppMailer.sendMail(ResetMessage, (err, info) => {
+                                const ResetMessage = {
+                                    form: process.env.mailuser,
+                                    to: req.body.email,
+                                    subject: `Password Reset Link`,
+                                    html: `
+                                        <div style="width:700px; font-style: normal; font-size:14px; margin-left: 20px;">
+                                            <p>Password Reset link. Please click the link to reset your password.
+                                                <a href='http://www.nba-slp.org/help?r=${key}&u=${req.body.email}' target='_blank'>Reset Password</a>
+                                            </p>
+                                        </div>
+                                    `,
+                                };
+
+                                AppMailer.verify((err, message) => {
                                     if (err) {
                                         sendJsonResponse(res, 404, {
-                                            error: `Technical error while sending email ${err}`,
+                                            error: `We have problem emailing you reset link`,
                                         });
                                     }
                                     else {
-                                        sendJsonResponse(res, 200, {
-                                            success: true,
+                                        AppMailer.sendMail(ResetMessage, (err, info) => {
+                                            if (err) {
+                                                sendJsonResponse(res, 404, {
+                                                    error: `Technical error while sending email ${err}`,
+                                                });
+                                            }
+                                            else {
+                                                sendJsonResponse(res, 200, {
+                                                    success: true,
+                                                });
+                                            }
                                         });
                                     }
                                 });
                             }
-                        });
+                        });                        
                     }
                 });
         }
     });
 };
 
+/*
+|----------------------------------------------
+| following function will count user in the user
+| collection.
+|----------------------------------------------
+*/
+module.exports.countUser = (req, res) => {
+    const userId = Joi.object().keys({
+        userId: Joi.string().email().required(),
+    });
+
+    Joi.validate(req.params, userId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            User
+                .findOne({ email: req.params.userId })
+                .exec((err, user) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else if (!user) {
+                        sendJsonResponse(res, 404, {
+                            error: `No user found with given ${req.params.userId}`,
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            success: true,
+                        });
+                    }
+                });
+        }
+    });
+};

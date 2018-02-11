@@ -24,6 +24,19 @@
 						</div>
 					</form>
 				</div>
+
+				<!-- password reset form -->
+				<div ng-if="hvm.PasswordresetForm === true">
+						
+						<!-- alax loader to check details -->
+						<div class="col-md-5 col-md-offset-3 m-t-2 m-b-2" ng-if='hvm.verifyAjaxLoader === true'>
+							<div ng-if="hvm.userVerificationUserError === false">
+								<p class="text-center title regular">We are checking your details. One moment please.</p>
+								<img src="img/ajax-loader.gif" alt="ajax loader" style="margin-left: auto; margin-right: auto; display: block;">
+							</div>
+						</div>
+
+				</div>
 		</div>
 	</div>
 </div>

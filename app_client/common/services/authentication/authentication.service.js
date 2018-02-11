@@ -83,6 +83,13 @@ function authentication($window, $http) {
             .catch(handleError);
     };
 
+    const countUser = (userId) => {
+        return $http 
+            .get('/api/' + userId + '/count')
+            .then(handleSuccess)
+            .catch(handleError);
+    };
+
     const handleSuccess = (response) => response;
 
     const handleError = (response) => response;
@@ -95,6 +102,7 @@ function authentication($window, $http) {
         signUp: signUp,
         signIn: signIn,
         checkUser: checkUser,
+        countUser: countUser,
         Logout: Logout,
     };
 }
