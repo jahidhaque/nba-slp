@@ -30,6 +30,7 @@ const systemController = require('../controllers/systemController');
 */
 Routes.post('/signup', Authentication.signup);
 Routes.post('/signin', Authentication.signin);
+Routes.post('/checkuser', Authentication.checkingUser);
 
 /*
 |----------------------------------------------

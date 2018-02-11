@@ -186,3 +186,75 @@ module.exports.signin = function (req, res) {
         })(req, res);
     }
 };
+
+/*
+|----------------------------------------------
+| Following method will check your account
+| based on given details.
+|----------------------------------------------
+*/
+module.exports.checkingUser = (req, res) => {
+    const user = Joi.object().keys({
+        email: Joi.string().email().required(),
+    });
+
+    Joi.validate(req.body, user, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            User
+                .findOne({ email: req.body.email })
+                .select('email')
+                .exec((err, user) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else if (!user) {
+                        sendJsonResponse(res, 404, {
+                            security: true,
+                        });
+                    }
+                    else {
+                        const ResetMessage = {
+                            form: process.env.mailuser,
+                            to: req.body.email,
+                            subject: `Password Reset Link`,
+                            html: `
+                                <div style="width:700px; font-style: normal; font-size:14px; margin-left: 20px;">
+                                    <p>Password Reset link</p>
+                                </div>
+                            `,
+                        };
+
+                        AppMailer.verify((err, message) => {
+                            if (err) {
+                                sendJsonResponse(res, 404, {
+                                    error: `We have problem emailing you reset link`,
+                                });
+                            }
+                            else {
+                                AppMailer.sendMail(ResetMessage, (err, info) => {
+                                    if (err) {
+                                        sendJsonResponse(res, 404, {
+                                            error: `Technical error while sending email ${err}`,
+                                        });
+                                    }
+                                    else {
+                                        sendJsonResponse(res, 200, {
+                                            success: true,
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+        }
+    });
+};
+

@@ -1,7 +1,32 @@
 <!-- navigation -->
 <site-nav></site-nav>
 
-<h1 class="thin text-center">Welcome to help</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 col-md-12" ng-init='hvm.checkingRoute()'>
+				<div ng-if="hvm.checkUserForm === true">
+					<h1 class="text-center title regular">Please Enter Your Email Address</h1>
+					<hr>
+					<form ng-submit="hvm.checkUser()">
+						<div class="col-md-5 col-md-offset-3">
+							<input type="text" placeholder="email address" ng-model='hvm.user.email' id='checkUser' class="form-control">
+							
+							<!-- when we have error -->
+							<div class="alert alert-danger m-t-2 m-b-2" ng-if="hvm.userCheckingError === true">
+								<p class="text-center regular title">{{hvm.userCheckingErrorMsg}}</p>
+							</div>
+
+							<!-- when we don't have error -->
+							<div class="alert alert-success m-t-2 m-b-2" ng-if="hvm.userCheckingError === false">
+								<p class="text-center regular title">If you have account with us, then we have sent you reset email</p>
+							</div>
+
+						</div>
+					</form>
+				</div>
+		</div>
+	</div>
+</div>
 
 <!-- sitefooter -->
 <site-footer></site-footer>

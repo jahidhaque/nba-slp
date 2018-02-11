@@ -47,7 +47,9 @@ var     paths       =       {
         "app_client/signin/signin.controller.js",
         "app_client/profile/profile.controller.js",
         "app_client/welcome/welcome.controller.js",
+        "app_client/help/help.controller.js",
         "app_client/admin/sitecontroll/sitecontroll.controller.js",
+        "public/js/site-opr.js"
     ],
     styles: [
         "public/scss/app.scss"

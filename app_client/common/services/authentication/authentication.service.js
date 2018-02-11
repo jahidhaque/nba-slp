@@ -76,6 +76,13 @@ function authentication($window, $http) {
         });
     };
 
+    const checkUser = (data) => {
+        return $http
+            .post('/api/checkuser', data)
+            .then(handleSuccess)
+            .catch(handleError);
+    };
+
     const handleSuccess = (response) => response;
 
     const handleError = (response) => response;
@@ -87,6 +94,7 @@ function authentication($window, $http) {
         isLoggedIn: isLoggedIn,
         signUp: signUp,
         signIn: signIn,
+        checkUser: checkUser,
         Logout: Logout,
     };
 }
