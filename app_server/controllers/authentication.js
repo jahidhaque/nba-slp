@@ -231,6 +231,7 @@ module.exports.checkingUser = (req, res) => {
                         code.securityCode = key;
                         code.encryptCode = code.setCode(key);
                         code.codeHolder = req.body.email;
+                        code.valid = false;
 
                         code.save(err => {
                             if (err) {
@@ -316,6 +317,143 @@ module.exports.countUser = (req, res) => {
                         sendJsonResponse(res, 200, {
                             success: true,
                         });
+                    }
+                });
+        }
+    });
+};
+
+
+/*
+|----------------------------------------------
+| Following function will verify user key
+| based on given information
+|----------------------------------------------
+*/
+module.exports.verifyKey = (req, res) => {
+    const key = Joi.object().keys({
+        key: Joi.string().required(),
+        userId: Joi.string().email().required(),
+    });
+
+    Joi.validate(req.params, key, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            SecurityCode
+                .findOne({ codeHolder: req.params.userId, valid: false, securityCode: req.params.key })
+                .exec((err, code) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else if (!code) {
+                        sendJsonResponse(res, 404, {
+                            error: `No code found for the given user ${req.param.userId}`,
+                        });
+                    }
+                    else if (!code.validateCode(req.params.key)) {
+                        sendJsonResponse(res, 404, {
+                            error: 'Invalid code',
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            success: true,
+                        });
+                    }
+                });
+        }
+    });
+};
+
+/*
+|----------------------------------------------
+| Following function will check the details 
+| and change password
+|----------------------------------------------
+*/
+module.exports.changePassword = (req, res) => {
+
+    const changePasswordInfo = Joi.object().keys({
+        key: Joi.string().required(),
+        user: Joi.string().email().required(),
+        newpassword: Joi.string().min(6).max(16),
+        repeatpassword: Joi.any().valid(Joi.ref('newpassword')).required().options({ language: { any: { allowOnly: 'must match new password' } } }),
+    });
+
+    Joi.validate(req.body, changePasswordInfo, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            SecurityCode
+                .findOne({ codeHolder: req.body.user, securityCode: req.body.key, valid: false })
+                .exec((err, code) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else if (!code) {
+                        sendJsonResponse(res, 404, {
+                            error: 'No user assigned with given code',
+                        });
+                    }
+                    else if (!code.validateCode(req.body.key)) {
+                        sendJsonResponse(res, 404, {
+                            error: 'Invalid code',
+                        });
+                    }
+                    else {
+                        User
+                            .findOne({ email: req.body.user })
+                            .exec((err, user) => {
+                                if (err) {
+                                    sendJsonResponse(res, 404, {
+                                        error: err,
+                                    });
+                                }
+                                else if (!user) {
+                                    sendJsonResponse(res, 404, {
+                                        error: 'No user account found with give user id',
+                                    });
+                                }
+                                else {
+                                    user.password = user.setPassword(req.body.newpassword);
+
+                                    user.save(err => {
+                                        if (err) {
+                                            sendJsonResponse(res, 404, {
+                                                error: err,
+                                            });
+                                        }
+                                        else {
+                                            // update the code valid to true.
+                                            code.valid = true;
+
+                                            code.save(err => {
+                                                if (err) {
+                                                    sendJsonResponse(res, 404, {
+                                                        error: 'Error! technical error',
+                                                    });
+                                                }
+                                                else {
+                                                    sendJsonResponse(res, 200, {
+                                                        success: true,
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
                     }
                 });
         }

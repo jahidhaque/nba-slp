@@ -90,6 +90,20 @@ function authentication($window, $http) {
             .catch(handleError);
     };
 
+    const verifyKey = (userId, key) => {
+        return $http
+            .get('/api/' + userId + '/' + key + '/verify')
+            .then(handleSuccess)
+            .catch(handleError);
+    };
+
+    const changePassword = (data) => {
+        return $http 
+            .post('/api/changepassword', data)
+            .then(handleSuccess)
+            .catch(handleError);
+    };
+
     const handleSuccess = (response) => response;
 
     const handleError = (response) => response;
@@ -103,6 +117,8 @@ function authentication($window, $http) {
         signIn: signIn,
         checkUser: checkUser,
         countUser: countUser,
+        verifyKey: verifyKey,
+        changePassword: changePassword,
         Logout: Logout,
     };
 }

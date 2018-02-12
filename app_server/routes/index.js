@@ -32,6 +32,8 @@ Routes.post('/signup', Authentication.signup);
 Routes.post('/signin', Authentication.signin);
 Routes.post('/checkuser', Authentication.checkingUser);
 Routes.get('/:userId/count', Authentication.countUser);
+Routes.get('/:userId/:key/verify', Authentication.verifyKey);
+Routes.post('/changepassword', Authentication.changePassword);
 
 /*
 |----------------------------------------------

@@ -19,6 +19,7 @@
         hvm.checkUserForm = true;
         hvm.PasswordresetForm = false;
         hvm.verifyAjaxLoader = false;
+        hvm.showPassResetForm = false;
 
         // checking the route url
         hvm.checkingRoute = () => {
@@ -50,15 +51,47 @@
                         });
                 };
             }
-            else if ($route.current.params && $route.current.params.r) {
+            else if ($route.current.params && $route.current.params.r && $route.current.params.u) {
 
                 hvm.PasswordresetForm = true;
                 hvm.checkUserForm = false;
 
                 hvm.verifyAjaxLoader = true;
 
+                
                 hvm.varifyUserDetails();
+
+                /*
+                |----------------------------------------------
+                | change password form submit
+                |----------------------------------------------
+                */
+                hvm.changePasswordInfo = {
+                    key: $route.current.params.r,
+                    user: $route.current.params.u,
+                    newpassword: '',
+                    repeatpassword: '',
+                };
+                hvm.changePassword = () => {
+                    authentication
+                        .changePassword(hvm.changePasswordInfo)
+                        .then(response => {
+                            console.log(response);
+                            if (response.data.error) {
+                                hvm.changePassError = true;
+                                hvm.changePassErrorMsg = response.data.error;
+                            }
+                            else {
+                                hvm.changePassError = false;
+                            }
+                        })
+                        .catch(err => {
+                            hvm.changePassError = true;
+                            hvm.changePassErrorMsg = err;
+                        });
+                };
             }
+
         };
 
         hvm.varifyUserDetails = () => {
@@ -68,17 +101,39 @@
                     if (response.data.error) {
                         hvm.userVerificationUserError = true;
                         hvm.userVerificationUserErrorMsg = response.data.error;
+
+                        // turn of ajax
+                        hvm.verifyAjaxLoader = false;
                     }
                     else {
-                        hvm.userVerificationUserError = false;
+                        // now check verify the key
+                        authentication
+                            .verifyKey($route.current.params.u, $route.current.params.r)
+                            .then(response => {
+                                if (response.data.error) {
+                                    hvm.userVerificationUserError = true;
+                                    hvm.userVerificationUserErrorMsg = response.data.error;
+                                }
+                                else {
+                                    hvm.userVerificationUserError = false;
+                                    hvm.showPassResetForm = true;
+                                    hvm.verifyAjaxLoader = false;
+                                }
+                            })
+                            .catch(err => {
+                                hvm.userVerificationUserError = true;
+                                hvm.userVerificationUserErrorMsg = err;
+                            });
                     }
                 })
                 .catch(err => {
                     hvm.userVerificationUserError = true;
                     hvm.userVerificationUserErrorMsg = err;
+                    hvm.verifyAjaxLoader = false;
                 });
 
         };
+
     }
 
 })();

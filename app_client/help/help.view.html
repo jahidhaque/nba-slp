@@ -36,6 +36,40 @@
 							</div>
 						</div>
 
+						<!-- display error if there is any -->
+						<div class="alert alert-danger" ng-if="hvm.userVerificationUserError === true">
+							<p class="text-center regular title">{{hvm.userVerificationUserErrorMsg}}</p>
+						</div>
+
+						<!-- show reset form -->
+						<div ng-if="hvm.showPassResetForm === true" class="row">
+							<div class="col-xs-12 col-md-offset-3 m-t-3 m-b-3">
+								<form ng-submit='hvm.changePassword()'>
+									<div class="form-group"><label for="newpassword" class="regular title">New Password</label><input type="password" ng-model='hvm.changePasswordInfo.newpassword' placeholder="New password" class="form-control half" id="newpassword">
+									</div>
+
+									<div class="form-group"><label for="repeatpassword" class="regular title">Repeat New Password</label><input type="password" ng-model='hvm.changePasswordInfo.repeatpassword' placeholder="Repeat New password" class="form-control half" id="repeatpassword">
+									</div>
+
+									<div class="alert alert-danger col-md-6 pull-left" ng-if="hvm.changePassError === true">
+										<p class="text-center title regular">{{hvm.changePassErrorMsg}}</p>
+									</div>
+									<span class="clearfix"></span>
+
+									<!-- when password change successful -->
+									<div class="alert alert-success col-md-6 pull-left" ng-if="hvm.changePassError === false">
+										<p class="text-center title regular">
+											Your password has been successfully changed. Please <a class="bold regular" href='/signin' title="Login">Login</a>
+										</p>
+									</div>
+									<span class="clearfix"></span>
+
+									<button type="submit" class="btn btn-success">Save My New Password</button>
+								</form>
+
+							</div>
+						</div>
+
 				</div>
 		</div>
 	</div>
