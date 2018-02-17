@@ -80,6 +80,13 @@
                 .catch(handleError);
         };
 
+        const editBranchInfo = (userId, data) => {
+            return $http 
+                .put('/api/' + userId + '/branch', data)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const uploadTellerDocs = (file, userId) => {
             var fd = new FormData();
             fd.append('tellerDoc', file);
@@ -134,6 +141,7 @@
             saveBasicInfo: saveBasicInfo,
             editBasicInfo: editBasicInfo,
             saveBranchInfo: saveBranchInfo,
+            editBranchInfo: editBranchInfo,
             loadUserInfo: loadUserInfo,
             getCommittee: getCommittee,
             saveBankTeller: saveBankTeller,

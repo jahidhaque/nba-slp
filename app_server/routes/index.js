@@ -52,6 +52,7 @@ Routes.post('/:userId/:code/validate', AccountController.validateCode);
 Routes.post('/docupload/:userId/', AccountController.uploadBankTeller);
 Routes.post('/savebankteller', AccountController.saveBankTeller);
 Routes.get('/:userId/bankteller', AccountController.showTellerInfo);
+Routes.put('/:userId/branch', AccountController.editBranchInfo);
 
 
 /*

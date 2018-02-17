@@ -82,6 +82,7 @@
                 provm.codeReady = false;
 
                 provm.basicProfileEditOn = false;
+                provm.branchInfoEditOn = false;
                 
                 provm.sendActivationCode = () => {
                     provm.codeReady = true;
@@ -261,7 +262,6 @@
                     };
 
                     provm.SaveEditBasicInfo = () => {
-                        console.log(provm.editBasic);
                         account
                             .editBasicInfo(userId, provm.editBasic)
                             .then(response => {
@@ -314,6 +314,41 @@
                             provm.userInfoLoadingError = true;
                             provm.userInfoLoadingErrorMsg = err;
                         });
+                };
+
+                
+                // edit branch info
+                provm.editBranchInfo = (userId) => {
+                    provm.branchInfoEditOn = true;
+
+                    provm.editBranch = {
+                        baryear: provm.branchInfo.barYear,
+                        branch: provm.branchInfo.nbaBranch,
+                    };
+                    // handle form submission 
+                    provm.saveEditBranchInfo = () => {
+                        account
+                            .editBranchInfo(userId, provm.editBranch)
+                            .then(response => {
+                                if (response.data.error) {
+                                    provm.editBranchInfoError = true;
+                                    provm.editBranchInfoErrorMsg = response.data.error;
+                                }
+                                else {
+                                    provm.editBranchInfoError = false;
+                                    $route.reload();
+                                }
+                            })
+                            .catch(err => {
+                                provm.editBranchInfoError = true;
+                                provm.editBranchInfoErrorMsg = err;
+                            });
+                    };
+                };
+
+                // cancle branch info edit.
+                provm.cancelEditBranchInfo = () => {
+                    provm.branchInfoEditOn = false;
                 };
 
                 /*

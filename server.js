@@ -29,6 +29,7 @@ App.use(BodyParser.json());
 */
 App.use(Express.static(Path.join(__dirname, '/public')));
 App.use(Express.static(Path.join(__dirname, '/app_client')));
+App.use(Express.static(Path.join(__dirname, '/users')));
 
 const apiRoutes = require('./app_server/routes/index');
 

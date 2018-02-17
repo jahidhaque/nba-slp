@@ -794,3 +794,71 @@ module.exports.showTellerInfo = (req, res) => {
         }
     });
 };
+
+
+/*
+|----------------------------------------------
+| following function will handle edit branch
+|----------------------------------------------
+*/
+module.exports.editBranchInfo = (req, res) => {
+    console.log(req.params);
+    const userId = Joi.object().keys({
+        userId: Joi.string().email().required(),
+    });
+
+    Joi.validate(req.params, userId, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            const BranchInfo = Joi.object().keys({
+                baryear: Joi.number().required(),
+                branch: Joi.string().required(),
+            });
+
+            Joi.validate(req.body, BranchInfo, (err, value) => {
+                if (err) {
+                    sendJsonResponse(res, 404, {
+                        error: err.details[0].message,
+                    });
+                }
+                else {
+                    Branch
+                        .findOne({ whos: req.params.userId })
+                        .exec((err, branch) => {
+                            if (err) {
+                                sendJsonResponse(res, 404, {
+                                    error: err,
+                                });
+                            }
+                            else if (!branch) {
+                                sendJsonResponse(res, 404, {
+                                    error: 'No branch found for this user',
+                                });
+                            }
+                            else {
+                                branch.barYear = req.body.baryear;
+                                branch.nbaBranch = req.body.branch;
+
+                                branch.save(err => {
+                                    if (err) {
+                                        sendJsonResponse(res, 404, {
+                                            error: 'Error while saving branch information. please contact admin',
+                                        });
+                                    }
+                                    else {
+                                        sendJsonResponse(res, 200, {
+                                            success: true,
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                }
+            });
+        }
+    });
+};
