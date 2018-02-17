@@ -18,7 +18,7 @@ const bankTellerSchema = new Mongoose.Schema({
         type: String, required: true,
     },
     userId: {
-        type: String, min: 10, max: 10, required: true, unique: true,
+        type: String, min: 10, max: 10, required: true, 
     },
     preferredCommittee: {
         type: String, min: 3, max: 24, required: true,
