@@ -48,7 +48,7 @@
 <!-- profile container -->
 <div class="container m-t-2 m-b-2" ng-init='provm.getProfileStatuses()'>
     <div class="row">
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="container-box shadow wbg" ng-if='provm.userStatuses[0].basic_info === false'>
                 <h1 class="text-center title light">Fill up your personal information</h1>
                 <hr>
@@ -159,7 +159,7 @@
 
         </div>
 
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="container-box shadow wbg" ng-if='provm.userStatuses[0].branch === false'>
                 <h1 class="text-center title light">Branch Info</h1>
                 <hr>
@@ -233,37 +233,82 @@
 
             </div>
         </div>
+    </div>
 
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 m-t-3 m-b-2">
             <div class="container-box shadow wbg">
                 <h1 class="text-center title light">Bank Tellers</h1>
                 <hr>
-                <form ng-submit="provm.saveBankTellerInfo()">
-                    <div class="form-group">
-                        <label for="preferredCommittee">Preferred Committee * </label>
-                        <input type="text" id='preferredCommittee' ng-model='provm.bankTellerInfo.preferredCommittee' placehoder="Preferred Committee" class="form-control">
-                    </div>
-                    
-                    <div class="form-group" ng-init="provm.getCommittee()">
-                        <label for="additional_committee">Additional Committee *</label>
-                        <select name="additional_committee" id="additional_committee" class="form-control" ng-model='provm.bankTellerInfo.additional_committee'>
-                            <option value="" selected="">Select additional committee</option>
-                            <option value="{{committee.name}}" ng-repeat="committee in provm.committees">{{committee.name}}</option>
-                        </select>
-                    </div>
+                <form ng-submit="provm.saveBankTellerInfo()" ng-if="provm.userStatuses[0].bankteller === false">
 
-                    <div class="form-group">
-                        <label for="tellerDoc" class="btn btn-danger">
-                            Upload bank Teller *
-                            <input type="file" id="tellerDoc" file-model='tellerDoc' name='files' class="hidden">
-                        </label>
-                    </div> 
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">                            
+                            <div class="form-group">
+                                <label for="preferredCommittee regular title">Preferred Committee * </label>
+                                <input type="text" id='preferredCommittee' ng-model='provm.bankTellerInfo.preferredCommittee' placehoder="Preferred Committee" class="form-control">
+                            </div>
+                            
+                            <div class="form-group" ng-init="provm.getCommittee()">
+                                <label for="additional_committee regular title">Additional Committee *</label>
+                                <select name="additional_committee" id="additional_committee" class="form-control" ng-model='provm.bankTellerInfo.additional_committee'>
+                                    <option value="" selected="">Select additional committee</option>
+                                    <option value="{{committee.name}}" ng-repeat="committee in provm.committees">{{committee.name}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bank_name" class="title regular">Bank Name *</label>
+                                <input type="text" class="form-control" ng-model='provm.bankTellerInfo.bank' id='bank_name' placeholder="Name of the bank">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bank_branch" class="title regular">Branch *</label>
+                                <input type="text" class="form-control" ng-model='provm.bankTellerInfo.branch' id='bank_branch' placeholder="Branch address">
+                            </div> 
+                        </div>
+
+                        <div class="col-xs-12 col-md-6">
+                            
+                            <div class="form-group">
+                                <label for="depositor_name" class="title regular">Name of Depositor *</label>
+                                <input type="text" class="form-control" ng-model='provm.bankTellerInfo.depositor' id='depositor_name' placeholder="Name of the depositor">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone_no" class="title regular">Phone No *</label>
+                                <input type="text" class="form-control" ng-model='provm.bankTellerInfo.depositor_tel' id='phone_no' placeholder="Phone number">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tell_no" class="title regular">Teller No *</label>
+                                <input type="text" class="form-control" ng-model='provm.bankTellerInfo.tellerno' id='tell_no' placeholder="Teller No">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="amount_deposited" class="title regular">Amount Deposited *</label>
+                                <input type="text" class="form-control" ng-model='provm.bankTellerInfo.amount' id='amount_deposited' placeholder="Amount deposited">
+                            </div> 
+
+                            <div class="form-group">
+                                <label for="datedeposit" class="title regular">Date of Deposit *</label>
+                                <datepicker date-format="yyyy-MM-dd" style='position: relative;'>
+                                    <input type="text" class="form-control" ng-model='provm.bankTellerInfo.datedeposit' id='datedeposit' placeholder="Date of deposit">
+                                    <i class="fa fa-calendar" style="position: absolute !important; right: 40px; top: 10px; color: #499928 !important;" aria-hidden="true"></i>
+                                </datepicker>
+                                
+                            </div> 
+
+                        </div>                      
+
+                    </div>
 
                     <div class="alert alert-danger" ng-if="provm.saveTellerError === true">
                         <p class="text-center regular no-margin">{{provm.saveTellerErrorMsg}}</p>
                     </div>
 
                     <button type="submit" class="btn btn-info">Save Details</button>
+
                 </form>
                 
                 <!-- when file upload has been successfull -->
@@ -278,15 +323,57 @@
                     <div class="alert alert-success m-t-2">
                         <p class="text-center regular">We have received your bank teller. its under verification right now. You will get a notification email once its been verified.</p>
                     </div>
-                    <ul class="list">
-                        <li><span class="regular titile">Preferred Committee: {{provm.userBankTeller.preferredCommittee}}</span></li>
-                        <li><span class="regular titile">Additional Committee: {{provm.userBankTeller.additionalCommittee}}</span></li>
-                    </ul>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4 m-t-1 m-b-1">
+                            <p class="title regular">
+                                Preferred Committee: 
+                                <span class="bold title">{{provm.userBankTeller.preferredCommittee}}</span>
+                            </p>
+                            <p class="title regular">
+                                Additional Committee:
+                                <span class="bold title">{{provm.userBankTeller.additionalCommittee}}</span>
+                            </p>
+                            <p class="title regular">
+                                Date Deposited:
+                                <span class="title bold">
+                                    {{provm.userBankTeller.datedeposit | date: 'yyyy, MMM dd'}}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-md-4 m-t-1 m-b-1">
+                            <p class="title regular">
+                                Amount: 
+                                <span class="title bold">{{provm.userBankTeller.amount}}</span>
+                            </p>
+                            <p class="title regular">
+                                Depositor: 
+                                <span class="title bold">{{provm.userBankTeller.depositor}}</span>
+                            </p>
+                            <p class="title regular">
+                                Depositor Phone: 
+                                <span class="title bold">{{provm.userBankTeller.depositor_tel}}</span>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-md-4 m-t-1 m-b-1">
+                            <p class="title regular">
+                                Bank: 
+                                <span class="title bold">{{provm.userBankTeller.bank}}</span>
+                            </p>
+                            <p class="title regular">
+                                Branch: 
+                                <span class="title bold">{{provm.userBankTeller.branch}}</span>
+                            </p>
+                            <p class="title regular">
+                                Teller Approved: 
+                                <span class="title bold">{{provm.userBankTeller.tellerApproved}}</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
-
     </div>
 
     <div class="row">

@@ -634,128 +634,73 @@ module.exports.loadUserInfo = (req, res) => {
 
 /*
 |----------------------------------------------
-| Following function will upload file for bank
-| teller
+| Following function will create new bank teller
+| based on given information.
 |----------------------------------------------
 */
-module.exports.uploadBankTeller = (req, res) => {
-
-    const userDir = './users/' + req.params.userId;
-
-    // create directory if it doesn't exists.
-    if (!Fs.existsSync(userDir)) {
-        Fs.mkdirSync(userDir);
-    }
-    
-    const storage = Multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, './users/' + req.params.userId);
-        },
-        filename: function (req, file, cb) { 
-            if (!file.originalname.match(/\.(png|jpeg|jpg|JPG|pdf)$/)) {
-                const err = new Error(); 
-                err.code = 'filetype';
-                return cb(err);
-            } 
-            else {
-                const fileid = UId.sync(10);
-                cb(null, fileid + file.originalname);
-            } 
-        },
+module.exports.createBankTeller = (req, res) => {
+    const userId = Joi.object().keys({
+        userId: Joi.string().email().required(),
     });
 
-    const upload = Multer({
-        storage: storage,
-        limits: { fileSize: 5000000 },
-    }).single('tellerDoc');
-
-    upload(req, res, function (err) {
-        if (err) {
-            if (err.code === 'LIMIT_FILE_SIZE') {
-                sendJsonResponse(res, 404, {
-                    success: false,
-                    error: "File size is too large",
-                });
-            }
-            else if (err.code === 'filetype') {
-                sendJsonResponse(res, 404, {
-                    success: false,
-                    error : "Invalid file type",
-                });
-            }
-            else {
-                sendJsonResponse(res, 404, {
-                    success: false,
-                    error: err,
-                });
-            }
-        }
-        else {
-            if (!req.file) {
-                sendJsonResponse(res, 404, {
-                    success: false,
-                    error: "Please select a product image",
-                });
-            }
-            else {
-                sendJsonResponse(res, 200, {
-                    success: true,
-                    docLocation: req.params.userId + '/' + req.file.filename,
-                });
-            }
-        }
-    });
-};
-
-
-/*
-|----------------------------------------------
-| Following function will save bank teller in
-| mongodb
-|----------------------------------------------
-*/
-module.exports.saveBankTeller = (req, res) => {
-    const tellerInfo = Joi.object().keys({
-        preferredCommittee: Joi.string().required(),
-        additional_committee: Joi.string().required(),
-        whos: Joi.string().email().required(),
-        userId: Joi.string().required(),
-        tellerDoc: Joi.string().required(),
-    });
-
-    Joi.validate(req.body, tellerInfo, (err, value) => {
+    Joi.validate(req.params, userId, (err, value) => {
         if (err) {
             sendJsonResponse(res, 404, {
                 error: err.details[0].message,
             });
         }
         else {
+            const bankTeller = Joi.object().keys({
+                preferredCommittee: Joi.string().required(),
+                additional_committee: Joi.string().required(),
+                bank: Joi.string().required(),
+                branch: Joi.string().required(),
+                depositor: Joi.string().required(),
+                depositor_tel: Joi.string().regex(/^[0-9]{11,11}$/).required(),
+                tellerno: Joi.number().integer().required(),
+                amount: Joi.number().precision(2).required(),
+                datedeposit: Joi.date().iso().required(),
+                userId: Joi.string().required(),
+            });
 
-            const newteller = new BankTeller();
-
-            newteller.tellerId = UId.sync(10);
-            newteller.whos = req.body.whos;
-            newteller.userId = req.body.userId;
-            newteller.preferredCommittee = req.body.preferredCommittee;
-            newteller.additionalCommittee = req.body.additional_committee;
-            newteller.tellerLocation = req.body.tellerDoc;
-
-            newteller.save(err => {
+            Joi.validate(req.body, bankTeller, (err, value) => {
                 if (err) {
                     sendJsonResponse(res, 404, {
-                        error: err,
+                        error: err.details[0].message,
                     });
                 }
                 else {
-                    sendJsonResponse(res, 200, {
-                        success: true,
+                    const bankteller = new BankTeller();
+                    bankteller.tellerId = UId.sync(10);
+                    bankteller.whos = req.params.userId;
+                    bankteller.userId = req.body.userId;
+                    bankteller.preferredCommittee = req.body.preferredCommittee;
+                    bankteller.additionalCommittee = req.body.additional_committee;
+                    bankteller.bank = req.body.bank;
+                    bankteller.branch = req.body.branch;
+                    bankteller.depositor = req.body.depositor;
+                    bankteller.depositor_tel = req.body.depositor_tel;
+                    bankteller.tellerno = req.body.tellerno;
+                    bankteller.amount = req.body.amount;
+                    bankteller.datedeposit = req.body.datedeposit;
+
+                    bankteller.save(err => {
+                        if (err) {
+                            sendJsonResponse(res, 404, {
+                                error: err,
+                            });
+                        }
+                        else {
+                            sendJsonResponse(res, 200, {
+                                success: true,
+                            });
+                        }
                     });
                 }
             });
         }
     });
 };
-
 
 /*
 |----------------------------------------------

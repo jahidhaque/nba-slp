@@ -394,61 +394,59 @@
                 provm.bankTellerInfo = {
                     preferredCommittee: '',
                     additional_committee: '',
-                    whos: authentication.currentUser().email,
+                    bank: '',
+                    branch: '',
+                    depositor: '',
+                    depositor_tel: '',
+                    tellerno: '',
+                    amount: '',
+                    datedeposit: '',
                     userId: authentication.currentUser().accountId,
-                    tellerDoc: $scope.tellerDoc,
+                    
                 };
 
-                provm.saveBankTellerInfo = () => {   
+                provm.saveBankTellerInfo = () => { 
 
-                    if (!provm.bankTellerInfo.preferredCommittee || !provm.bankTellerInfo.additional_committee) {
-                        provm.saveTellerError = true;
-                        provm.saveTellerErrorMsg = 'All * fiends are required. Must not be empty';
-                    }
-                    else {
-
-                        console.log(provm.bankTellerInfo);
-
-                        account
-                            .uploadTellerDocs($scope.tellerDoc, authentication.currentUser().accountId)
-                            .then(response => {
-                                if (response.data.success === false) {
-                                    provm.saveTellerError = true;
-                                    provm.saveTellerErrorMsg = response.data.error;
-                                }
-                                else if (response.data.success === true) {
-                                    provm.bankTellerInfo.tellerDoc = response.data.docLocation;
-
-                                    account
-                                        .saveBankTeller(provm.bankTellerInfo)
-                                        .then(response => {
-                                            if (response.data.error) {
-                                                provm.saveTellerError = true;
-                                                provm.saveTellerErrorMsg = response.data.error;
-                                            }
-                                            else {
-                                                const updatedStatus = {
-                                                    update_at: 'bankteller',
-                                                    email: authentication.currentUser().email,
-                                                    status: true,
-                                                };
-                                                statusUpdater(updatedStatus);
-
-                                                $route.reload();                                              
-                                                
-                                            }
-                                        })
-                                        .catch(err => {
-                                            provm.saveTellerError = true;
-                                            provm.saveTellerErrorMsg = err;
-                                        });
-                                }
-                            })
-                            .catch(err => {
+                    account
+                        .uploadTellerDocs(authentication.currentUser().email, provm.bankTellerInfo)
+                        .then(response => {
+                            if (response.data.error) {
                                 provm.saveTellerError = true;
-                                provm.saveTellerErrorMsg = err;
-                            });
-                    }
+                                provm.saveTellerErrorMsg = response.data.error;
+                            }
+                            else {
+                                provm.saveTellerError = false;
+
+                                // now update user status for bank teller
+                                const updatedStatus = {
+                                    update_at: 'bankteller',
+                                    email: authentication.currentUser().email,
+                                    status: true,
+                                };
+
+                                // calling service function.
+                                account
+                                    .updateUserStatus(updatedStatus)
+                                    .then(response => {
+                                        if (response.data.updated === true) {
+                                            provm.branchInfoError = false;
+                                            $route.reload();
+                                        }
+                                        else {
+                                            provm.branchInfoError = true;
+                                            provm.branchInfoErrorMsg = response.data.error;
+                                        }
+                                    })
+                                    .catch(err => {
+                                        provm.branchInfoError = true;
+                                        provm.branchInfoErrorMsg = err;
+                                    });
+                            }
+                        })
+                        .catch(err => {
+                            provm.saveTellerError = true;
+                            provm.saveTellerErrorMsg = err;
+                        });
                 };
 
                 /*
@@ -460,6 +458,7 @@
                     account
                         .getBankTeller(authentication.currentUser().email)
                         .then(response => {
+                            console.log('teller', response);
                             if (response.data.error) {
                                 provm.bankTellerLoadingError = true;
                                 provm.bankTellerLoadingErrorMsg = response.data.error;

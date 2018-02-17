@@ -26,11 +26,30 @@ const bankTellerSchema = new Mongoose.Schema({
     additionalCommittee: {
         type: String, min: 3, max: 24,
     },
-    tellerLocation: {
-        type: String, min: 10, max: 40, required: true, unique: true,
+    bank: {
+        type: String, required: true,
     },
+    branch: {
+        type: String, required: true,
+    },
+    depositor: {
+        type: String, required: true,
+    },
+    depositor_tel: {
+        type: String, min: 11, max: 11, required: true,
+    },
+    tellerno: {
+        type: Number, required: true, 
+    },
+    amount: {
+        type: Number, required: true,
+    },
+    datedeposit: {
+        type: Date, required: true,
+    },
+
     tellerApproved: {
-        type: Boolean, default: false, required: true,
+        type: Boolean, default: false, 
     },
     tellerValidTill: {
         type: Date, 

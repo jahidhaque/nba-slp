@@ -87,15 +87,9 @@
                 .catch(handleError);
         };
 
-        const uploadTellerDocs = (file, userId) => {
-            var fd = new FormData();
-            fd.append('tellerDoc', file);
-
+        const uploadTellerDocs = (userId, data) => {            
             return $http
-                .post('/api/docupload/' + userId, fd, {
-                    transformRequest: angular.identity,
-                    headers: { 'Content-Type': undefined }
-                })
+                .post('/api/' + userId + '/bankteller', data)
                 .then(handleSuccess)
                 .catch(handleError);
         };
