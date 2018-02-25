@@ -130,6 +130,10 @@
                         uservm.bankTellerLoadingError = true;
                         uservm.bankTellerLoadingErrorMsg = response.data.error;
                     }
+                    else if (response.data.bankTeller === null) {
+                        uservm.bankTellerLoadingError = true;
+                        uservm.bankTellerLoadingErrorMsg = 'This user has not uploaded any bank teller yet';
+                    }
                     else {
                         uservm.bankTellerLoadingError = false;
                         uservm.memberbankTeller = response.data.bankTeller;
