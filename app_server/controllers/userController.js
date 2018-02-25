@@ -15,6 +15,8 @@ const User = Mongoose.model('users');
 
 const Profile = Mongoose.model('profile');
 
+const BankTeller = Mongoose.model('bank_teller');
+
 const Branch = Mongoose.model('branch');
 
 
@@ -160,3 +162,59 @@ module.exports.showMemberBranch = (req, res) => {
         }
     });
 };
+
+/*
+|----------------------------------------------
+| following function will update bank teller
+| based on give information 
+|----------------------------------------------
+*/
+module.exports.approvedTeller = (req, res) => {
+    const tellerInfo = Joi.object().keys({
+        whos: Joi.string().email().required(),
+        valid: Joi.string().min(4).max(5).regex(/^[a-z]{4,5}$/).required(),
+        validTill: Joi.string().required(),
+    });
+
+    Joi.validate(req.body, tellerInfo, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            BankTeller
+                .findOne({ whos: req.body.whos })
+                .exec((err, teller) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else if (!teller) {
+                        sendJsonResponse(res, 404, {
+                            errro: 'No bank teller found for this user to update',
+                        });
+                    }
+                    else {
+                        teller.tellerApproved = req.body.valid;
+                        teller.tellerValidTill = req.body.validTill;
+
+                        teller.save(err => {
+                            if (err) {
+                                sendJsonResponse(res, 404, {
+                                    error: `Error while saving bank teller, Here is the details ${err}`,
+                                });
+                            }
+                            else {
+                                sendJsonResponse(res, 200, {
+                                    success: true,
+                                });
+                            }
+                        });
+                    }
+                });
+        }
+    });
+};
+

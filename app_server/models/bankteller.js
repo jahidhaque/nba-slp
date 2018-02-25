@@ -52,7 +52,7 @@ const bankTellerSchema = new Mongoose.Schema({
         type: Boolean, default: false, 
     },
     tellerValidTill: {
-        type: Date, 
+        type: String, default: 'valid till date',
     },
     createdAt: {
         type: Date, default: Date.now,

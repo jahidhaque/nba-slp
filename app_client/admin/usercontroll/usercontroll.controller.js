@@ -14,11 +14,14 @@
         .module('nbaslp')
         .controller('usercontrollCtrl', usercontrollCtrl);
 
-    usercontrollCtrl.$inject = ['usercontroller', 'account', '$routeParams'];
+    usercontrollCtrl.$inject = ['usercontroller', 'account', '$routeParams', '$route'];
 
-    function usercontrollCtrl(usercontroller, account, $routeParams) {
+    function usercontrollCtrl(usercontroller, account, $routeParams, $route) {
         
         const uservm = this;
+
+        uservm.approveProcess = false;
+        uservm.approveEdit = false;
 
         usercontroller
             .showMembers()
@@ -130,12 +133,55 @@
                     else {
                         uservm.bankTellerLoadingError = false;
                         uservm.memberbankTeller = response.data.bankTeller;
+
+                        if (response.data.bankTeller.tellerApproved === false 
+                            && response.data.bankTeller.tellerValidTill === 'valid till date') {
+                            uservm.approveProcess = true;
+                        }
+                        else {
+                            uservm.approveEdit = true;
+                        }
                     }
                 })
                 .catch(err => {
                     uservm.bankTellerLoadingError = true;
                     uservm.bankTellerLoadingErrorMsg = err;
                 });
+        };
+
+        uservm.tellerApproved = {
+            validTill: '',
+            valid: '',
+            whos: $routeParams.v,
+        };
+
+        uservm.approveTeller = () => {
+            account
+                .approveTeller(uservm.tellerApproved)
+                .then(response => {
+                    if (response.data.error) {
+                        uservm.tellerApprovedError = true;
+                        uservm.tellerApprovedErrorMsg = response.data.error;
+                    }
+                    else {
+                        uservm.tellerApprovedError = false;
+                        $route.reload();
+                    }
+                })
+                .catch(err => {
+                    uservm.tellerApprovedError = true;
+                    uservm.tellerApprovedErrorMsg = err;
+                });
+        };
+
+        uservm.editBankTellerApproving = () => {
+            uservm.approveEdit = false;
+            uservm.approveProcess = true;
+        };
+
+        uservm.cancelTellerSubmission = () => {
+            uservm.approveEdit = true;
+            uservm.approveProcess = false;
         };
     }
 

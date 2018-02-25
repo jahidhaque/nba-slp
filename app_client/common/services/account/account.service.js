@@ -121,6 +121,18 @@
                 .catch(handleError);
         };
 
+        /*
+        |----------------------------------------------
+        | following function will handle teller approval
+        |----------------------------------------------
+        */
+        const approveTeller = (data) => {
+            return $http 
+                .put('/api/bankteller', data)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const handleSuccess = (response) => response;
 
         const handleError = (response) => response;
@@ -140,6 +152,7 @@
             getCommittee: getCommittee,
             saveBankTeller: saveBankTeller,
             getBankTeller: getBankTeller,
+            approveTeller: approveTeller,
         };
     }
 

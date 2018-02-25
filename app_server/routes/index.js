@@ -49,7 +49,7 @@ Routes.post('/:userId/savebranchinfo', AccountController.saveBranchInfo);
 Routes.get('/:userId/:collectionName/userinfo', AccountController.loadUserInfo);
 Routes.post('/:userId/generatevalidationcode', AccountController.generateSecurityCode);
 Routes.post('/:userId/:code/validate', AccountController.validateCode);
-Routes.post('/:userId/bankteller', AccountController.createBankTeller)
+Routes.post('/:userId/bankteller', AccountController.createBankTeller);
 Routes.get('/:userId/bankteller', AccountController.showTellerInfo);
 Routes.put('/:userId/branch', AccountController.editBranchInfo);
 
@@ -72,6 +72,7 @@ Routes.get('/:memberId/branch', userController.showMemberBranch);
 Routes.post('/councilmember', siteController.createCouncil);
 Routes.get('/showcouncil', siteController.showcouncil);
 Routes.delete('/:councilId/council', siteController.deleteCouncil);
+Routes.put('/bankteller', userController.approvedTeller);
 
 /*
 |----------------------------------------------

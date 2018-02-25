@@ -99,8 +99,83 @@
 							<div class="alert alert-danger" ng-if="uservm.bankTellerLoadingError === true">
 								<p class="text-center title regular">{{uservm.bankTellerLoadingErrorMsg}}</p>
 							</div>
-							<p class="title regular">Preferred Committee: {{uservm.memberbankTeller.preferredCommittee}}</p>
-							<p class="title regular">Additional Committee: {{uservm.memberbankTeller.additionalCommittee}}</p>
+
+							<!-- when we don't have error loading bank teller -->
+							<div class="row" ng-if="uservm.bankTellerLoadingError === false">
+								<div class="col-xs-12 col-md-4 col-lg-4">
+									<p class="title regular">Preferred Committee: {{uservm.memberbankTeller.preferredCommittee}}</p>
+									<p class="title regular">Additional Committee: {{uservm.memberbankTeller.additionalCommittee}}</p>
+									<p class="title regular">Record Created: 
+									{{uservm.memberbankTeller.createdAt | date: 'yyyy, MMM, dd'}}</p>
+								</div>
+								<div class="col-xs-12 col-md-4 col-lg-4">
+									<p class="title regular">Bank Name: {{uservm.memberbankTeller.bank}}</p>
+									<p class="title regular">Branch: {{uservm.memberbankTeller.branch}}</p>
+									<p class="title regular">Amount: 
+									{{uservm.memberbankTeller.amount | currency: '₦ '}}</p>
+								</div>
+								<div class="col-xs-12 col-md-4 col-lg-4">
+									<p class="title regular">Teller No: {{uservm.memberbankTeller.tellerno}}</p>
+									<p class="title regular">Depositor: {{uservm.memberbankTeller.depositor}}</p>
+									<p class="title regular">Depositor Tel: 
+									{{uservm.memberbankTeller.depositor_tel}}</p>
+								</div>
+								
+								<!-- when approve process is true -->
+								<div ng-if="uservm.approveProcess === true" class="m-t-3 m-b-2">
+										<form ng-submit='uservm.approveTeller()'>
+											<div class="col-xs-12 col-md-4">
+												<label for="approveDate" class="title regular">Valid Till:</label>
+												<datepicker date-format="yyyy-MM-dd" style='position: relative;'>
+	                          <input type="text" class="form-control" 
+	                          ng-model='uservm.tellerApproved.validTill' 
+	                          id='approveDate' placeholder="Set approval date">
+	                          <i class="fa fa-calendar" 
+	                          style="position: absolute !important; 
+	                          right: 40px; top: 10px; color: #499928 !important;" 
+	                          aria-hidden="true"></i>
+	                      </datepicker>
+	                      <button type="submit" class="btn btn-success pull-left m-t-3 m-b-2">Save changes</button>
+	                      <a href="#" title="cancel submission" ng-click='uservm.cancelTellerSubmission()' class="btn btn-danger pull-right m-t-3 m-b-2">Cancel</a>
+                      	<span class="clearfix"></span>
+                      	<!-- when we have error updating teller approval -->
+												<div class="alert alert-danger" ng-if="uservm.tellerApprovedError === true">
+													<p class="text-center title regular">{{uservm.tellerApprovedErrorMsg}}</p>
+												</div>
+
+                      </div>
+                      <div class="col-xs-12 col-md-5">
+                      	<label for="approved" class="title regular">Approve It:</label>
+                      	<select name="approved" id="approved" ng-model='uservm.tellerApproved.valid' 
+                      	class="form-control half">
+                            <option value="" selected="">Select Approval State</option>
+                            <option value="true">Approved</option>
+                        </select>
+                      </div>
+										</form>									
+								</div>
+
+								<div ng-if="uservm.approveEdit === true">
+									
+										<div class="col-xs-12 col-md-4">
+											<hr>
+											<P class="title regular">
+												Bank teller validation Info
+											</P>
+											<p class="title regular">
+												Valid till: {{uservm.memberbankTeller.tellerValidTill | date: 'yyyy, MMM, dd'}}
+											</p>
+											<p class="title regular">Valid Status: {{uservm.memberbankTeller.tellerApproved}}</p>
+
+											<a href='#' ng-click='uservm.editBankTellerApproving()' title="Edit teller approval" class="btn btn-danger pull-left">Edit Teller Approval</a>
+												<span class="clearfix"></span>
+
+										</div>
+									
+								</div>
+								
+							</div>
+							
 						</div>
 
 					</div>
