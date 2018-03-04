@@ -4,25 +4,46 @@
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-			<div class="container-box shadow wbg">
+		<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 m-t-3">
+			<div class="container-box shadow wbg" ng-init='uservm.loadUserList()'>
 				<h1 class="text-center title regular">
-					List of users
-					<hr>
+					{{uservm.initialTitle}}
+					
+					<ul class="list-inline user-list-controll m-t-2">
+						<li><a ng-click="uservm.filterControll('alluser', 'users')" href="#" title="Get List Of Paid members"><i class="fas fa-users"></i></a></li>
+						<li><a ng-click="uservm.filterControll('paid', 'bankteller')" href="#" title="Get List Of Paid members"><i class="fa fa-money-bill-alt" aria-hidden="true"></i></a></li>
+						<li><a ng-click="uservm.filterControll('unpaid', 'bankteller')" href="#" title="Get List Of Unpaid members"><i class="fas fa-shopping-basket" aria-hidden="true"></i></a></li>
+						<li><a ng-click="uservm.filterControll('unverified', 'users')" href="#" title="Get List Of Unverified members"><i class="fab fa-uniregistry"></i></a></li>
+						<li><a ng-click="uservm.filterControll('searchuser')" href="#" title="search user"><i class="fas fa-search-plus"></i></a></li>
+					</ul>
 				</h1>
 				<!-- when we have error showing members -->
 				<div class="alert alert-danger" ng-if="uservm.showMemberError === true">
 					<p class="text-center regular no-margin">{{uservm.showMemberErrorMsg}}</p>
 				</div>
 				<!-- when we don't have errors while showing memebrs -->
-				<ul class="list">
+				<ul class="list" ng-if='uservm.alluser === true'>
 					<li ng-repeat="member in uservm.members"><a href="/usercontroll?v={{member.email}}" title="Check details of {{member.displayName}}" class="regular">{{member.displayName}}</a></li>
 				</ul>
+				
+				<!-- list of paid members -->
+				<ul class="list" ng-if="uservm.paidMemberControl === true">
+					
+					<!-- list of paid users -->
+					<li ng-if='uservm.loadPaidMemberError === false' class="nestedList">
+						<span ng-repeat='paidmember in uservm.paidListUsers'>
+							<a href="/usercontroll?v={{paidmember.whos}}" title="Check details of {{paidmember.whos}}" class="regular">{{paidmember.whos}}</a>
+						</span>
+					</li>
+					<!-- when we have error loading the paid user -->
+					<li ng-if="uservm.loadPaidMemberError === true"><p class='title regular'>{{uservm.loadPaidMemberErrorMsg}}</p></li>
+				</ul>
+
 			</div>
 		</div>
 
 		<!-- user details component -->
-		<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9" ng-init='uservm.checkRoutes()'>
+		<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 m-t-3" ng-init='uservm.checkRoutes()'>
 				<div class="container-box shadow wbg">
 
 					<!-- when admin clicks the member's name -->

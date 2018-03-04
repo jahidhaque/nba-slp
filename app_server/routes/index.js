@@ -73,6 +73,7 @@ Routes.post('/councilmember', siteController.createCouncil);
 Routes.get('/showcouncil', siteController.showcouncil);
 Routes.delete('/:councilId/council', siteController.deleteCouncil);
 Routes.put('/bankteller', userController.approvedTeller);
+Routes.get('/:source/:action', userController.filterAction);
 
 /*
 |----------------------------------------------

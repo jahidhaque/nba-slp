@@ -46,6 +46,12 @@
                 .catch(handleError);
         };
 
+        const filterAction = (source, action) => {
+            return $http 
+                .get('/api/' + source + '/' + action)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
 
         const handleSuccess = (response) => response;
 
@@ -56,6 +62,7 @@
             showSingleMember: showSingleMember,
             showMemberProfile: showMemberProfile,
             showMemberBranch: showMemberBranch,
+            filterAction: filterAction,
         };
     }
 

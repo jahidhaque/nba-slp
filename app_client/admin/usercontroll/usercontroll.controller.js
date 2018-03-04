@@ -23,22 +23,72 @@
         uservm.approveProcess = false;
         uservm.approveEdit = false;
 
-        usercontroller
-            .showMembers()
-            .then(response => {
-                if (response.data.error) {
-                    uservm.showMemberError = true; 
-                    uservm.showMemberErrorMsg = response.data.error; 
-                }
-                else {
-                    uservm.members = response.data.members;
-                }
-            })
-            .catch(err => {
-                uservm.showMemberError = true;
-                uservm.showMemberErrorMsg = err;
-            });
+        /*
+        |----------------------------------------------
+        | list action and title
+        |----------------------------------------------
+        */
+        uservm.alluser = true;
+        uservm.initialTitle = 'List of all user';
 
+        uservm.paidMemberControl = false;
+
+        uservm.loadUserList = () => {
+            uservm.alluser = true;
+            uservm.paidMemberControl = false;
+            uservm.initialTitle = 'List of all user';
+
+            usercontroller
+                .showMembers()
+                .then(response => {
+                    if (response.data.error) {
+                        uservm.showMemberError = true; 
+                        uservm.showMemberErrorMsg = response.data.error; 
+                    }
+                    else {
+                        uservm.members = response.data.members;
+                    }
+                })
+                .catch(err => {
+                    uservm.showMemberError = true;
+                    uservm.showMemberErrorMsg = err;
+                });
+        };
+
+        uservm.loadPaidMember = (action, source) => {
+            uservm.alluser = false;
+            uservm.paidMemberControl = true;
+            uservm.initialTitle = 'List Of Only Paid User(s)';
+
+            const QuerySource = source;
+            const QueryAction = action;
+
+            usercontroller
+                .filterAction(QuerySource, QueryAction)
+                .then(response => {
+                    if (response.data.error) {
+                        uservm.loadPaidMemberError = true;
+                        uservm.loadPaidMemberErrorMsg = response.data.error;
+                    }
+                    else {
+                        uservm.loadPaidMemberError = false;
+                        uservm.paidListUsers = response.data.verifiedUsers;
+                    }
+                })
+                .catch(err => {
+                    uservm.loadPaidMemberError = true;
+                    uservm.loadPaidMemberErrorMsg = err;
+                });
+        };
+
+        uservm.filterControll = (action, source) => {
+            if (action === 'alluser') {
+                uservm.loadUserList();
+            }
+            else if (action === 'paid') {
+                uservm.loadPaidMember(action, source);
+            }
+        };
 
         // initial function to check whether user clicked any member name
         uservm.checkRoutes = () => {

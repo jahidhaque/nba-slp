@@ -12,5 +12,9 @@
     $(document).ready(() => {
         
         $("#checkUser").focus();
+
+        $(".user-list-controll li a").on('click', function(){
+        	// $(this).toggleClass('activeControll');
+        });
     });
 })();

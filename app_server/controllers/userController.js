@@ -218,3 +218,43 @@ module.exports.approvedTeller = (req, res) => {
     });
 };
 
+
+module.exports.filterAction = (req, res) => {
+    const filterObject = Joi.object().keys({
+        source: Joi.string().required(),
+        action: Joi.string().required(),
+    });
+
+    Joi.validate(req.params, filterObject, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            if (req.params.source === 'bankteller') {
+
+                
+                BankTeller
+                    .find({ tellerApproved: true })
+                    .exec((err, verifiedUsers) => {
+                        if (err) {
+                            sendJsonResponse(res, 404, {
+                                error: err,
+                            });
+                        }
+                        else if(!verifiedUsers) {
+                            sendJsonResponse(res, 404, {
+                                error: 'no paid user found!',
+                            });
+                        }
+                        else {
+                            sendJsonResponse(res, 200, {
+                                verifiedUsers: verifiedUsers,
+                            });
+                        }
+                    });
+            }
+        }
+    });
+};
