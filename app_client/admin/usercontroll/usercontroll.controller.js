@@ -23,6 +23,8 @@
         uservm.approveProcess = false;
         uservm.approveEdit = false;
 
+        uservm.usernotLoaded = true;
+
         /*
         |----------------------------------------------
         | list action and title
@@ -55,6 +57,40 @@
                 });
         };
 
+        /*
+        |----------------------------------------------
+        | collect user details based on given email
+        |----------------------------------------------
+        */
+        uservm.collectUserDetail = (email) => {
+            const memebrId = email;
+
+            uservm.usernotLoaded = false;
+
+            usercontroller
+                .showSingleMember(memebrId)
+                .then(response => {
+                    if (response.data.error) {
+                        uservm.singleMemberLoadingError = true;
+                        uservm.singleMemberLoadingErrorMsg = response.data.error;
+                    }
+                    else {
+                        uservm.singleMemberLoadingError = false;
+                        uservm.singleMember = response.data.member;
+                        
+                        // calling load bank teller
+                        uservm.loadBankTeller(uservm.singleMember.email);
+
+                        // calling branch loader
+                        uservm.loadUserBranch(uservm.singleMember.email);
+                    }
+                })
+                .catch(err => {
+                    uservm.singleMemberLoadingError = true;
+                    uservm.singleMemberLoadingErrorMsg = err;
+                });
+        }
+
         uservm.loadPaidMember = (action, source) => {
             uservm.alluser = false;
             uservm.paidMemberControl = true;
@@ -69,6 +105,10 @@
                     if (response.data.error) {
                         uservm.loadPaidMemberError = true;
                         uservm.loadPaidMemberErrorMsg = response.data.error;
+                    }
+                    else if (response.data.verifiedUsers.length < 1) {
+                        uservm.loadPaidMemberError = true;
+                        uservm.loadPaidMemberErrorMsg = "No paid member has found";
                     }
                     else {
                         uservm.loadPaidMemberError = false;
@@ -90,43 +130,7 @@
             }
         };
 
-        // initial function to check whether user clicked any member name
-        uservm.checkRoutes = () => {
-            if ($routeParams.v) {
-                uservm.clickedMemberName = true;
-            }
-            else {
-                uservm.clickedMemberName = false;
-            }
-        };
-
-
-        /*
-        |----------------------------------------------
-        | Following function will get individual member's
-        | details
-        |----------------------------------------------
-        */
-        uservm.loadUserInfo = () => {
-            const memebrId = $routeParams.v;
-
-            usercontroller
-                .showSingleMember(memebrId)
-                .then(response => {
-                    if (response.data.error) {
-                        uservm.singleMemberLoadingError = true;
-                        uservm.singleMemberLoadingErrorMsg = response.data.error;
-                    }
-                    else {
-                        uservm.singleMemberLoadingError = false;
-                        uservm.singleMember = response.data.member;
-                    }
-                })
-                .catch(err => {
-                    uservm.singleMemberLoadingError = true;
-                    uservm.singleMemberLoadingErrorMsg = err;
-                });
-        };
+        
 
         uservm.loadUserProfile = () => {
             const memebrId = $routeParams.v;
@@ -149,8 +153,8 @@
                 });
         };
 
-        uservm.loadUserBranch = () => {
-            const memebrId = $routeParams.v;
+        uservm.loadUserBranch = (email) => {
+            const memebrId = email;
 
             usercontroller
                 .showMemberBranch(memebrId)
@@ -170,8 +174,8 @@
                 });
         };
 
-        uservm.loadBankTeller = () => {
-            const memebrId = $routeParams.v;
+        uservm.loadBankTeller = (email) => {
+            const memebrId = email;
 
             account
                 .getBankTeller(memebrId)
@@ -206,10 +210,11 @@
         uservm.tellerApproved = {
             validTill: '',
             valid: '',
-            whos: $routeParams.v,
+            whos: '',
         };
 
-        uservm.approveTeller = () => {
+        uservm.approveTeller = (email) => {
+            uservm.tellerApproved.whos = email;
             account
                 .approveTeller(uservm.tellerApproved)
                 .then(response => {

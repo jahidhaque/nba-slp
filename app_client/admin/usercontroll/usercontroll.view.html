@@ -10,20 +10,20 @@
 					{{uservm.initialTitle}}
 					
 					<ul class="list-inline user-list-controll m-t-2">
-						<li><a ng-click="uservm.filterControll('alluser', 'users')" href="#" title="Get List Of Paid members"><i class="fas fa-users"></i></a></li>
-						<li><a ng-click="uservm.filterControll('paid', 'bankteller')" href="#" title="Get List Of Paid members"><i class="fa fa-money-bill-alt" aria-hidden="true"></i></a></li>
-						<li><a ng-click="uservm.filterControll('unpaid', 'bankteller')" href="#" title="Get List Of Unpaid members"><i class="fas fa-shopping-basket" aria-hidden="true"></i></a></li>
-						<li><a ng-click="uservm.filterControll('unverified', 'users')" href="#" title="Get List Of Unverified members"><i class="fab fa-uniregistry"></i></a></li>
-						<li><a ng-click="uservm.filterControll('searchuser')" href="#" title="search user"><i class="fas fa-search-plus"></i></a></li>
+						<li><a ng-click="uservm.filterControll('alluser', 'users')" href="#" title="Get List Of Paid members"><i class="fa fa-users"></i></a></li>
+						<li><a ng-click="uservm.filterControll('paid', 'bankteller')" href="#" title="Get List Of Paid members"><i class="fa fa-money" aria-hidden="true"></i></a></li>
+						<li><a ng-click="uservm.filterControll('unpaid', 'bankteller')" href="#" title="Get List Of Unpaid members"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a></li>
+						<li><a ng-click="uservm.filterControll('searchuser')" href="#" title="search user"><i class="fa fa-search-plus"></i></a></li>
 					</ul>
 				</h1>
 				<!-- when we have error showing members -->
 				<div class="alert alert-danger" ng-if="uservm.showMemberError === true">
 					<p class="text-center regular no-margin">{{uservm.showMemberErrorMsg}}</p>
 				</div>
+				
 				<!-- when we don't have errors while showing memebrs -->
 				<ul class="list" ng-if='uservm.alluser === true'>
-					<li ng-repeat="member in uservm.members"><a href="/usercontroll?v={{member.email}}" title="Check details of {{member.displayName}}" class="regular">{{member.displayName}}</a></li>
+					<li ng-repeat="member in uservm.members"><a ng-click="uservm.collectUserDetail(member.email)" title="Check details of {{member.displayName}}" href="#" class="regular">{{member.displayName}}</a></li>
 				</ul>
 				
 				<!-- list of paid members -->
@@ -32,7 +32,7 @@
 					<!-- list of paid users -->
 					<li ng-if='uservm.loadPaidMemberError === false' class="nestedList">
 						<span ng-repeat='paidmember in uservm.paidListUsers'>
-							<a href="/usercontroll?v={{paidmember.whos}}" title="Check details of {{paidmember.whos}}" class="regular">{{paidmember.whos}}</a>
+							<a href="#" ng-click="uservm.collectUserDetail(paidmember.whos)" title="Check details of {{paidmember.whos}}" class="regular">{{paidmember.whos}}</a>
 						</span>
 					</li>
 					<!-- when we have error loading the paid user -->
@@ -43,170 +43,150 @@
 		</div>
 
 		<!-- user details component -->
-		<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 m-t-3" ng-init='uservm.checkRoutes()'>
+		<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 m-t-3">
+
 				<div class="container-box shadow wbg">
-
-					<!-- when admin clicks the member's name -->
-					<div ng-if="uservm.clickedMemberName === true" ng-init='uservm.loadUserInfo()'>
-						<h1 class="text-center regular title">User Details</h1>
+					<div ng-if="uservm.usernotLoaded === true">
+						<h1 class="text-center title regular">
+							Please click user from left sidebar to see details
+						</h1>
 						<hr>
-						
-						<!-- when we have error showing single user -->
+					</div>
+
+					<!--  user details -->
+					<div ng-if="uservm.usernotLoaded === false">
+
+						<!-- if we have error loading the details -->
 						<div class="alert alert-danger" ng-if="uservm.singleMemberLoadingError === true">
-							<p class="text-center regular">{{uservm.singleMemberLoadingErrorMsg}}</p>
-						</div>
-						
-						<!-- when we don't have error showing user details -->
-						<p class="title light">{{uservm.singleMember.displayName}}'s Personal Details</p>
-
-						<ul class="list list-inline">
-							<li class="pull-left"><span class="regular title">Display Name: {{uservm.singleMember.displayName}}</span><span class="regular title m-l-2">Full name {{uservm.singleMember.lastName}} {{uservm.singleMember.firstName}}</span><span class="clearfix"></span></li>
-							<li class="pull-left">
-								<span class="regular title">Email: {{uservm.singleMember.email}}</span>
-								<span class="regular title">Account Created: {{uservm.singleMember.createdAt | date: 'dd MMM,  yyyy'}}</span>
-								<p class="regular title pull-right">Account Status: <span style="color: green !important;"> {{uservm.singleMember.validationStatus}} </span> </p>
-							</li>
-						</ul>
-						<div class="clearfix"></div>
-						<hr>
-
-						<p class="title light">{{uservm.singleMember.displayName}}'s Account Status</p>
-						<ul class="list">
-							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Branch: {{status.branch}}</span></li>
-							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Bank Teller: {{status.bankteller}}</span></li>
-							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Basic Info: {{status.basic_info}}</span></li>
-							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Current Profile: {{status.current_profile}}</span></li>
-							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Profile: {{status.profile}}</span></li>
-							<li ng-repeat="status in uservm.singleMember.statuses"><span class="regular title">Email Validation: {{status.profileActivationMail}}</span></li>
-						</ul>
-
-						<hr>
-						
-						<p class="title light">{{uservm.singleMember.displayName}}'s Profile</p>
-
-						<div ng-init="uservm.loadUserProfile()">
-							
-							<!-- when we have error loading member's profile -->
-							<div class="alert alert-danger" ng-if="uservm.profileLoadingError === true">
-								<p class="text-center regular">{{uservm.profileLoadingErrorMsg}}</p>
-							</div>
-
-							<!-- when we don't have any error while loading user profile -->
-							<p class="regular light">Address : <strong>{{uservm.memberProfile.address}}</strong></p>
-							<p class="regular light">Sex : <strong>{{uservm.memberProfile.sex}}</strong></p>
-							<p class="regular light">Former Name : <strong>{{uservm.memberProfile.formerName}}</strong></p>
+							<p class="text-center title regular">{{uservm.singleMemberLoadingErrorMsg}}</p>
 						</div>
 
-						<hr>
-						
-						<p class="title light">{{uservm.singleMember.displayName}}'s Branch Info</p>
-						<div ng-init="uservm.loadUserBranch()">
-							
-							<!-- when we have error loading member's profile -->
-							<div class="alert alert-danger" ng-if="uservm.branchLoadingError === true">
-								<p class="text-center regular">{{uservm.branchLoadingErrorMsg}}</p>
-							</div>
+						<!-- when we don't have error loading the page -->
+						<div ng-if="uservm.singleMemberLoadingError === false">
+							<p class="text-center title">User Details Of {{uservm.singleMember.displayName}}</p>
+							<hr>	
+							<p class="title regular">First Name: {{uservm.singleMember.firstName}}</p>
+							<p class="title regular">Last Name: {{uservm.singleMember.lastName}}</p>
+							<p class="title regular">Email address: {{uservm.singleMember.email}}</p>
 
-							<!-- when we don't have any error while loading user profile -->
-							<p class="regular light">Branch : <strong>{{uservm.memberBranch.nbaBranch}}</strong></p>
-							<p class="regular light">Bar Year : <strong>{{uservm.memberBranch.barYear}}</strong></p>
-						</div>
+							<!-- load bank teller -->
 
-						<hr>
-
-						<p class="title light">{{uservm.singleMember.displayName}}'s Bank Teller Info</p>
-
-						<div ng-init="uservm.loadBankTeller()">
-							<div class="alert alert-danger" ng-if="uservm.bankTellerLoadingError === true">
-								<p class="text-center title regular">{{uservm.bankTellerLoadingErrorMsg}}</p>
-							</div>
-
-							<!-- when we don't have error loading bank teller -->
-							<div class="row" ng-if="uservm.bankTellerLoadingError === false">
-								<div class="col-xs-12 col-md-4 col-lg-4">
-									<p class="title regular">Preferred Committee: {{uservm.memberbankTeller.preferredCommittee}}</p>
-									<p class="title regular">Additional Committee: {{uservm.memberbankTeller.additionalCommittee}}</p>
-									<p class="title regular">Record Created: 
-									{{uservm.memberbankTeller.createdAt | date: 'yyyy, MMM, dd'}}</p>
-								</div>
-								<div class="col-xs-12 col-md-4 col-lg-4">
-									<p class="title regular">Bank Name: {{uservm.memberbankTeller.bank}}</p>
-									<p class="title regular">Branch: {{uservm.memberbankTeller.branch}}</p>
-									<p class="title regular">Amount: 
-									{{uservm.memberbankTeller.amount | currency: '₦ '}}</p>
-								</div>
-								<div class="col-xs-12 col-md-4 col-lg-4">
-									<p class="title regular">Teller No: {{uservm.memberbankTeller.tellerno}}</p>
-									<p class="title regular">Depositor: {{uservm.memberbankTeller.depositor}}</p>
-									<p class="title regular">Depositor Tel: 
-									{{uservm.memberbankTeller.depositor_tel}}</p>
-								</div>
-								
-								<!-- when approve process is true -->
-								<div ng-if="uservm.approveProcess === true" class="m-t-3 m-b-2">
-										<form ng-submit='uservm.approveTeller()'>
-											<div class="col-xs-12 col-md-4">
-												<label for="approveDate" class="title regular">Valid Till:</label>
-												<datepicker date-format="yyyy-MM-dd" style='position: relative;'>
-	                          <input type="text" class="form-control" 
-	                          ng-model='uservm.tellerApproved.validTill' 
-	                          id='approveDate' placeholder="Set approval date">
-	                          <i class="fa fa-calendar" 
-	                          style="position: absolute !important; 
-	                          right: 40px; top: 10px; color: #499928 !important;" 
-	                          aria-hidden="true"></i>
-	                      </datepicker>
-	                      <button type="submit" class="btn btn-success pull-left m-t-3 m-b-2">Save changes</button>
-	                      <a href="#" title="cancel submission" ng-click='uservm.cancelTellerSubmission()' class="btn btn-danger pull-right m-t-3 m-b-2">Cancel</a>
-                      	<span class="clearfix"></span>
-                      	<!-- when we have error updating teller approval -->
-												<div class="alert alert-danger" ng-if="uservm.tellerApprovedError === true">
-													<p class="text-center title regular">{{uservm.tellerApprovedErrorMsg}}</p>
-												</div>
-
-                      </div>
-                      <div class="col-xs-12 col-md-5">
-                      	<label for="approved" class="title regular">Approve It:</label>
-                      	<select name="approved" id="approved" ng-model='uservm.tellerApproved.valid' 
-                      	class="form-control half">
-                            <option value="" selected="">Select Approval State</option>
-                            <option value="true">Approved</option>
-                        </select>
-                      </div>
-										</form>									
+								<!-- when we have error loading bankteller -->
+								<div class="alert alert-danger" ng-if="uservm.bankTellerLoadingError === true">
+									<p class="text-center title light">{{uservm.bankTellerLoadingErrorMsg}}</p>
 								</div>
 
-								<div ng-if="uservm.approveEdit === true">
-									
-										<div class="col-xs-12 col-md-4">
-											<hr>
-											<P class="title regular">
-												Bank teller validation Info
-											</P>
-											<p class="title regular">
-												Valid till: {{uservm.memberbankTeller.tellerValidTill | date: 'yyyy, MMM, dd'}}
-											</p>
-											<p class="title regular">Valid Status: {{uservm.memberbankTeller.tellerApproved}}</p>
-
-											<a href='#' ng-click='uservm.editBankTellerApproving()' title="Edit teller approval" class="btn btn-danger pull-left">Edit Teller Approval</a>
-												<span class="clearfix"></span>
-
+								<!-- when we do have bank teller -->
+								<div ng-if="uservm.bankTellerLoadingError === false">
+									<p class="text-center title light">Bank teller information</p>
+									<hr>
+									<div class="row">
+										<div class="col-xs-12 col-md-4 col-lg-4">
+											<p class="title regular">Preferred Committee: {{uservm.memberbankTeller.preferredCommittee}}</p>
+											<p class="title regular">Additional Committee: {{uservm.memberbankTeller.additionalCommittee}}</p>
+											<p class="title regular">Record Created: 
+											{{uservm.memberbankTeller.createdAt | date: 'yyyy, MMM, dd'}}</p>
 										</div>
-									
+										<div class="col-xs-12 col-md-4 col-lg-4">
+											<p class="title regular">Bank Name: {{uservm.memberbankTeller.bank}}</p>
+											<p class="title regular">Branch: {{uservm.memberbankTeller.branch}}</p>
+											<p class="title regular">Amount: 
+											{{uservm.memberbankTeller.amount | currency: '₦ '}}</p>
+										</div>
+										<div class="col-xs-12 col-md-4 col-lg-4">
+											<p class="title regular">Teller No: {{uservm.memberbankTeller.tellerno}}</p>
+											<p class="title regular">Depositor: {{uservm.memberbankTeller.depositor}}</p>
+											<p class="title regular">Depositor Tel: 
+											{{uservm.memberbankTeller.depositor_tel}}</p>
+										</div>
+										
+										<!-- when approve process is true -->
+										<div ng-if="uservm.approveProcess === true" style="width: 100%;" 
+											class="pull-left m-t-3 m-b-2">
+												<form ng-submit='uservm.approveTeller(uservm.singleMember.email)'>
+													<div class="col-xs-12 col-md-6">
+														<label for="approveDate" class="title regular">Valid Till:</label>
+														<datepicker date-format="yyyy-MM-dd" style='position: relative;'>
+			                          <input type="text" class="form-control" 
+			                          ng-model='uservm.tellerApproved.validTill' 
+			                          id='approveDate' placeholder="Set approval date">
+			                          <i class="fa fa-calendar" 
+			                          style="position: absolute !important; 
+			                          right: 40px; top: 10px; color: #499928 !important;" 
+			                          aria-hidden="true"></i>
+			                      </datepicker>
+			                      <button type="submit" class="btn btn-success pull-left m-t-3 m-b-2">Save changes</button>
+			                      <a href="#" title="cancel submission" ng-click='uservm.cancelTellerSubmission()' class="btn btn-danger pull-right m-t-3 m-b-2">Cancel</a>
+		                      	<span class="clearfix"></span>
+		                      	<!-- when we have error updating teller approval -->
+														<div class="alert alert-danger" ng-if="uservm.tellerApprovedError === true">
+															<p class="text-center title regular">{{uservm.tellerApprovedErrorMsg}}</p>
+														</div>
+
+		                      </div>
+		                      <div class="col-xs-12 col-md-6">
+		                      	<label for="approved" class="title regular">Approve It:</label>
+		                      	<select name="approved" id="approved" ng-model='uservm.tellerApproved.valid' 
+		                      	class="form-control half">
+		                            <option value="" selected="">Select Approval State</option>
+		                            <option value="true">Approved</option>
+		                        </select>
+		                      </div>
+												</form>									
+										</div>
+
+										<div class="clearfix"></div>
+
+
+										<div ng-if="uservm.approveEdit === true" style="width: 100%;" class="m-t-3 m-b-2 pull-left">									
+											
+												<div class="col-xs-12 col-md-12">
+													<hr>
+													<P class="title regular">
+														Bank teller validation Info
+													</P>
+													<p class="title regular">
+														Valid till: {{uservm.memberbankTeller.tellerValidTill | date: 'yyyy, MMM, dd'}}
+													</p>
+													<p class="title regular">Valid Status: {{uservm.memberbankTeller.tellerApproved}}</p>
+
+													<a href='#' ng-click='uservm.editBankTellerApproving()' title="Edit teller approval" class="btn btn-danger pull-left">Edit Teller Approval</a>
+														<span class="clearfix"></span>
+
+												</div>
+											
+										</div>
+										<div class="clearfix"></div>
+
+									</div>
 								</div>
-								
-							</div>
+
+								<!-- branch info -->
+								<div>
 							
+										<!-- when we have error loading member's profile -->
+										<div class="alert alert-danger" ng-if="uservm.branchLoadingError === true">
+											<p class="text-center regular">{{uservm.branchLoadingErrorMsg}}</p>
+										</div>
+
+										<div ng-if="uservm.branchLoadingError === false">
+											<p class="text-center title light">Branch Information</p>
+											<hr>
+										</div>
+
+										<!-- when we don't have any error while loading user profile -->
+										<p ng-if="uservm.branchLoadingError === false" class="regular light">Branch : <strong>{{uservm.memberBranch.nbaBranch}}</strong></p>
+										<p ng-if="uservm.branchLoadingError === false" class="regular light">Bar Year : <strong>{{uservm.memberBranch.barYear}}</strong></p>
+								</div>
+
 						</div>
 
 					</div>
 
-					<div ng-if="uservm.clickedMemberName === false">
-							<h1 class="text-center regular title">Please click member's name from left panel to see details </h1>
-							<hr>
-					</div>
 				</div>	
+
 		</div>
+
 	</div>
 </div>
 
