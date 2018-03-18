@@ -39,6 +39,22 @@
 					<li ng-if="uservm.loadPaidMemberError === true"><p class='title regular'>{{uservm.loadPaidMemberErrorMsg}}</p></li>
 				</ul>
 
+				<!-- showing list of unpaid member -->
+				<ul class="list" ng-if="uservm.unPaidMemberControl === true">
+					<!-- when we have error loading unpaid userlist -->
+					<li ng-if="uservm.loadUnPaidMemberError === true" class="alert alert-danger">
+						<p class="title light">{{uservm.loadUnPaidMemberErrorMsg}}</p>
+					</li>
+
+					<!-- display list of unpaid members -->
+					<li ng-if="uservm.loadUnPaidMemberError === false">
+						<span ng-repeat='unpaidmember in uservm.unPaidListUsers'>
+							<a href="#" ng-click="uservm.collectUserDetail(unpaidmember.whos)" title="Check details of {{unpaidmember.whos}}" class="regular">{{unpaidmember.whos}}</a>
+						</span>
+					</li>
+
+				</ul>
+
 			</div>
 		</div>
 

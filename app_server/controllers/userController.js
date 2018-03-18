@@ -232,7 +232,7 @@ module.exports.filterAction = (req, res) => {
             });
         }
         else {
-            if (req.params.source === 'bankteller') {
+            if (req.params.source === 'bankteller' && req.params.action === 'paid') {
 
                 
                 BankTeller
@@ -254,6 +254,28 @@ module.exports.filterAction = (req, res) => {
                             });
                         }
                     });
+            }
+            else if (req.params.source === 'bankteller' && req.params.action === 'unpaid') {
+                BankTeller
+                    .find({ tellerApproved: false })
+                    .exec((err, verifiedUsers) => {
+                        if (err) {
+                            sendJsonResponse(res, 404, {
+                                error: err,
+                            });
+                        }
+                        else if(!verifiedUsers) {
+                            sendJsonResponse(res, 404, {
+                                error: 'no unpaid user found!',
+                            });
+                        }
+                        else {
+                            sendJsonResponse(res, 200, {
+                                verifiedUsers: verifiedUsers,
+                            });
+                        }
+                    });
+
             }
         }
     });

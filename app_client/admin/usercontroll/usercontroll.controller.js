@@ -34,10 +34,12 @@
         uservm.initialTitle = 'List of all user';
 
         uservm.paidMemberControl = false;
+        uservm.unPaidMemberControl = false;
 
         uservm.loadUserList = () => {
             uservm.alluser = true;
             uservm.paidMemberControl = false;
+            uservm.unPaidMemberControl = false;
             uservm.initialTitle = 'List of all user';
 
             usercontroller
@@ -94,6 +96,7 @@
         uservm.loadPaidMember = (action, source) => {
             uservm.alluser = false;
             uservm.paidMemberControl = true;
+            uservm.unPaidMemberControl = false;
             uservm.initialTitle = 'List Of Only Paid User(s)';
 
             const QuerySource = source;
@@ -128,7 +131,43 @@
             else if (action === 'paid') {
                 uservm.loadPaidMember(action, source);
             }
+            else if (action === 'unpaid') {
+                uservm.loadUnPaidMember(action, source);
+            }
         };
+
+        uservm.loadUnPaidMember = (action, source) => {
+            uservm.alluser = false;
+            uservm.paidMemberControl = false;
+            uservm.unPaidMemberControl = true;
+
+            uservm.initialTitle = 'List Of Only Unpaid User(s)';
+
+            const QuerySource = source;
+            const QueryAction = action;
+
+            usercontroller
+                .filterAction(QuerySource, QueryAction)
+                .then(response => {
+                    console.log('response', response);
+                    if (response.data.error) {
+                        uservm.loadUnPaidMemberError = true;
+                        uservm.loadUnPaidMemberErrorMsg = response.data.error;
+                    }
+                    else if (response.data.verifiedUsers.length < 1) {
+                        uservm.loadUnPaidMemberError = true;
+                        uservm.loadUnPaidMemberErrorMsg = "No unpaid member has found";
+                    }
+                    else {
+                        uservm.loadUnPaidMemberError = false;
+                        uservm.unPaidListUsers = response.data.verifiedUsers;
+                    }
+                })
+                .catch(err => {
+                    uservm.loadUnPaidMemberError = true;
+                    uservm.loadUnPaidMemberErrorMsg = err;
+                });
+        }
 
         
 
