@@ -280,3 +280,50 @@ module.exports.filterAction = (req, res) => {
         }
     });
 };
+
+
+/*
+|----------------------------------------------
+| Following function will search user based
+| on given query.
+|----------------------------------------------
+*/
+
+module.exports.SearchUser = (req, res) => {
+    const query = Joi.object().keys({
+        query: Joi.string().min(3).required(),
+    });
+
+    Joi.validate(req.params, query, (err, value) => {
+        if (err) {
+            sendJsonResponse(res, 404, {
+                error: err.details[0].message,
+            });
+        }
+        else {
+            User
+                .find({ $or: [{'email': req.params.query}, 
+                    {'displayName': req.params.query}, {'firstName': req.params.query},
+                    {'lastName': req.params.query}
+                    ] })
+                .exec((err, users) => {
+                    if (err) {
+                        sendJsonResponse(res, 404, {
+                            error: err,
+                        });
+                    }
+                    else  if (!users) {
+                        sendJsonResponse(res, 404, {
+                            error: 'No user found',
+                        });
+                    }
+                    else {
+                        sendJsonResponse(res, 200, {
+                            searchResult: users,
+                        });
+                    }
+                })
+        }
+    })
+}
+

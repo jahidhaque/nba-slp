@@ -74,6 +74,7 @@ Routes.get('/showcouncil', siteController.showcouncil);
 Routes.delete('/:councilId/council', siteController.deleteCouncil);
 Routes.put('/bankteller', userController.approvedTeller);
 Routes.get('/:source/:action', userController.filterAction);
+Routes.get('/search/user/:query', userController.SearchUser);
 
 /*
 |----------------------------------------------

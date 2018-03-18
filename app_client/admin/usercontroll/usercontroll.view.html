@@ -13,7 +13,7 @@
 						<li><a ng-click="uservm.filterControll('alluser', 'users')" href="#" title="Get List Of Paid members"><i class="fa fa-users"></i></a></li>
 						<li><a ng-click="uservm.filterControll('paid', 'bankteller')" href="#" title="Get List Of Paid members"><i class="fa fa-money" aria-hidden="true"></i></a></li>
 						<li><a ng-click="uservm.filterControll('unpaid', 'bankteller')" href="#" title="Get List Of Unpaid members"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a></li>
-						<li><a ng-click="uservm.filterControll('searchuser')" href="#" title="search user"><i class="fa fa-search-plus"></i></a></li>
+						<li><a ng-click="uservm.filterControll('searchuser', 'users')" href="#" title="search user"><i class="fa fa-search-plus"></i></a></li>
 					</ul>
 				</h1>
 				<!-- when we have error showing members -->
@@ -53,6 +53,35 @@
 						</span>
 					</li>
 
+				</ul>
+
+				<!-- show user search controller -->
+				<form ng-if="uservm.searchUserControl === true" ng-submit='uservm.searchUser()'>
+					<div class="row">
+						<div class="col-xs-10">
+							<div class="form-group">
+								<input type="text" class="form-control" 
+									placeholder="Search by name, or email" ng-model='uservm.search.user'>
+								<span class="clearfix"></span>
+							</div>
+						</div>
+						<div class="col-xs-2">
+							<button type="submit" class="btn btn-primary">Search</button>
+						</div>
+					</div>
+				</form>
+
+				<div class="alert alert-danger" ng-if="uservm.userSearchError === true">
+					<p class="text-center light no-margin">{{uservm.userSearchErrorMsg}}</p>
+				</div>
+				
+				<!-- display list of search result -->
+				<ul class="list" ng-if="uservm.userSearchError === false">
+					<li>
+						<span ng-repeat='searchResult in uservm.searchUserList'>
+							<a href="#" ng-click="uservm.collectUserDetail(searchResult.email)" title="Check details of {{searchResult.email}}" class="regular">{{searchResult.email}}</a>
+						</span>
+					</li>
 				</ul>
 
 			</div>

@@ -53,6 +53,13 @@
                 .catch(handleError);
         };
 
+        const searchUser = (query) => {
+            return $http 
+                .get('/api/search/user/' + query)
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
         const handleSuccess = (response) => response;
 
         const handleError = (response) => response;
@@ -63,6 +70,7 @@
             showMemberProfile: showMemberProfile,
             showMemberBranch: showMemberBranch,
             filterAction: filterAction,
+            searchUser: searchUser,
         };
     }
 

@@ -35,10 +35,12 @@
 
         uservm.paidMemberControl = false;
         uservm.unPaidMemberControl = false;
+        uservm.searchUserControl = false;
 
         uservm.loadUserList = () => {
             uservm.alluser = true;
             uservm.paidMemberControl = false;
+            uservm.searchUserControl = false;
             uservm.unPaidMemberControl = false;
             uservm.initialTitle = 'List of all user';
 
@@ -95,6 +97,7 @@
 
         uservm.loadPaidMember = (action, source) => {
             uservm.alluser = false;
+            uservm.searchUserControl = false;
             uservm.paidMemberControl = true;
             uservm.unPaidMemberControl = false;
             uservm.initialTitle = 'List Of Only Paid User(s)';
@@ -134,11 +137,22 @@
             else if (action === 'unpaid') {
                 uservm.loadUnPaidMember(action, source);
             }
+            else if (action === 'searchuser') {
+                uservm.loadUserSearch(action, source);
+            }
         };
+
+        uservm.loadUserSearch = (action, source) => {
+            uservm.searchUserControl = true;
+            uservm.alluser = false;
+            uservm.paidMemberControl = false;
+            uservm.unPaidMemberControl = false;
+        }
 
         uservm.loadUnPaidMember = (action, source) => {
             uservm.alluser = false;
             uservm.paidMemberControl = false;
+            uservm.searchUserControl = false;
             uservm.unPaidMemberControl = true;
 
             uservm.initialTitle = 'List Of Only Unpaid User(s)';
@@ -169,6 +183,38 @@
                 });
         }
 
+
+        /*
+        |----------------------------------------------
+        | searching the user based on given input
+        |----------------------------------------------
+        */
+        uservm.search = {
+            user: '',
+        };
+
+        uservm.searchUser = () => {
+            usercontroller
+                .searchUser(uservm.search.user)
+                .then(response => {
+                    if (response.data.error) {
+                        uservm.userSearchError = true;
+                        uservm.userSearchErrorMsg = response.data.error;
+                    }
+                    if (response.data.searchResult.length < 1) {
+                        uservm.userSearchError = true;
+                        uservm.userSearchErrorMsg = 'No user found';
+                    }
+                    else {
+                        uservm.userSearchError = false;
+                        uservm.searchUserList = response.data.searchResult;
+                    }
+                })
+                .catch(err => {
+                    uservm.userSearchError = true;
+                    uservm.userSearchErrorMsg = err;
+                })
+        }
         
 
         uservm.loadUserProfile = () => {
