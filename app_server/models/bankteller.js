@@ -12,7 +12,7 @@ const Mongoose = require('mongoose');
 
 const bankTellerSchema = new Mongoose.Schema({
     tellerId: {
-        type: String, min: 10, max: 10, required: true, unique: true,
+        type: String, min: 10, max: 10, required: true, 
     },
     whos: {
         type: String, required: true,

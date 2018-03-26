@@ -74,6 +74,12 @@
 	}
 }
 
+.no-point{
+	li{
+		list-style-type: none;
+	}
+}
+
 .no-margin{margin: 0; }
 .no-padding{padding:0; }
 

@@ -27,11 +27,11 @@
 				</ul>
 				
 				<!-- list of paid members -->
-				<ul class="list" ng-if="uservm.paidMemberControl === true">
+				<ul class="list no-point" ng-if="uservm.paidMemberControl === true">
 					
 					<!-- list of paid users -->
 					<li ng-if='uservm.loadPaidMemberError === false' class="nestedList">
-						<span ng-repeat='paidmember in uservm.paidListUsers'>
+						<span class="p-t-1 p-b-1 block" ng-repeat='paidmember in uservm.paidListUsers'>
 							<a href="#" ng-click="uservm.collectUserDetail(paidmember.whos)" title="Check details of {{paidmember.whos}}" class="regular">{{paidmember.whos}}</a>
 						</span>
 					</li>
@@ -40,7 +40,7 @@
 				</ul>
 
 				<!-- showing list of unpaid member -->
-				<ul class="list" ng-if="uservm.unPaidMemberControl === true">
+				<ul class="list no-point" ng-if="uservm.unPaidMemberControl === true">
 					<!-- when we have error loading unpaid userlist -->
 					<li ng-if="uservm.loadUnPaidMemberError === true" class="alert alert-danger">
 						<p class="title light">{{uservm.loadUnPaidMemberErrorMsg}}</p>
@@ -48,7 +48,7 @@
 
 					<!-- display list of unpaid members -->
 					<li ng-if="uservm.loadUnPaidMemberError === false">
-						<span ng-repeat='unpaidmember in uservm.unPaidListUsers'>
+						<span class="p-t-1 p-b-1 block" ng-repeat='unpaidmember in uservm.unPaidListUsers'>
 							<a href="#" ng-click="uservm.collectUserDetail(unpaidmember.whos)" title="Check details of {{unpaidmember.whos}}" class="regular">{{unpaidmember.whos}}</a>
 						</span>
 					</li>
@@ -76,9 +76,9 @@
 				</div>
 				
 				<!-- display list of search result -->
-				<ul class="list" ng-if="uservm.userSearchError === false">
+				<ul class="list no-point" ng-if="uservm.userSearchError === false && uservm.searchUserControl === true">
 					<li>
-						<span ng-repeat='searchResult in uservm.searchUserList'>
+						<span class="p-t-1 p-b-1 block" ng-repeat='searchResult in uservm.searchUserList'>
 							<a href="#" ng-click="uservm.collectUserDetail(searchResult.email)" title="Check details of {{searchResult.email}}" class="regular">{{searchResult.email}}</a>
 						</span>
 					</li>
