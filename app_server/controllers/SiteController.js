@@ -225,7 +225,7 @@ module.exports.deleteCouncil = (req, res) => {
 |----------------------------------------------
 | Following function will add new event to the
 | database
-| @author: jahid haque <jahid.haque@yahoo.com>
+| @author: jahid haque <emegwalio@yahoo.com>
 | @copyright: nba-slp, 2018
 |----------------------------------------------
 */

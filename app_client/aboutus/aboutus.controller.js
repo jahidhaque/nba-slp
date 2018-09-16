@@ -1,7 +1,7 @@
 /*
 |----------------------------------------------
 | setting up about us controller for app
-| @author: jahid haque <jahid.haque@yahoo.com>
+| @author: jahid haque <emegwalio@yahoo.com>
 | @copyright: nba-slp, 2018
 |----------------------------------------------
 */

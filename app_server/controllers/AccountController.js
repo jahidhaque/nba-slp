@@ -117,7 +117,7 @@ module.exports.resetPassword = (req, res) => {
 /*
 |----------------------------------------------
 | Following function will generate security code
-| @author: jahid haque <jahid.haque@yahoo.com>
+| @author: jahid haque <emegwalio@yahoo.com>
 | @copyright: nbaslp, 2018
 |----------------------------------------------
 */
@@ -706,7 +706,7 @@ module.exports.createBankTeller = (req, res) => {
 |----------------------------------------------
 | Following function will get bank teller based
 | on given user id.
-| @author: jahid haque <jahid.haque@yahoo.com>
+| @author: jahid haque <emegwalio@yahoo.com>
 | @copyright: nba-slp, 2018
 |----------------------------------------------
 */
